@@ -36,7 +36,7 @@ export class RegistroAtfComponent implements OnInit {
       codigoAtf: ['', Validators.required],
       
     });
-    //console.log('this.data',this.data.dataATF.idAtf);
+    
     if(this.data.dataATF !== null && this.data.dataATF !== undefined)
      {
       this.inputRegistroATF.get("nombreAtf").patchValue(this.data.dataATF.nombreAtf);

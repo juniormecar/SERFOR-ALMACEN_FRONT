@@ -17,7 +17,16 @@ import { catchError } from 'rxjs/operators';
       this.base = environment.urlProcesos + "/api/serfor/parametro";
     }
   
+    deleteTipoParametro(idTipoParametro:number): Observable<TipoParametroResponse> {
+      let url = `${this.base}/eliminarTipoParametro?idTipoParametro=${idTipoParametro}&nuIdUsuarioElimina=1`;
+      return this.http.delete<TipoParametroResponse>(url).pipe(catchError(this.errorHandler));
+    }
   
+    postTipoParametro(request: TipoParametro) {
+      let url = `${this.base}/registrartipoParametro`;
+      return this.http.post(url, request).pipe(catchError(this.errorHandler));
+    }
+
     getATFSearch(atfRequest:TipoParametro, page: number, size: number): Observable<TipoParametroResponse> {
       let url = `${this.base}/listarTipoParametro?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
       return this.http.get<TipoParametroResponse>((url)).pipe(catchError(this.errorHandler));

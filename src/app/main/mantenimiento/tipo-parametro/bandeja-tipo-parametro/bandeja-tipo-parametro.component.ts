@@ -8,6 +8,8 @@ import { TipoParametroService } from 'app/service/tipo-parametro.service';
 import { TipoParametroResponse } from 'app/shared/models/response/tipo-parametro-reponse';
 import { TipoParametro } from 'app/shared/models/tipo-parametro.model';
 import { RegistroTipoParametroComponent } from './modal/registro-tipo-parametro/registro-tipo-parametro.component';
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-bandeja-tipo-parametro',
@@ -50,7 +52,7 @@ export class BandejaTipoParametroComponent implements OnInit {
   ngOnInit(): void {
     this.search();
   }
-
+  
   search() {
     this.dataSource = new MatTableDataSource<TipoParametro>([])
 
@@ -62,6 +64,50 @@ export class BandejaTipoParametroComponent implements OnInit {
       }
     })
   }
+  openModalTipoParametro(dataPuestoControl: TipoParametro, type: String, index: any){
+    const dialogRef = this._dialog.open(RegistroTipoParametroComponent, {
+      width: '1000px',
+      height: '470px',
+      data: { dataPuestoControl: dataPuestoControl, type: type }
+    });
+   // dialogRef.afterClosed().subscribe(result => { })
+
+   dialogRef.afterClosed().subscribe(result => {  
+    console.log('result',result);
+    if (result == 999) {
+      
+     // this.dataSource = new MatTableDataSource<ATF>(this.listATF);
+     this.search();
+    }
+  })
+
+  }
+
+  eliminar(idTipoParametro:number) { 
+    Swal.fire({
+      title: '¿Desea eliminar el Tipo Parámetro?',
+      text: "Los cambios no se van a revertir",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#43a047',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+          if (result.isConfirmed) {
+            this.tipoParametroService.deleteTipoParametro(idTipoParametro).subscribe((response: TipoParametroResponse) => {             
+              
+              if(response.success)
+              {
+                this.search();
+              }
+        
+            }, error => {
+              
+            })
+          }
+    })   
+  }
 
   pageDataSource(e: PageEvent): PageEvent {
     debugger
@@ -71,34 +117,6 @@ export class BandejaTipoParametroComponent implements OnInit {
     return e;
   }
 
-  openModalTipoParametro(dataPuestoControl: TipoParametro, type: String, index: any){
-    const dialogRef = this._dialog.open(RegistroTipoParametroComponent, {
-      width: '1000px',
-      height: '420px',
-      data: { dataPuestoControl: dataPuestoControl, type: type }
-    });
-   // dialogRef.afterClosed().subscribe(result => { })
-
-    dialogRef.afterClosed().subscribe(result => {  
-      if (result !== null && result !== -1 && result !== undefined) {
-        if(result.type === 'EDIT'){
-          this.listTipoParametro[index].prefijo = result.prefijo;
-          this.listTipoParametro[index].nombre = result.nombre;  
-          this.listTipoParametro[index].descripcion = result.descripcion; 
-        } else {
-          let indexNew = this.listTipoParametro.indexOf(result,0);
-          if(indexNew === -1){
-            this.listTipoParametro.push(result);
-          }else{
-            this.listTipoParametro[indexNew] = result;
-          }
-        };
-
-        this.dataSource = new MatTableDataSource<TipoParametro>(this.listTipoParametro);
-      }
-    })
-  }
-
-
+  
 
 }
