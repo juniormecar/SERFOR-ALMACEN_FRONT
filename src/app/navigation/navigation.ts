@@ -100,6 +100,12 @@ export const navigation: FuseNavigation[] = [
                         title: 'Bandeja de Puesto Control',
                         type : 'item',
                         url  : '/bandeja-puestoControl'
+                    },
+                    {
+                        id   : '3',
+                        title: 'Bandeja de Tipo Parametro',
+                        type : 'item',
+                        url  : '/bandeja-tipoParametro'
                     }
                 ]
             }

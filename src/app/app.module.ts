@@ -75,6 +75,7 @@ import { BandejaTipoParametroComponent } from './main/mantenimiento/tipo-paramet
 
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ReportesAvanzadoComponent } from './main/reporte/reportes-avanzado/reportes-avanzado.component';
+import { RegistroTipoParametroComponent } from './main/mantenimiento/tipo-parametro/bandeja-tipo-parametro/modal/registro-tipo-parametro/registro-tipo-parametro.component';
 
 
 const appRoutes: Routes = [
@@ -146,6 +147,11 @@ const appRoutes: Routes = [
         path: 'bandeja-puestoControl',
         component: BandejaPuestoControlComponent
     },
+
+    {
+        path: 'bandeja-tipoParametro',
+        component: BandejaTipoParametroComponent
+    },
         
     {
         path: 'reportes-avanzado',
@@ -201,7 +207,9 @@ const appRoutes: Routes = [
         RegistroPuestoControlComponent,
         BandejaTipoParametroComponent,
 
-        ReportesAvanzadoComponent
+        ReportesAvanzadoComponent,
+
+        RegistroTipoParametroComponent
 
     ],
     imports: [
