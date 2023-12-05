@@ -8,6 +8,8 @@ import { PuestoControlService } from 'app/service/puesto-control.service';
 import { PuestoControl } from 'app/shared/models/puesto-control.model';
 import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
 import { RegistroPuestoControlComponent } from './modal/registro-puesto-control/registro-puesto-control.component';
+import Swal from 'sweetalert2'
+
 
 @Component({
   selector: 'app-bandeja-puesto-control',
@@ -57,33 +59,18 @@ export class BandejaPuestoControlComponent implements OnInit {
   openModalPuestoControl(dataPuestoControl: PuestoControl, type: String, index: any) {
     const dialogRef = this._dialog.open(RegistroPuestoControlComponent, {
       width: '1000px',
-      height: '550px',
+      height: '690px',
       data: { dataPuestoControl: dataPuestoControl, type: type }
     });    
 
     dialogRef.afterClosed().subscribe(result => {  
-      if (result !== null && result !== -1 && result !== undefined) {
-        if(result.type === 'EDIT'){
-          this.listPuestoControl[index].nombrePuestoControl = result.nombrePuestoControl;
-          this.listPuestoControl[index].controlObligatorio = result.controlObligatorio;          
-          this.listPuestoControl[index].departamento = result.departamento;     
-          this.listPuestoControl[index].provincia = result.provincia;     
-          this.listPuestoControl[index].distrito = result.distrito;     
-          this.listPuestoControl[index].coordenadasNorte = result.coordenadasNorte;     
-          this.listPuestoControl[index].coordenadasEste = result.coordenadasEste;     
-
-        } else {
-          let indexNew = this.listPuestoControl.indexOf(result,0);
-          if(indexNew === -1){
-            this.listPuestoControl.push(result);
-          }else{
-            this.listPuestoControl[indexNew] = result;
-          }
-        };
-
-        this.dataSource = new MatTableDataSource<PuestoControl>(this.listPuestoControl);
+      console.log('result',result);
+      if (result == 999) {
+        
+       this.search();
       }
     })
+
   }
 
   search() {
@@ -96,6 +83,32 @@ export class BandejaPuestoControlComponent implements OnInit {
         this.resultsLength = response.totalRecords;
       }
     })
+  }
+
+  eliminar(idPuestoControl:number) { 
+    Swal.fire({
+      title: '¿Desea eliminar el Puesto de Control?',
+      text: "Los cambios no se van a revertir",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#43a047',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+          if (result.isConfirmed) {
+            this.puestoControlService.deletePuestoControl(idPuestoControl).subscribe((response: PuestoControlResponse) => {             
+              
+              if(response.success)
+              {
+                this.search();
+              }
+        
+            }, error => {
+              
+            })
+          }
+    })   
   }
 
   pageDataSource(e: PageEvent): PageEvent {

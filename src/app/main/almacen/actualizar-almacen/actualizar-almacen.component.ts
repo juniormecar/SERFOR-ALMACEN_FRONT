@@ -573,7 +573,7 @@ export class ActualizarAlmacenComponent implements OnInit {
       .subscribe((response: BandejaRecursoResponse) => {
 
         let datafiltradaSeparado = response.data;
-
+        console.log('datafiltradaSeparado',datafiltradaSeparado);
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
         );
@@ -839,6 +839,12 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,null,null,
       null,null,this.recursoResponse.pageNumber, this.recursoResponse.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
+
+
+        let datafiltradaSeparado = response.data;
+        console.log('datafiltradaSeparadoJUNIOOOOOOOOOR',datafiltradaSeparado);
+
+
         //////console.log("response.data", response.data);
         let contador:number=0;
         response.data.forEach((item:any) => {

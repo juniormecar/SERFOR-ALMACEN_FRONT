@@ -97,7 +97,7 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id   : '2',
-                        title: 'Bandeja de Puesto Control',
+                        title: 'Bandeja de Puesto de Control',
                         type : 'item',
                         url  : '/bandeja-puestoControl'
                     }

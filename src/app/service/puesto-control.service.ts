@@ -15,11 +15,18 @@ export class PuestoControlService {
   constructor(private http: HttpClient) {
     this.base = environment.urlProcesos + "/api/serfor/puestoControl";
   }
+ 
 
-  // getPuestoControlSearch(idATF: Number): Observable<PuestoControl[]> {
-  //   let url = `${this.base}?idAtf=${idATF}`;
-  //   return this.http.get<PuestoControl[]>((url)).pipe(catchError(this.errorHandler));
-  // }
+  deletePuestoControl(idPuestoControl:number): Observable<PuestoControlResponse> {
+    let url = `${this.base}/eliminarPuestoControl?idPuestoControl=${idPuestoControl}&nuIdUsuarioElimina=1`;
+    return this.http.delete<PuestoControlResponse>(url).pipe(catchError(this.errorHandler));
+  }
+
+  postPuestoControl(request: PuestoControl) {
+    let url = `${this.base}/registrarPuestoControl`;
+    return this.http.post(url, request).pipe(catchError(this.errorHandler));
+  }
+
 
   getPuestoControlSearch(puestoControlRequest:PuestoControl, page: number, size: number): Observable<PuestoControlResponse> {
     let url = `${this.base}?pageNumber=${page}&pageSize=${size}&sortType=DESC`; 

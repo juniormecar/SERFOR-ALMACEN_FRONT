@@ -44,6 +44,8 @@
                   </mat-form-field>
                 </div>
 
+                <br>
+
                 <div fxLayout="row" fxLayoutAlign="space-between">
                     <span class="text-primary-ir" floatLabel="always" fxFlex="30">Departamento</span>
                     <div fxFlex="3"></div>
@@ -66,6 +68,8 @@
                       </mat-form-field>
                 </div>
 
+                <br>
+
                 <div fxLayout="row" fxLayoutAlign="space-between">
                     <span class="text-primary-ir" floatLabel="always" fxFlex="47">Coordenadas Norte</span>
                     <div fxFlex="3"></div>
@@ -85,6 +89,35 @@
                 </div>
   
                 <br>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Zona UTM</span>
+                  <div fxFlex="3"></div>
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">ATF</span>
+                  <!-- <div fxFlex="3"></div> -->
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="zonaUTM">
+                  </mat-form-field>
+                  <div fxFlex="3"></div>
+                  <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                    <mat-select formControlName="idAtf">
+                        <mat-option [value]="">
+                            Seleccione
+                        </mat-option>
+                        <ng-container *ngFor="let item of listATF">
+                            <mat-option [value]="item.idAtf">
+                                {{item.nombreAtf}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+              <br>
   
                 <div mat-dialog-actions class="text-center" style="padding: 3%;">
                   <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"

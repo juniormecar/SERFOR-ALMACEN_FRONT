@@ -21,6 +21,7 @@ interface DialogData {
 export class RegistroAtfComponent implements OnInit {
 
   inputRegistroATF: FormGroup;
+  iddAtf: number=0;
 
   constructor(
     public dialogRef: MatDialogRef<RegistroAtfComponent>,
@@ -35,11 +36,12 @@ export class RegistroAtfComponent implements OnInit {
       codigoAtf: ['', Validators.required],
       
     });
-    
+    //console.log('this.data',this.data.dataATF.idAtf);
     if(this.data.dataATF !== null && this.data.dataATF !== undefined)
      {
       this.inputRegistroATF.get("nombreAtf").patchValue(this.data.dataATF.nombreAtf);
-      this.inputRegistroATF.get("codigoAtf").patchValue(this.data.dataATF.codigoAtf);      
+      this.inputRegistroATF.get("codigoAtf").patchValue(this.data.dataATF.codigoAtf);    
+      this.iddAtf =   this.data.dataATF.idAtf;
      }
 
 
@@ -52,7 +54,7 @@ export class RegistroAtfComponent implements OnInit {
     registrar() {
 
     let obj: ATF = new ATF();
-    obj.idAtf = this.data.dataATF.idAtf !== undefined ? this.data.dataATF.idAtf : 0;
+    obj.idAtf = this.iddAtf;
     obj.nombreAtf = this.inputRegistroATF.get('nombreAtf').value
     obj.codigoAtf = this.inputRegistroATF.get('codigoAtf').value    
 
