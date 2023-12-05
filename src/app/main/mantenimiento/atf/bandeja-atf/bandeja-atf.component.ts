@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AtfResponse } from 'app/shared/models/response/atf-response';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { PageEvent } from '@angular/material/paginator';
-
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-bandeja-atf',
@@ -62,23 +62,14 @@ export class BandejaATFComponent implements OnInit {
    // dialogRef.afterClosed().subscribe(result => { })
 
     dialogRef.afterClosed().subscribe(result => {  
-      if (result !== null && result !== -1 && result !== undefined) {
-        if(result.type === 'EDIT'){
-          this.listATF[index].nombreAtf = result.nombreAtf;
-          this.listATF[index].codigoAtf = result.codigoAtf;          
-
-        } else {
-          let indexNew = this.listATF.indexOf(result,0);
-          if(indexNew === -1){
-            this.listATF.push(result);
-          }else{
-            this.listATF[indexNew] = result;
-          }
-        };
-
-        this.dataSource = new MatTableDataSource<ATF>(this.listATF);
+      console.log('result',result);
+      if (result == 999) {
+        
+       // this.dataSource = new MatTableDataSource<ATF>(this.listATF);
+       this.search();
       }
     })
+    
   }
 
   search() {
@@ -91,6 +82,32 @@ export class BandejaATFComponent implements OnInit {
         this.resultsLength = response.totalRecords;
       }
     })
+  }
+
+  eliminar(idAtf:number) { 
+    Swal.fire({
+      title: '¿Desea eliminar el ATF?',
+      text: "Los cambios no se van a revertir",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#43a047',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+          if (result.isConfirmed) {
+            this.atfService.deleteAtf(idAtf).subscribe((response: AtfResponse) => {             
+              
+              if(response.success)
+              {
+                this.search();
+              }
+        
+            }, error => {
+              
+            })
+          }
+    })   
   }
 
   pageDataSource(e: PageEvent): PageEvent {
