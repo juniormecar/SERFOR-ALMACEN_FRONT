@@ -1,0 +1,108 @@
+<!-- <div id="academy-course" class="page-layout left-sidebar inner-scroll"> -->
+
+    <div class="center">
+        
+        <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> <b> Registro de Responsable</b></span>
+                <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <br><br>
+
+
+    <div class="center">
+
+        <div id="course-content" class="content">
+
+            <ng-container *ngFor="let step of course; let i = index;">
+
+                <!-- [@slideIn]="animationDirection" -->
+                <div class="course-step"  *ngIf="currentStep === i">
+
+                    <div id="course-step-content" class="course-step-content ">
+                        <form [formGroup]="inputRegistro">  
+                            
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">Tipo de Documento</span>
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">N° de Documento</span>
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="18"></span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                    fxFlex="35">
+                                    <mat-select formControlName="txTipoDocumento">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoDocumento">
+                                            <mat-option [value]="item.codigo">
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div fxFlex="3"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="35">
+                                    <input matInput type="text" formControlName="txNumeroDocumento">
+                                </mat-form-field>
+                                <div fxFlex="3"></div>
+                                <button class="validate-dni" floatLabel="always" fxFlex="18"
+                                    (click)="validarDNI()">Validar DNI</button>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxFlex="76">
+                                    
+                                    <div fxLayout="column" fxLayoutAlign="space-between">                                        
+                                        <br>
+                                        <span class="text-primary-ir" floatLabel="always" fxFlex="30">Nombre de Responsable</span>
+                                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                            <input matInput type="text" formControlName="txNombresEncargado">
+                                        </mat-form-field>
+                                        
+                                    </div>
+                                </div>
+                                <div class="rounded-circle" floatLabel="always" fxFlex="13" >
+                                    <img *ngIf="photo" [src]="'data:image/png;base64,' + photo" alt="avatar">
+                                    <img *ngIf="!photo" src="https://img.freepik.com/free-icon/user_318-563642.jpg" alt="avatar">
+                                </div>
+                            </div>
+                            <br>                            
+                            <div mat-dialog-actions class="text-center" style="padding: 3%;">
+
+                                <div *ngIf="typeProcess === 'NEW'">
+                                    <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                    (click)="agregarAlmacenResponsable()">Agregar</button>                        
+                                    <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                    (click)="close()">Cancelar</button>
+                                </div>
+                                <div *ngIf="typeProcess === 'EDIT'">
+                                    <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                    (click)="editarAlmacenResponsable()">Editar</button>                        
+                                    <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                    (click)="close()">Cancelar</button>
+                                </div>
+
+                            </div>
+                        </form> 
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </div>
+        
+
+    </div>
+    <div class="step-navigation">
+
+
+    </div>
+
+<!-- </div> -->

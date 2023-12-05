@@ -1,0 +1,220 @@
+<div class="center">
+    
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"> <b> {{tittle}} </b></span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <br><br>  
+
+    <div class="content-tab">
+
+        <mat-tab-group dynamicHeight="true">
+
+            <mat-tab label="Recursos Maderables">
+                <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxFlex="70"></div>
+                        <!--<button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                            (click)="agregarMaderable()">
+                            <mat-icon aria-label="Agregar">library_add</mat-icon>
+                            Agregar especie nueva</button>-->
+                    </div>
+                <br>
+                <div class="example-container mat-elevation-z1">
+                    <table mat-table [dataSource]="dataSourceMad">
+                                                          
+                        
+                        <ng-container matColumnDef="nombreCientifico">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Científico</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreCientifico}} </td>
+                        </ng-container>                                   
+
+                        <ng-container matColumnDef="nombreComun">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Común o Comercial</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreComun}} </td>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="tipoProducto">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo de Producto </th>
+                            <td mat-cell *matCellDef="let element"> {{element.desctipoProducto}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="subProducto">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Sub Producto </th>
+                            <td mat-cell *matCellDef="let element"> {{element.descSubProducto}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="txCantidadProducto">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Trozas/Piezas </th>
+                            <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unidadMedida">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> U. de Medida </th>
+                            <td mat-cell *matCellDef="let element"> {{element.descUnidadMedida}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="metroCubico">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Metro Cúbico </th>
+                            <td mat-cell *matCellDef="let element"> {{element.metroCubico}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="flagAgregar"class="text-center" >                                                
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%; padding-left: 1%;" >                                
+                            </th>
+                            <td mat-cell *matCellDef="let element">                                
+                                <input mat-cell type="checkbox"  class="valor" [(ngModel)]="element.disponibilidad" [checked]="element.disponibilidad"> 
+                                <!--<input *ngIf="element.disponibilidadActa==='D'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="true">
+                                    <input *ngIf="element.disponibilidadActa==='ND'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="false">  -->                                 
+                            </td>
+                        </ng-container> 
+
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+                    </table>
+                    <mat-paginator style="float:left; color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons 
+                    [length]="recursoResponseMad.totalRecords"
+                    [pageSize]="recursoResponseMad.pageSize" (page)="pageDataSource($event,'M')"
+                    aria-label="Select page of periodic elements"> 
+                </mat-paginator>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Recursos No Maderables">
+                <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxFlex="70"></div>
+                        <!--<button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                            (click)="agregarNoMaderable()">
+                            <mat-icon aria-label="Agregar">library_add</mat-icon>
+                            Agregar especie nueva</button>-->
+                    </div>
+                <br>
+                <div class="example-container mat-elevation-z1">
+                    <table mat-table [dataSource]="dataSourceNoMad">                        
+
+                        <ng-container matColumnDef="nombreCientifico">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Científico</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreCientifico}} </td>
+                        </ng-container>                                   
+
+                        <ng-container matColumnDef="nombreComun">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Común o Comercial</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreComun}} </td>
+                        </ng-container>   
+
+                        <ng-container matColumnDef="tipoAlmacenamiento">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo de Almacenamiento </th>
+                            <td mat-cell *matCellDef="let element"> {{element.descTipoAlmacenamiento}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="capacidadUnidad">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Capacidad/Unidad </th>
+                            <td mat-cell *matCellDef="let element"> {{element.capacidadUnidad}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="txCantidadProducto">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
+                            <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="unidadMedida">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> U. de Medida </th>
+                            <td mat-cell *matCellDef="let element"> {{element.descUnidadMedida}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="flagAgregar"class="text-center" >                                                
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%; padding-left: 1%;" >                                
+                            </th>
+                            <td mat-cell *matCellDef="let element">                                
+                                    <input mat-cell type="checkbox"  class="valor" [(ngModel)]="element.disponibilidad" [checked]="element.disponibilidad"> 
+                                    <!--<input *ngIf="element.disponibilidadActa==='D'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="true">
+                                    <input *ngIf="element.disponibilidadActa==='ND'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="false">   -->
+                            </td>
+                        </ng-container> 
+
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsNOMad"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsNOMad;"></tr>
+        
+                    </table>
+                    <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+                    [length]="recursoResponseNoMad.totalRecords" [pageSize]="recursoResponseNoMad.pageSize"
+                    (page)="pageDataSource($event, 'NM')" aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Fauna">
+                <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxFlex="70"></div>
+                        <!--<button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                            (click)="agregarFauna()">
+                            <mat-icon aria-label="Agregar">library_add</mat-icon>
+                            Agregar especie nueva</button>-->
+                    </div>
+                <br>
+                <div class="example-container mat-elevation-z1">
+                    <table mat-table [dataSource]="dataSourceFauna">
+
+                        <ng-container matColumnDef="nombreCientifico">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Científico</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreCientifico}} </td>
+                        </ng-container>                                   
+
+                        <ng-container matColumnDef="nombreComun">
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%;">Nombre Común</th>
+                            <td mat-cell *matCellDef="let element"> {{element.nombreComun}} </td>
+                        </ng-container>                       
+                        
+
+                        <ng-container matColumnDef="txCantidadProducto">
+                            <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
+                            <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                        </ng-container>
+
+                        
+                        <ng-container matColumnDef="flagAgregar"class="text-center" >                                                
+                            <th mat-header-cell *matHeaderCellDef style="width: 15%; padding-left: 1%;" >                                
+                            </th>
+                            <td mat-cell *matCellDef="let element">                                
+                                     <input mat-cell type="checkbox"  class="valor" [(ngModel)]="element.disponibilidad" [checked]="element.disponibilidad">                        
+                                    <!--<input *ngIf="element.disponibilidadActa==='D'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="true">
+                                    <input *ngIf="element.disponibilidadActa==='ND'" mat-cell type="checkbox" value="val" id="val" class="valor" [checked]="false"> -->
+                            </td>
+                        </ng-container> 
+
+        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsFauna"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsFauna;"></tr>
+        
+                    </table>
+                    <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+                    [length]="recursoResponseFauna.totalRecords" [pageSize]="recursoResponseFauna.pageSize"
+                    (page)="pageDataSource($event,'F')" aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+
+    <br>
+    <div mat-dialog-actions class="text-center" style="padding: 3%;">
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+        (click)="actualizarDisponibilidad()"  >Actualizar Disponibilidad</button>   
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                    (click)="close()">Cancelar</button>
+    </div>
+    
+
+</div>

@@ -1,0 +1,28 @@
+<div class="flex flex-col flex-auto md:w-100 md:min-w-100 max-h-screen -m-6 overflow-y-auto content-scroll">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-center py-6 px-6 bg-card text-accent">
+        <div class="font-medium popup-title">{{ data.title }}</div>
+    </div>
+    
+    <!-- Body -->
+    <ng-container>
+
+        <div class="items-center text-center w-full bg-card text-accent px-6 pb-6">
+            <div class="w-full flex flex-row justify-center mb-4">
+                <div *ngIf="data.type == 'success'" class="status-action-success"><mat-icon [svgIcon]="'tabler-icons:check'" class="status-action-icon"></mat-icon></div>
+                <div *ngIf="data.type == 'warning'" class="status-action-warning"><mat-icon [svgIcon]="'tabler-icons:alert-triangle'" class="status-action-icon"></mat-icon></div>
+                <div *ngIf="data.type == 'error'" class="status-action-error"><mat-icon [svgIcon]="'tabler-icons:alert-circle'" class="status-action-icon"></mat-icon></div>
+            </div>
+            <div>{{ data.message }}</div>
+        </div>
+
+    </ng-container>
+    
+    <div class="flex flex-col items-center justify-center w-full px-6 py-4">
+        <button mat-flat-button class="w-full mb-4 btn-primary-ir" (click)="accept()">
+            Aceptar
+        </button>
+    </div>
+
+</div>

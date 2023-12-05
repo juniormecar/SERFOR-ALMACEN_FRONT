@@ -1,0 +1,60 @@
+
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+      <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+  
+        <span class="title dialog-title"> <b> Registrar ATF</b></span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+  
+      </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <br><br>
+  
+    <div class="center">
+  
+      <div id="course-content" class="content">
+  
+        <ng-container>
+  
+          <!-- [@slideIn]="animationDirection" -->
+          <div class="course-step">
+  
+            <div id="course-step-content" class="course-step-content ">
+              <form [formGroup]="inputRegistroATF">
+  
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Nombre de ATF</span>
+                  <div fxFlex="3"></div>
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Código</span>
+                  <!-- <div fxFlex="3"></div> -->
+                </div>
+  
+                <div fxLayout="row" fxLayoutAlign="space-between">                  
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="nombreAtf">
+                  </mat-form-field>
+                  <div fxFlex="3"></div>
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="codigoAtf">
+                  </mat-form-field>
+                </div>
+  
+                <br>
+  
+                <div mat-dialog-actions class="text-center" style="padding: 3%;">
+                  <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                    (click)="registrar()">Guardar</button>
+                  <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                    (click)="close()">Cancelar</button>
+                </div>
+  
+              </form>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>

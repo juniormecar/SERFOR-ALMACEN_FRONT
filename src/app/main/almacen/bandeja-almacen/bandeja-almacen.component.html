@@ -1,0 +1,188 @@
+<div id="academy-course" class="page-layout simple left-sidebar inner-scroll">
+
+    <!-- Código para el Steper -->
+    <!-- <fuse-sidebar class="sidebar" name="academy-course-left-sidebar-1" position="left" lockedOpen="gt-md">        
+        <div class="content" fusePerfectScrollbar>
+            <div class="steps">
+                <div class="step" *ngFor="let step of course; let i = index; let last = last; let first = first"
+                    (click)="gotoStep(i)"
+                    [ngClass]="{'current': currentStep === i, 'completed': currentStep > i, 'last': last, 'first': first}">
+                    <div class="index">
+                        <span>{{i + 1}}</span>
+                    </div>
+                    <div class="title">{{step.title}}</div>
+                </div>
+            </div>
+        </div>        
+    </fuse-sidebar> -->
+    <!-- Fin Código para el steper -->
+
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
+
+            <div>
+                <h2> <b> Bandeja de Almacén </b> </h2>
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div id="course-content" class="content">
+
+            <ng-container>
+
+                <!-- [@slideIn]="animationDirection" -->
+                <div class="course-step" fusePerfectScrollbar>
+
+                    <div id="course-step-content" class="course-step-content ">
+                        <form [formGroup]="inputBandeja">
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">ATF</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Puesto de Control</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombre de Almacén</span>
+                                
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="numeroATF" (selectionChange)="searchPuestoControl()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listATF">
+                                            <mat-option [value]="item.idAtf">
+                                                {{item.nombreAtf}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="puestoControl">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listPuestoControl">
+                                            <mat-option [value]="item.idPuestoControl">
+                                                {{item.nombrePuestoControl}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="nombreAlmacen">
+                                </mat-form-field>
+
+                                
+
+                            </div>
+                            <br>
+                            <br>
+
+
+                            <div class="col-sm-12 my-2 form-group text-center">
+                                <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button>
+                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+                                    (click)="search()">Buscar</button>
+                                <button mat-button class="btn btn-sm btn-registrar mr-2"
+                                    (click)="NewAlmacen()">Registrar Nuevo</button>
+
+                            </div>
+                            <br>
+                            <br>
+
+                            <div class="example-container mat-elevation-z8">
+                                <table mat-table [dataSource]="dataSource">
+
+                                    <ng-container matColumnDef="position">
+                                        <th mat-header-cell *matHeaderCellDef> #</th>
+                                        <td mat-cell *matCellDef="let element;let i = index;">
+                                            {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="nuIdAlmacen">
+                                        <th mat-header-cell *matHeaderCellDef> Id Almacén </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nuIdAlmacen }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="numeroATF">
+                                        <th mat-header-cell *matHeaderCellDef> ATF </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.descrATF}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="puestoControl">
+                                        <th mat-header-cell *matHeaderCellDef> Puesto de Control </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.descrPuestoControl}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="nombreAlmacen">
+                                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.txNombreAlmacen}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="tipoAlmacen">
+                                        <th mat-header-cell *matHeaderCellDef> Tipo </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.descrTipoAlmacen}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="cantidadResponsables">
+                                        <th mat-header-cell *matHeaderCellDef> Responsable(s) </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.cantidadResponsables}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="acciones">
+                                        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button  mat-mini-fab (click)="verAlmacen(element, element.nuIdAlmacen)" style="background-color: #89B361;">
+                                                <mat-icon>remove_red_eye</mat-icon>
+                                            </button>
+                                            &nbsp; &nbsp;
+                                            <button  mat-mini-fab (click)="editarAlmacen(element, element.nuIdAlmacen)" style="background-color: #679738;">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp; &nbsp;
+                                            <button  mat-mini-fab (click)="eliminar(element.nuIdAlmacen)" style="background-color: #d33;">
+                                                <mat-icon>delete</mat-icon>
+                                               </button>
+                                        </td>
+                                    </ng-container>
+
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+                                </table>
+                                <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                    showFirstLastButtons [length]="almacenResponse.totalRecords"
+                                    [pageSize]="almacenResponse.pageSize" (page)="pageDataSource($event)"
+                                    aria-label="Select page of periodic elements">
+                                </mat-paginator>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+
+            </ng-container>
+
+        </div>
+
+    </div>

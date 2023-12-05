@@ -1,0 +1,251 @@
+<div id="academy-course" class="page-layout simple left-sidebar inner-scroll">
+
+    <fuse-sidebar class="sidebar" name="academy-course-left-sidebar-1" position="left" lockedOpen="gt-md">
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content" fusePerfectScrollbar>
+
+            <div class="steps">
+
+                <div class="step" *ngFor="let step of course; let i = index; let last = last; let first = first"
+                    (click)="gotoStep(i)"
+                    [ngClass]="{'current': currentStep === i, 'completed': currentStep > i, 'last': last, 'first': first}">
+                    <div class="index">
+                        <span>{{i + 1}}</span>
+                    </div>
+                    <div class="title">{{step.title}}</div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- / SIDEBAR CONTENT -->
+
+    </fuse-sidebar>
+
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+       
+
+        <mat-toolbar class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> <b> {{titleStep}} </b></span>  
+                <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F "
+                                    (click)="cancelar()">Volver</button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    
+
+
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div id="course-content" class="content">
+
+            <ng-container *ngFor="let step of course; let i = index;">
+
+                <!-- [@slideIn]="animationDirection" -->
+                <div class="course-step" fusePerfectScrollbar *ngIf="currentStep === i">
+
+                    <div id="course-step-content" *ngIf=" step.stepId==='step01'" class="course-step-content ">
+                        <form [formGroup]="inputRegistro">                          
+                            
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">ATF</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Puesto de Control</span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                               
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="numeroATF" (selectionChange)="searchPuestoControl()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listATF">
+                                            <mat-option [value]="item.idAtf">
+                                                {{item.nombreAtf}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="puestoControl">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listPuestoControl">
+                                            <mat-option [value]="item.idPuestoControl">
+                                                {{item.nombrePuestoControl}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                            </div>
+                            <br>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Almacén</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombre de Almacén</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field  appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="txTipoAlmacen">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoAlmacen">
+                                            <mat-option [value]="item.codigo" >
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="txNombreAlmacen">
+                                </mat-form-field>
+                            </div>
+                            <br>  
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tamaño de Almacén</span>     
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Dirección de Almacén</span>                       
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">                                
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="nuCapacidadAlmacen">
+                                </mat-form-field>
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="direccionAlmacen">
+                                </mat-form-field>
+                            </div>
+                                <br>                          
+
+                        <div  id="course-step-content" mat-dialog-content class="repayment">
+
+                                <div  fxLayout="column">
+                        
+                                    <div fxLayout="row" fxLayoutAlign="space-between">                                        
+                                        <div fxFlex="70"></div>                                        
+                                        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                        (click)="openModalAlmacenResponsable(null, 'NEW',null)">
+                                         <mat-icon aria-label="Agregar">person_add</mat-icon>
+                                         Agregar responsable</button>
+                                    </div>
+                                </div>
+                                <br>
+                        
+                        
+                            <div class="example-container mat-elevation-z1" >
+                                <table mat-table [dataSource]="dataSource">
+                        
+                                    
+                                    <ng-container matColumnDef="position">
+                                        <th mat-header-cell *matHeaderCellDef style="width:10%"> #</th>
+                                        <td mat-cell *matCellDef="let element;let i = index;" >
+                                            {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                        </td>
+                                    </ng-container>
+                        
+                                    <ng-container matColumnDef="tipoDocumento">
+                                        <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.tipoDocumento}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="numeroDocumento">
+                                        <th mat-header-cell *matHeaderCellDef> N° Documento </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.numeroDocumento}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="nombresResponsable">
+                                        <th mat-header-cell *matHeaderCellDef> Responsable </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nombresResponsable}} </td>
+                                    </ng-container>
+                                    
+                                    <ng-container matColumnDef="acciones">
+                                        <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                        <td mat-cell *matCellDef="let element;let i = index;">                                            
+                                            <!--<button  mat-mini-fab (click)="
+                                            openModalAlmacenResponsable(element, 'EDIT', i)" style="background-color: #43a047;">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>-->
+                                            &nbsp; &nbsp;
+                                            <button  mat-mini-fab (click)="eliminar(element)" style="background-color: #d33;">
+                                                <mat-icon>delete</mat-icon>
+                                               </button>
+                                        </td>
+                                    </ng-container>
+                                    
+                        
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+                                </table>
+                                <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                    showFirstLastButtons [length]="almacenResponsableResponse.totalRecords"
+                                    [pageSize]="almacenResponsableResponse.pageSize" (page)="pageDataSource($event)"
+                                    aria-label="Select page of periodic elements">
+                                </mat-paginator>
+                            </div>  
+                        </div>
+                    
+                        <br>
+                            <br>
+                            <br>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738; "
+                                    (click)="registerAlmacen()">Guardar</button>
+                                <!-- <button mat-button class="btn-primary3" (click)="cancelar()"  >Cancelar</button> -->
+
+                            </div>
+
+                            
+
+                        </form>
+                    </div>
+
+                </div>
+                
+
+            </ng-container>
+
+        </div>
+
+        
+
+        <!-- / CONTENT -->
+
+        <div class="step-navigation">
+
+            <!-- <button mat-fab class="previous green-600 fuse-white-fg" (click)="gotoPreviousStep()"
+                [disabled]="currentStep === 0" [fxHide]="currentStep === 0">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button mat-fab class="next green-600 fuse-white-fg" (click)="gotoNextStep()"
+                [disabled]="currentStep === course.length - 1" [fxHide]="currentStep === course.length - 1">
+                <mat-icon>chevron_right</mat-icon>
+            </button> -->
+
+            <!-- <button mat-fab class="done green-600" routerLink="/apps/academy/courses"
+                [disabled]="currentStep !== course.length - 1" [fxShow]="currentStep === course.length - 1">
+                <mat-icon>check</mat-icon>
+            </button> -->
+
+        </div>
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

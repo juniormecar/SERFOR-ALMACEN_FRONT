@@ -1,0 +1,1172 @@
+<div id="academy-course" class="page-layout simple left-sidebar inner-scroll">
+
+    <fuse-sidebar class="sidebar" name="academy-course-left-sidebar-1" position="left" lockedOpen="gt-md">
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="content" fusePerfectScrollbar>
+
+            <div class="steps">
+
+                <div class="step" *ngFor="let step of course; let i = index; let last = last; let first = first"
+                    (click)="gotoStep(i)"
+                    [ngClass]="{'current': currentStep === i, 'completed': currentStep > i, 'last': last, 'first': first}">
+                    <div class="index">
+                        <span>{{i + 1}}</span>
+                    </div>
+                    <div class="title">{{step.title}}</div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- / SIDEBAR CONTENT -->
+
+    </fuse-sidebar>
+
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header p-24" style="background-color: #679738; color: white;"  fxLayout="row" fxLayoutAlign="start center">
+
+            <mat-toolbar class="header p-24" style="background-color: #679738; color: white;"  fxLayout="row" fxLayoutAlign="start center">
+                <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                    <span class="title dialog-title"> <b>  {{titleStep}} </b></span>  
+                    <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F "
+                                        (click)="cancelar()">Volver</button>
+                </mat-toolbar-row>
+            </mat-toolbar>
+
+        </div>
+
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div id="course-content" class="content">
+
+            <ng-container *ngFor="let step of course; let i = index;">
+
+                <!-- [@slideIn]="animationDirection" -->
+                <div class="course-step" fusePerfectScrollbar *ngIf="currentStep === i">
+
+                    <div id="course-step-content" *ngIf=" step.stepId==='step01'" class="course-step-content ">
+                        <form [formGroup]="inputRegistro">
+
+                            <mat-accordion>                                
+                                <mat-expansion-panel >
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title style="color: white;">
+                                        <b> Datos del Ingreso</b>
+                                    </mat-panel-title>                                    
+                                  </mat-expansion-panel-header>
+                                  <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Fecha de Ingreso</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Hora de Ingreso</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between">    
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                    fxFlex="45">
+                                        <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="fechaActual" name="fechaIngreso"
+                                            formControlName="fechaIngreso"> 
+                                        <mat-datepicker-toggle matSuffix [for]="startDatePicker" ></mat-datepicker-toggle>
+                                        <mat-datepicker #startDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                    fxFlex="45">
+                                        <input matInput type="time" [(ngModel)]="horaActual" formControlName="horaIngreso">
+                                    </mat-form-field>
+                                </div>
+    
+                                <br>                            
+    
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Ingreso</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Almacén</span>
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+    
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="tipoIngreso">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listTipoIngreso">
+                                                <mat-option [value]="item.codigo">
+                                                    {{item.valorPrimario}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="almacen">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listAlmacen">
+                                                <mat-option [value]="item.nuIdAlmacen">
+                                                    {{item.txNombreAlmacen}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Infracción</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Sanción</span>
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+    
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="tipoInfraccion">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listTipoInfraccion">
+                                                <mat-option [value]="item.codigo">
+                                                    {{item.valorPrimario}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="tipoSancion">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listTipoSancion">
+                                                <mat-option [value]="item.codigo">
+                                                    {{item.valorPrimario}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° de Guía</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° de Acta</span>
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                        <input matInput type="text" formControlName="numGuia">
+                                    </mat-form-field>
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <input matInput type="text" formControlName="nroActa">
+                                    </mat-form-field>
+                                    <button class="validate-dni" floatLabel="always" fxFlex="18"
+                                    (click)="searchPass()">Validar PAS</button>
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always">Observaciones</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always">
+                                        <textarea matInput type="text" formControlName="observaciones" rows="4"> </textarea>
+                                    </mat-form-field>
+                                </div> 
+                                </mat-expansion-panel>
+                              </mat-accordion>
+
+                            <br><br>                     
+                            <mat-accordion>                               
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                     (closed)="panelOpenState = false">
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title style="color: white;">
+                                        <b> Datos del Intervenido</b>
+                                    </mat-panel-title>
+                                    <!-- <mat-panel-description style="color: #89B361;"><b>{{panelOpenState ? 'abierto' : 'cerrado'}}</b></mat-panel-description> -->
+                                  </mat-expansion-panel-header>
+                                  <br>
+                                  <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Documento</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° de Documento</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="tipoDoc">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listTipoDocumento">
+                                                <mat-option [value]="item.codigo">
+                                                    {{item.valorPrimario}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+    
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <input matInput type="text" formControlName="numDoc">
+                                    </mat-form-field>
+                                    <button class="validate-dni" floatLabel="always" fxFlex="18"
+                                        (click)="validarDNI()">Validar DNI</button>
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <div fxFlex="80">
+                                        <div fxLayout="column" fxLayoutAlign="space-between">
+                                            <span class="text-primary-ir" floatLabel="always" fxFlex="30">Nombres y
+                                                Apellidos</span>
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                                <input matInput type="text" formControlName="nombres">
+                                            </mat-form-field>
+                                            <br>
+                                            <span class="text-primary-ir" floatLabel="always" fxFlex="30">Dirección de la Intervención</span>
+                                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                                <input matInput type="text" formControlName="direccion">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="rounded-circle" floatLabel="always" fxFlex="12">
+                                        <img *ngIf="photo" [src]="'data:image/png;base64,' + photo" alt="avatar">
+                                        <img *ngIf="!photo" src="https://img.freepik.com/free-icon/user_318-563642.jpg"
+                                             alt="avatar">
+                                    </div>
+                                </div>
+                                </mat-expansion-panel>
+                              </mat-accordion>
+                              <br><br>
+                            <mat-accordion >                                
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                     (closed)="panelOpenState = false">
+                                  <mat-expansion-panel-header>
+                                    <mat-panel-title style="color: white;"><b> Datos del Conductor</b></mat-panel-title>
+                                    <!-- <mat-panel-description style="color: #89B361;"><b>{{panelOpenState ? 'abierto' : 'cerrado'}}</b></mat-panel-description> -->
+                                  </mat-expansion-panel-header>   
+                                  <br>                               
+                                  <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Documento</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° de Documento</span>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                        fxFlex="45">
+                                        <mat-select formControlName="tipoDocCon">
+                                            <mat-option [value]="">
+                                                Seleccione
+                                            </mat-option>
+                                            <ng-container *ngFor="let item of listTipoDocumento">
+                                                <mat-option [value]="item.codigo">
+                                                    {{item.valorPrimario}}
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+    
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="25">
+                                        <input matInput type="text" formControlName="numDocCon">
+                                    </mat-form-field>
+                                    <button class="validate-dni" floatLabel="always" fxFlex="18"
+                                        (click)="validarDNIconductor()">Validar DNI</button>
+                                </div>
+                                <br>
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombres y Apellidos</span>
+                                    <div fxFlex="5"></div>
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° de Placa</span>
+                                </div>
+    
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                        <input matInput type="text" formControlName="nombresCon">
+                                    </mat-form-field>
+                                    <div fxFlex="5"></div>
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                        <input matInput type="text" formControlName="placa">
+                                    </mat-form-field>                                
+                                </div>
+                                </mat-expansion-panel>
+                              </mat-accordion>
+                            
+
+                        </form>
+                    </div>
+
+                    <div id="course-step-content" *ngIf=" step.stepId==='step02'" class="course-step-content ">
+
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                            <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Catálogo</span>
+                            <div fxFlex="5"></div>
+                            <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombre Científico o Nombre común</span>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between">
+                            <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                fxFlex="45">
+                                <mat-select [(ngModel)]="tipoProductoCatalogo" (selectionChange)="search()">
+                                    <mat-option [value]="">
+                                        Seleccione
+                                    </mat-option>
+                                    <ng-container *ngFor="let item of listTipoProductoCata">
+                                        <mat-option [value]="item.codigo">
+                                            {{item.valorPrimario}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                            <div fxFlex="5"></div>
+                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                <input matInput type="text" [(ngModel)]="nombreEspecie" (keyup)="searchNombre()">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="example-container mat-elevation-z1"
+                            *ngIf="tipoProductoCatalogo === Constants.PRODUCTO_MADERABLE">
+                            <table mat-table [dataSource]="dataSourceCatalogo">
+
+
+                                <!-- Checkbox Column -->
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button *ngIf="!element.add" mat-mini-fab (click)="agregar(element)"
+                                            style="background-color: #679738;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                        <button *ngIf="element.add" [disabled]="true" mat-mini-fab
+                                            (click)="agregar(element)" style="background-color: #CDD0C7;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameCientifico">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Científico </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreCientifico}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameComun">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Común o Comercial
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreComun}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="family">
+                                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Familia </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.familia}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCatalogo"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCatalogo;"></mat-row>
+                            </table>
+
+                            <mat-paginator style="float:left; color: #89B361;"  #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                showFirstLastButtons [length]="especieResponse.totalRecords"
+                                [pageSize]="especieResponse.size" (page)="pageDataSourceCatalogo($event)"
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                        <div class="example-container mat-elevation-z1"
+                            *ngIf="tipoProductoCatalogo === Constants.PRODUCTO_NOMADERABLE">
+                            <table mat-table [dataSource]="dataSourceCatalogoNoMad">
+
+
+                                <!-- Checkbox Column -->
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button *ngIf="!element.add" mat-mini-fab (click)="agregar(element)"
+                                            style="background-color: #679738;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                        <button *ngIf="element.add" [disabled]="true" mat-mini-fab
+                                            (click)="agregar(element)" style="background-color: #CDD0C7;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameCientifico">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Científico </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreCientifico}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameComun">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Común o Comercial
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreComun}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="family">
+                                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Familia </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.familia}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCatalogoNoMad"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCatalogoNoMad;"></mat-row>
+                            </table>
+
+                            <mat-paginator style="float:left; color: #89B361;"  #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                showFirstLastButtons [length]="especieResponseNoMad.totalRecords"
+                                [pageSize]="especieResponseNoMad.size" (page)="pageDataSourceCatalogo($event)"
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                        <div class="example-container mat-elevation-z1"
+                            *ngIf="tipoProductoCatalogo === Constants.PRODUCTO_FAUNA">
+                            <table mat-table [dataSource]="dataSourceCatalogoFA">
+
+
+                                <!-- Checkbox Column -->
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button *ngIf="!element.add" mat-mini-fab (click)="agregar(element)"
+                                            style="background-color: #679738;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                        <button *ngIf="element.add" [disabled]="true" mat-mini-fab
+                                            (click)="agregar(element)" style="background-color: #CDD0C7;color: white;">
+                                            <mat-icon>add_shopping_cart</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameCientifico">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Científico </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreCientifico}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="nameComun">
+                                    <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Común o Comercial
+                                    </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.nombreComun}}
+                                    </td>
+                                </ng-container>
+
+                                <!-- Symbol Column -->
+                                <ng-container matColumnDef="family">
+                                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Familia </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.familia}}
+                                    </td>
+                                </ng-container>
+
+
+
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCatalogoFA"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCatalogoFA;"></mat-row>
+                            </table>
+
+                            <mat-paginator style="float:left; color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                showFirstLastButtons [length]="especieResponseFauna.totalRecords"
+                                [pageSize]="especieResponseFauna.size" (page)="pageDataSourceCatalogo($event)"
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                    </div>
+
+                    <div id="course-step-content" *ngIf=" step.stepId==='step03'" class="course-step-content">
+                        <!-- <div class="tab-content p-24" fxLayout="column">
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxFlex="98"></div>
+                                <button mat-icon-button color="primary" floatLabel="always" fxFlex="2"
+                                    (click)="agregar()">
+                                    <mat-icon aria-label="Agregar">add</mat-icon>
+                                </button>
+                            </div>
+                        </div>-->
+                        <!--************************************************************************************************************************-->
+
+                        <!-- CONTENT -->
+                        <div class="content-tab">
+
+                            <mat-tab-group dynamicHeight="true">
+
+                                <mat-tab label="Recursos Maderables">
+                                    <br>
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <div fxFlex="70"></div>
+                                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                             (click)="agregarMaderable()">
+                                             <mat-icon aria-label="Agregar">library_add</mat-icon>
+                                             Agregar especie nueva</button>
+                                        </div>
+                                        <br>
+                                    <div class="example-container mat-elevation-z1">
+                                        <table mat-table [dataSource]="dataSource">
+
+                                            <ng-container matColumnDef="position">
+                                                <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+                                                <td mat-cell *matCellDef="let element;">
+                                                    <!-- <div *ngIf="element.idEspecie !== 0">
+                                                        {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                                    </div>-->
+                                                    <button *ngIf="element.idEspecie !== 0" mat-mini-fab
+                                                        (click)="delete(element)"
+                                                        style="background-color: #d33;color: white;">
+                                                        <mat-icon>remove_shopping_cart</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameCientifico">
+                                                <th mat-header-cell *matHeaderCellDef style="width:23%"> Nombre
+
+                                                    Científico </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreCientifico"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreCientifico}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameComun">
+                                                <th mat-header-cell *matHeaderCellDef style="width:23%"> Nombre Común o
+                                                    Comercial
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreComun"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreComun}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="tipoProducto">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Tipo de
+                                                    Producto </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field style="margin-bottom: 0px"
+                                                            *ngIf="element.idEspecie !== 0" [style.width.px]=120>
+                                                            <mat-label>Tipo de Producto</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoProducto">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container *ngFor="let item of listTipoProducto">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="tipoSubProducto">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Sub Producto
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ACE'">
+                                                        <mat-form-field style="margin-bottom: 0px"
+                                                            *ngIf="element.idEspecie !== 0" [style.width.px]=120>
+                                                            <mat-label>Sub Producto</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoSubProducto">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container
+                                                                    *ngFor="let item of listTipoProductoAcerrada">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div
+                                                        *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ROLL'">
+                                                        <mat-form-field style="margin-bottom: 0px"
+                                                            *ngIf="element.idEspecie !== 0" [style.width.px]=120>
+                                                            <mat-label>Sub Producto</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoSubProducto">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container
+                                                                    *ngFor="let item of listTipoProductoRolliza">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div
+                                                        *ngIf="element.idEspecie !== 0 && (element.tipoProducto==undefined || element.tipoProducto==null || element.tipoProducto=='' )">
+                                                        <mat-form-field style="margin-bottom: 0px"
+                                                            *ngIf="element.idEspecie !== 0" [style.width.px]=120>
+                                                            <mat-label>Sub Producto</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoSubProducto">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!-- <ng-container matColumnDef="tipoAlmacenamiento">
+                                                <th mat-header-cell *matHeaderCellDef style="width:11%"> Tipo de
+                                                    Presentación </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ACE'" >
+                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
+                                                            <mat-label>Presentación</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container *ngFor="let item of listTipoPresMadPie">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ROLL'" >
+                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
+                                                            <mat-label>Presentación</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container *ngFor="let item of listTipoPresMadTro">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 0 && (element.tipoProducto==undefined || element.tipoProducto==null || element.tipoProducto=='' )" >
+                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
+                                                            <mat-label>Presentación</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container> -->
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="cantidad">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Trozas/Piezas </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field [style.width.px]=100>
+                                                            <mat-label></mat-label>
+                                                            <input matInput type="text" placeholder="" (keyup)="calculateTotalTon()"
+                                                                [(ngModel)]="element.txCantidadProducto"
+                                                                style="text-align: right;"  onkeypress="return /[0-9.]/i.test(event.key)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        {{element.txCantidadProducto}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="unidadMedida">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> U. de Medida
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <mat-form-field style="margin-bottom: 0px"
+                                                        *ngIf="element.idEspecie !== 0">
+                                                        <mat-label>Unidad</mat-label>
+                                                        <mat-select [(ngModel)]="element.unidadMedida"
+                                                            (selectionChange)="calculateTotalTon()">
+                                                            <mat-option [value]="UND">
+                                                                Seleccione
+                                                            </mat-option>
+                                                            <ng-container *ngFor="let item of listUnidadMedida">
+                                                                <mat-option [value]="item.codigo " >
+                                                                    {{item.valorPrimario}}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        {{element.unidadMedida}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>                                            
+
+                                            <ng-container matColumnDef="action">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Acciones </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <button mat-mini-fab *ngIf="element.idEspecie !== 0 && element.flagCubicacion"
+                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun)"
+                                                    style="background-color: #679738;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon>table_chart</mat-icon>
+                                                    </button>
+
+                                                    <button mat-mini-fab *ngIf="element.idEspecie !== 0 && !element.flagCubicacion"
+                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun)"
+                                                    style="background-color: red;"
+                                                    [disabled]="element.unidadMedida === '' || element.unidadMedida === undefined ||
+                                                    element.tipoProducto === '' ||  element.tipoProducto === undefined ||
+                                                    element.tipoSubProducto === '' || element.tipoSubProducto === undefined ||
+                                                    element.txCantidadProducto === 0 || element.tipoSubProducto === undefined || element.txCantidadProducto === ''"
+                                                    >
+                                                    <mat-icon>table_chart</mat-icon>
+                                                    </button>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        {{element.metroCubico}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="cubicacion">
+                                                <th mat-header-cell *matHeaderCellDef style="width:5%"> Metro Cúbico </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field [style.width.px]=80>
+                                                            <mat-label></mat-label>
+                                                            <input matInput type="number" 
+                                                                [(ngModel)]="element.metroCubico"
+                                                                style="text-align: right;"
+                                                                (keyup)="redondeo(element)"
+                                                                onkeypress="return /[0-9.]/i.test(event.key)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        {{element.tipoProducto}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                        </table>
+
+                                        <!--<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                                            [showFirstLastButtons]="true">
+                                        </mat-paginator>
+                                        <mat-paginator style="float:left" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                            showFirstLastButtons [length]="recursoResponse.totalRecords"
+                                            [pageSize]="recursoResponse.pageSize" (page)="pageDataSource($event)"
+                                            aria-label="Select page of periodic elements">
+                                        </mat-paginator>-->
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Recursos No Maderables">
+                                    <br>
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <div fxFlex="70"></div>
+                                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                             (click)="agregarNoMaderable()">
+                                             <mat-icon aria-label="Agregar">library_add</mat-icon>
+                                             Agregar especie nueva</button>
+                                        </div>
+                                        <br>
+                                    <div class="example-container mat-elevation-z1">
+                                        <table mat-table [dataSource]="dataSourceNoMad">
+
+                                            <ng-container matColumnDef="position">
+                                                <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
+                                                <td mat-cell *matCellDef="let element;">
+                                                    <!-- <div *ngIf="element.idEspecie !== 0">
+                                                        {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                                    </div>-->
+                                                    <button *ngIf="element.idEspecie !== 0" mat-mini-fab
+                                                        (click)="deleteNoMad(element)"
+                                                        style="background-color: #d33;color: white;">
+                                                        <mat-icon>remove_shopping_cart</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameCientifico">
+                                                <th mat-header-cell *matHeaderCellDef style="width:20%"> Nombre
+                                                    Científico </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreCientifico"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreCientifico}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameComun">
+                                                <th mat-header-cell *matHeaderCellDef style="width:21%"> Nombre Común o
+                                                    Comercial
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreComun"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreComun}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="tipoAlmacenamiento">
+                                                <th mat-header-cell *matHeaderCellDef style="width:12%"> Tipo de
+                                                    Almacenamiento </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0" >
+                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
+                                                            <mat-label>Almacenamiento</mat-label>
+                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
+                                                                <mat-option [value]="">
+                                                                    Seleccione
+                                                                </mat-option>
+                                                                <ng-container *ngFor="let item of listTipoPresNoMad">
+                                                                    <mat-option [value]="item.codigo">
+                                                                        {{item.valorPrimario}}
+                                                                    </mat-option>
+                                                                </ng-container>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="capacidadUnidad">
+                                                <th mat-header-cell *matHeaderCellDef style="width:12%">
+                                                    Capacidad/Unidad </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field [style.width.px]=100>
+                                                            <mat-label></mat-label>
+                                                            <input matInput type="text" placeholder=""
+                                                                [(ngModel)]="element.capacidadUnidad"
+                                                                style="text-align: right;"  onkeypress="return /[0-9.]/i.test(event.key)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="cantidad">
+                                                <th mat-header-cell *matHeaderCellDef style="width:12%"> Cantidad </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field [style.width.px]=100>
+                                                            <mat-label></mat-label>
+                                                            <input matInput type="text" placeholder=""
+                                                                (keyup)="calculateTotalTonNoMad()"
+                                                                [(ngModel)]="element.txCantidadProducto"
+                                                                style="text-align: right;"
+                                                                onkeypress="return /[0-9.]/i.test(event.key)"
+                                                                >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        {{totalToneladasNoMad}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="unidadMedida">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> U. de Medida
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <mat-form-field style="margin-bottom: 0px"
+                                                        *ngIf="element.idEspecie !== 0">
+                                                        <mat-label>Unidad</mat-label>
+                                                        <mat-select [(ngModel)]="element.unidadMedida"
+                                                            (selectionChange)="calculateTotalTonNoMad()">
+                                                            <mat-option [value]="">
+                                                                Seleccione
+                                                            </mat-option>
+                                                            <ng-container *ngFor="let item of listUnidadMedida">
+                                                                <mat-option [value]="item.codigo">
+                                                                    {{item.valorPrimario}}
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                        Toneladas
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="total">
+                                                <th mat-header-cell *matHeaderCellDef style="width:14%">
+                                                    Total </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        {{element.capacidadUnidad*element.txCantidadProducto}}
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie == 0">
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumnsNoMad"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumnsNoMad;"></mat-row>
+                                        </table>
+
+                                        <!--<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                                            [showFirstLastButtons]="true">
+                                        </mat-paginator>
+                                        <mat-paginator style="float:left" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                            showFirstLastButtons [length]="recursoResponse.totalRecords"
+                                            [pageSize]="recursoResponse.pageSize" (page)="pageDataSource($event)"
+                                            aria-label="Select page of periodic elements">
+                                        </mat-paginator>-->
+                                    </div>
+                                </mat-tab>
+
+                                <mat-tab label="Fauna">
+                                    <br>
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <div fxFlex="70"></div>
+                                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                                             (click)="agregarFauna()">
+                                             <mat-icon aria-label="Agregar">library_add</mat-icon>
+                                             Agregar especie nueva</button>
+                                        </div>
+                                        <br>
+                                    <div class="example-container mat-elevation-z1">
+                                        <table mat-table [dataSource]="dataSourceFA">
+
+                                            <ng-container matColumnDef="position">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"></th>
+                                                <td mat-cell *matCellDef="let element;">
+                                                    <!-- <div *ngIf="element.idEspecie !== 0">
+                                                        {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                                    </div>-->
+                                                    <button *ngIf="element.idEspecie !== 0" mat-mini-fab
+                                                        (click)="deleteFauna(element)"
+                                                        style="background-color: #d33;color: white;">
+                                                        <mat-icon>remove_shopping_cart</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameCientifico">
+                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Nombre
+                                                    Científico </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreCientifico"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreCientifico}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="nameComun">
+                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Nombre Común o
+                                                    Comercial
+                                                </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie === 999999">
+                                                        <mat-form-field [style.width.px]=200>
+                                                            <mat-label></mat-label>
+                                                            <input matInput placeholder="" 
+                                                                [(ngModel)]="element.nombreComun"
+                                                                style="text-align: right;" >
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="element.idEspecie !== 999999">
+                                                        {{element.nombreComun}}
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <!--Symbol Column -->
+                                            <ng-container matColumnDef="cantidad">
+                                                <th mat-header-cell *matHeaderCellDef style="width:14%"> Cantidad </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">
+                                                        <mat-form-field [style.width.px]=100>
+                                                            <mat-label></mat-label>
+                                                            <input matInput type="text" placeholder=""
+                                                                [(ngModel)]="element.txCantidadProducto"
+                                                                style="text-align: right;"  onkeypress="return /[0-9.]/i.test(event.key)">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="detalle">
+                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Detalle </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <button mat-mini-fab
+                                                    (click)="agregarFaunaDetalle(element.nuIdRecursoProducto, element.txCantidadProducto,element.nombreCientifico,element.nombreComun)"
+                                                    style="background-color: #679738;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon>note_add</mat-icon>
+                                                    </button>
+                                                </td>
+                                            </ng-container>
+
+                                            <mat-header-row *matHeaderRowDef="displayedColumnsFA"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumnsFA;"></mat-row>
+                                        </table>
+
+                                        <!--<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                                            [showFirstLastButtons]="true">
+                                        </mat-paginator>
+                                        <mat-paginator style="float:left" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                            showFirstLastButtons [length]="recursoResponse.totalRecords"
+                                            [pageSize]="recursoResponse.pageSize" (page)="pageDataSource($event)"
+                                            aria-label="Select page of periodic elements">
+                                        </mat-paginator>-->
+                                    </div>
+                                </mat-tab>
+
+                            </mat-tab-group>
+
+                        </div>
+                        <!-- / CONTENT -->
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </div>
+        <!-- / CONTENT -->
+
+        <div class="step-navigation">
+
+            <button mat-fab class="previous fuse-white-fg" style="background-color: #679738;" (click)="gotoPreviousStep()"
+                [disabled]="currentStep === 0" [fxHide]="currentStep === 0">
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <button mat-fab class="next fuse-white-fg" style="background-color: #679738;"  (click)="gotoNextStep()"
+                [disabled]="currentStep === course.length - 1" [fxHide]="currentStep === course.length - 1">
+                <mat-icon>chevron_right</mat-icon>
+            </button>
+            &nbsp; &nbsp; &nbsp;
+            <!--<button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                [fxHide]="currentStep !== course.length - 1 && (currentStep === 0 || currentStep === 1)" (click)="generarActa()">Generar
+                Acta</button>-->
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                [fxHide]="currentStep !== course.length - 1 && (currentStep === 0 || currentStep === 1)"
+                (click)="registro()">{{texto_boton}}</button>
+
+            <!-- <button mat-fab class="done green-600" routerLink="/apps/academy/courses"
+                [disabled]="currentStep !== course.length - 1" [fxShow]="currentStep === course.length - 1">
+                <mat-icon>check</mat-icon>
+            </button> -->
+
+        </div>
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

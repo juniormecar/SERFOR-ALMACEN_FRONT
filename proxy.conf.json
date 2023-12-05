@@ -1,0 +1,7 @@
+{ 
+    "/sgiseguridad/*": {
+        "target": "https://ws.serfor.gob.pe",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

@@ -1,0 +1,116 @@
+<div id="academy-course" class="page-layout left-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center">
+            <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+                <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                    <span class="title dialog-title"> <b> Transferir a otro Almacén </b></span>
+                    <button mat-icon-button (click)="_dialogRef.close()" aria-label="Close dialog">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-toolbar-row>
+            </mat-toolbar>
+
+        
+        <br><br>      
+
+        <div class="course-step">
+
+            <div id="course-step-content" class="course-step-content ">
+                <form [formGroup]="inputTransferirAlmacen">
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">ATF</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Puesto de Control</span>                        
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                            <mat-select formControlName="numeroATF" (selectionChange)="searchPuestoControl()">
+                                <mat-option [value]="">
+                                    Seleccione
+                                </mat-option>
+                                <ng-container *ngFor="let item of listATF">
+                                    <mat-option [value]="item.idAtf">
+                                        {{item.nombreAtf}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div fxFlex="3"></div>
+
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                            <mat-select formControlName="idPuntoControl" (selectionChange)="searchAlmacen()">
+                                <mat-option [value]="">
+                                    Seleccione
+                                </mat-option>
+                                <ng-container *ngFor="let item of listPuestoControl">
+                                    <mat-option [value]="item.idPuestoControl">
+                                        {{item.nombrePuestoControl}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+                    <br>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Almacén</span>
+                        <div fxFlex="3"></div>  
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">N° Acta de Traslado</span>             
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">                        
+
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                            <mat-select formControlName="idAlmacen">
+                                <mat-option [value]="">
+                                    Seleccione almacén
+                                </mat-option>
+                                <ng-container *ngFor="let item of lstAlmacen">
+                                    <mat-option [value]="item.nuIdAlmacen">
+                                        {{item.txNombreAlmacen}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <div fxFlex="3"></div>                          
+                            <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                                <input matInput type="text" formControlName="nroActaTraslado">
+                            </mat-form-field>                       
+                    </div>
+                    
+                    <br>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">                        
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="45">Observaciones</span>                        
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <textarea matInput type="text" formControlName="observaciones"></textarea>
+                        </mat-form-field>
+                    </div>  
+                </form>
+            </div>
+
+        </div>
+        <!-- / CONTENT -->
+        <br>
+        
+        <div mat-dialog-actions class="text-center" style="padding: 3%;">
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;" (click)="saveTransferencia()">Transferir</button>
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                        (click)="close()">Cancelar</button>
+        </div>
+
+        <div class="step-navigation">
+
+
+        </div>
+
+    </div>
+
+</div>

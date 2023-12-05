@@ -1,0 +1,168 @@
+td {
+    text-align: justify;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+table {
+    font-family: Calibri;
+}
+
+#red {
+    color: #000000;
+}
+
+li {
+    padding-left: 20px;
+}
+
+#tabla-cabecera-inicio {
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    width: 100px;
+    height: 50px;
+    padding: 18px ;
+    background-color: #89B361;
+    color: white;
+}
+
+#tabla-cabecera-inicio-Fin {
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    width: 100px;
+    height: 50px;
+    padding: 18px ;
+    background-color: #89B361;
+    color: white;
+}
+
+#tabla-register-inicio {
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-left: 1px solid #000000;
+    width: 100px;
+    height: 50px;
+    padding: 18px ;
+}
+
+#tabla-cabecera-medio {
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+    padding: 18px ;
+    min-width: 120px;
+    min-height: 50px;  
+    background-color: #89B361;  
+    color: white;
+}
+
+#tabla-register-medio {
+    border-top: 1px solid #000000;
+    border-right: 1px solid #000000;
+    padding: 18px ;
+    min-width: 120px;
+    min-height: 50px;   
+}
+
+#tablaFin {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;    
+    min-width: 120px;
+    min-height: 50px;
+    padding: 18px ;
+}
+#tablaFin2 {
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;    
+    border-left: 1px solid #000000;
+    min-width: 120px;
+    height: 55px;
+    padding: 18px ;
+}
+.btn-primary2, .btn-primary2:hover {
+    background: #4a962c;
+    border: 0;
+    color: #fff;
+    //padding: 4px 14px;
+    font-size: 11px;
+    min-width: 120px;
+    min-height: 50px;
+    border-radius: 7px;
+    margin: 0 10px;
+}
+
+.btn-secondary {            
+    background: #fff !important;
+    border: 0;
+    color: #4a962c !important;
+    border: 2px solid #4a962c !important;
+    //padding: 4px 14px;
+    font-size: 11px;
+    min-width: 120px;
+    min-height: 50px;
+    border-radius: 7px;
+    margin: 0 10px;
+}
+
+.cabecera-table{
+    background-color: #89B361;
+    color: white;
+}
+.cabecera-table-especie{
+    background-color: #89B361;
+    height: 40px;    
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    padding-left: 15px;
+    color: white;
+}
+.example-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    overflow: auto;
+    width: 100%;
+}
+
+mat-row, mat-header-row, mat-footer-row {
+    display: flex;
+    border-width: 0;
+    border-bottom-width: 0px;
+    border-style: solid;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.td-tabla {    
+    padding-left: 0px;
+    padding-right: 20px;
+    text-align: center;    
+}
+
+td.mat-cell{
+    border-bottom-width: 0px;
+
+}
+
+.mat-form-field-appearance-outline{
+    font-size: 13px;
+    border-radius: 25px;
+}
+
+.text-primary-ir {
+    color: #43a047;
+}
+
+.text-primary-ir-center {
+    color: #43a047;
+    text-align: center;
+}
+
+textarea.mat-input-element {
+    height: 100px;
+}

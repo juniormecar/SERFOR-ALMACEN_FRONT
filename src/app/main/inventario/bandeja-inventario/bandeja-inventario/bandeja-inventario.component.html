@@ -1,0 +1,220 @@
+<div id="academy-course" class="page-layout simple left-sidebar inner-scroll">
+
+    <div class="center">
+
+        <div class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
+
+            <div>
+                <h2> <b>Inventario </b> </h2>
+            </div>
+
+        </div>
+        <div id="course-content" class="content">
+
+            <ng-container>
+
+                <div class="course-step" fusePerfectScrollbar>
+
+                    <div id="course-step-content" class="course-step-content ">
+                        <form [formGroup]="inputBandeja">
+                           
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">ATF</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Puesto de Control</span>    
+                                <div fxFlex="5"></div>                            
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Almacén</span>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="numeroATF" (selectionChange)="searchPuestoControl()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listATF">
+                                            <mat-option [value]="item.idAtf">
+                                                {{item.nombreAtf}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                    <mat-select formControlName="puestoControl" (selectionChange)="searchAlmacen()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listPuestoControl">
+                                            <mat-option [value]="item.idPuestoControl">
+                                                {{item.nombrePuestoControl}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                fxFlex="45">
+                                <mat-select formControlName="almacen">
+                                    <mat-option [value]="">
+                                        Seleccione
+                                    </mat-option>
+                                    <ng-container *ngFor="let item of listAlmacen">
+                                        <mat-option [value]="item.txNombreAlmacen">
+                                            {{item.txNombreAlmacen}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                                </mat-form-field>  
+
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Ingreso</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Disponibilidad de Acta</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombre del Producto</span>
+                                
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                
+                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
+                                    <mat-select formControlName="tipoIngreso" >
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoIngreso">
+                                            <mat-option [value]="item.codigo" >
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>  
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
+                                    <mat-select formControlName="disponibilidadActa">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listDisponibilidadActa">
+                                            <mat-option [value]="item.codigo" >
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>  
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">                                    
+                                    <input matInput type="text" formControlName="nombreEspecie">
+                                </mat-form-field>   
+                                                             
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Tipo de Especie</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="30" >
+                                    <mat-select formControlName="tipoEspecie" >
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoEspecie">
+                                            <mat-option [value]="item.codigo" >
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field> 
+                            </div>   
+                            <br>
+
+                            <div class="col-sm-12 my-2 form-group text-center">
+                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+                                    (click)="limpiarCampos()">Limpiar</button>
+                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+                                    (click)="Search()">Buscar</button>     
+                                <button mat-button class="btn btn-sm btn-secondary mr-2" 
+                                    (click)="exportToExcel()">Exportar a Excel</button>                          
+                            </div>
+                            <br>
+                            <br>
+
+                            <div class="example-container mat-elevation-z8">
+                                <table mat-table [dataSource]="dataSource">
+
+                                    <ng-container matColumnDef="position">
+                                        <th mat-header-cell *matHeaderCellDef> #</th>
+                                        <td mat-cell *matCellDef="let element;let i = index;">
+                                            {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                        </td>
+                                    </ng-container>    
+
+                                    <ng-container matColumnDef="disponibilidad">
+                                        <th mat-header-cell *matHeaderCellDef style="width:5%"> Disponible </th>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <mat-icon *ngIf="element.disponibilidadActa==='D'" style="color: #679738;">check_circle_outline</mat-icon>
+                                            <mat-icon *ngIf="element.disponibilidadActa==='ND'" style="color: brown;">not_interested</mat-icon>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="Tipo">
+                                        <th mat-header-cell *matHeaderCellDef> Tipo de producto </th>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <div *ngIf="element.tipo === 'MAD'">
+                                                 Maderable
+                                            </div>
+                                            <div *ngIf="element.tipo === 'NOMAD'">
+                                               No Maderable
+                                           </div>
+                                           <div *ngIf="element.tipo === 'FA'">
+                                            Fauna
+                                       </div>
+                                        </td>
+                                    </ng-container>
+                                    
+                                    <ng-container matColumnDef="nombreCientifico">
+                                        <th mat-header-cell *matHeaderCellDef> Nombre Científico </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nombreCientifico }} </td>
+                                    </ng-container>
+
+
+                                    <ng-container matColumnDef="nombreComun">
+                                        <th mat-header-cell *matHeaderCellDef> Nombre Común </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nombreComun }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="txCantidadProducto">
+                                        <th mat-header-cell *matHeaderCellDef> Cantidad</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="metroCubico">
+                                        <th mat-header-cell *matHeaderCellDef> Metro Cúbico</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.metroCubico | number: cantidadPipe}} </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+                                </table>
+                                <mat-paginator style="float:left; color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                                    showFirstLastButtons [length]="recursoResponse.totalRecords"
+                                    [pageSize]="recursoResponse.pageSize" (page)="pageDataSource($event)"
+                                    aria-label="Select page of periodic elements">
+                                </mat-paginator>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </div>
+
+    </div>

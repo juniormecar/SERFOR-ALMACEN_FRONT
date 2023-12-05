@@ -1,0 +1,56 @@
+<div id="academy-course" class="page-layout left-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> <b>  Salida de Fauna </b></span>
+                <button mat-icon-button (click)="_dialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+        <br><br>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="course-step">
+
+            <div id="course-step-content" class="course-step-content ">
+                <form [formGroup]="inputTransferir">
+
+                <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="tipo"  [(ngModel)]="this.listDecimalRedondeo.valorPrimario">
+                    <div class="val-dec">
+                        <mat-radio-button class="mb-3 may-dec ft text-primary-ir" [value]="type"
+                        *ngFor="let type of types "> {{type}}
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+                <br><br>
+                    <div fxLayout="row" fxLayoutAlign="space-between">                        
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="45">Observaciones</span>                        
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                            <textarea matInput type="text" formControlName="observaciones"></textarea>
+                        </mat-form-field>
+                    </div>  
+                    
+                    
+                </form>
+            </div>
+
+        </div>
+
+        <br>         
+        <div mat-dialog-actions class="text-center" style="padding: 3%;">
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;" (click)="saveFaunaSalida()">Transferir</button>
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                        (click)="close()">Cancelar</button>
+        </div>
+        <div class="step-navigation">
+        </div>
+    </div>
+</div>

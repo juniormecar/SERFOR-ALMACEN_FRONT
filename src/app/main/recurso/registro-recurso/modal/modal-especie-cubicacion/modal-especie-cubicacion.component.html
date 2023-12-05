@@ -1,0 +1,232 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"> <b> {{tittleCubicacion}} </b></span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+        <div class="tab-content p-24" fxLayout="column">
+
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <div fxFlex="98"></div>
+                <button mat-icon-button color="primary" floatLabel="always" fxFlex="2" (click)="agregar()">
+                    <mat-icon aria-label="Agregar">add</mat-icon>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="example-container mat-elevation-z1" *ngIf="disabledAce">
+            <table mat-table [dataSource]="dataSource">
+
+
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef style="width:10%"></th>
+                    <!--<td mat-cell *matCellDef="let element;let i = index;" >
+                    {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                </td>-->
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-mini-fab *ngIf="element.nuIdRecursoProducto !== 0" (click)="eliminar(element)"
+                            style="background-color: #d33;">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef style="width:15%"> Cantidad </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput type="text" placeholder=""
+                                (keyup)="calculoVPT(element);calculoVm3(element);" minlength="1" min="0"
+                                onkeypress="return /[0-9.]/i.test(event.key)" [(ngModel)]="element.cantidad"
+                                style="text-align: right;">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="espesor">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Espesor
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" type="text" minlength="1" min="0"
+                                (keyup)="calculoVPT(element);" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.espesor" style="text-align: right;">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="ancho">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Ancho </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" type="text" minlength="1" min="0"
+                                (keyup)="calculoVPT(element);" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.ancho" style="text-align: right;">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="largo">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Largo </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" type="text" minlength="1" min="0"
+                                (keyup)="calculoVPT(element);" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.largo" style="text-align: right;">
+                        </mat-form-field>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            <b> Total Volumen PT: </b>
+                        </div>
+                        <br>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            <b> Total Volumen M3: </b>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="volumenPT">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%"> Volumen Pt </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-form-field [style.width.px]=80>
+                                <mat-label></mat-label>
+                                <input matInput placeholder="" type="text" minlength="1" min="0"
+                                    onkeypress="return /[0-9.]/i.test(event.key)" [(ngModel)]="element.volumenPT"
+                                    style="text-align: right;" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            {{totalVolumenPT}}
+                        </div>
+                        <br>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            {{totalVolumenPTconvertido}}
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </table>
+
+            <mat-paginator style="color: #89B361;" #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+
+        <div class="example-container mat-elevation-z1" *ngIf="disabledRoll">
+            <table mat-table [dataSource]="dataSourceRolliza">
+
+
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef style="width:10%"></th>
+                    <!--<td mat-cell *matCellDef="let element;let i = index;" >
+                    {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                </td>-->
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-mini-fab *ngIf="element.nuIdRecursoProducto !== 0" (click)="eliminar(element)"
+                            style="background-color: #d33;">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef style="width:25%"> Cantidad </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" (keyup)="calculoVPT(element);calculoVm3(element);"
+                                type="text" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.cantidad" style="text-align: right;">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="diametro">
+                    <th mat-header-cell *matHeaderCellDef style="width:25%"> Diámetro </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" type="text" minlength="1" min="0"
+                                (keyup)="calculoVm3(element);" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.diametroPromedio" style="text-align: right;">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="longitud">
+                    <th mat-header-cell *matHeaderCellDef style="width:25%"> Longitud </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-form-field [style.width.px]=50 *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="" type="text" minlength="1" min="0"
+                                (keyup)="calculoVm3(element);" onkeypress="return /[0-9.]/i.test(event.key)"
+                                [(ngModel)]="element.longitud" style="text-align: right;">
+                        </mat-form-field>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            <b> Total Volumen M3: </b>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="volumenM3">
+                    <th mat-header-cell *matHeaderCellDef style="width:25%"> Volumen M3 </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.nuIdRecursoProducto !== 0">
+                            <mat-form-field [style.width.px]=80>
+                                <mat-label></mat-label>
+                                <input matInput placeholder="" type="text" minlength="1" min="0"
+                                    onkeypress="return /[0-9.]/i.test(event.key)" [(ngModel)]="element.volumenM3"
+                                    style="text-align: right;" disabled>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="element.nuIdRecursoProducto == 0">
+                            {{totalVolumenM3}}
+                        </div>
+                    </td>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumnsRolliza"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumnsRolliza;"></mat-row>
+            </table>
+
+            <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+            </mat-paginator>
+        </div>
+
+    </div>
+    <br> <br>
+    <div style="text-align: right;">
+        <button mat-fab class="next fuse-white-fg" style="background-color: #679738;" (click)="registrarCubicacion()">
+            <mat-icon>check</mat-icon>
+        </button>
+        &nbsp;
+        <button mat-fab class="next red-600 fuse-white-fg mat-dialog-close" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

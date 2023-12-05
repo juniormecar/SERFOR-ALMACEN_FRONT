@@ -1,0 +1,81 @@
+<div fusePerfectScrollbar>
+
+    <div class="header">
+
+        <span class="title"><strong>Configuración</strong></span>
+
+        <button mat-icon-button class="close-button" (click)="toggleSidebarOpen('themeOptionsPanelSettings')">
+            <mat-icon>close</mat-icon>
+        </button>
+
+    </div>
+
+    <form [formGroup]="form">
+
+        <div class="row val-dec "style="width:5rem; ">
+            <div class="line-3">
+                -
+            </div>
+            <!-- decimal -->
+            <div class="group col-6" formGroupName="decimal">
+                <h2>Decimales</h2>
+                <div class="val-dec" >
+                    <mat-label class="mb-8" value="theme-default" style="width: 18rem; padding-bottom: 1rem;">N. de Decimales: </mat-label>
+                    <input matInput style="width: 6rem; padding-bottom: 2rem; text-decoration-line: underline;" 
+                    placeholder="Digitar Decimal" type="number" formControlName="cantidad" [(ngModel)]="this.listDecimalCantidad.valorPrimario"
+                    minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">
+                </div>
+                <mat-label class="mb-4" value="theme-default">Redondeo: </mat-label>
+                <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="redondeo"  [(ngModel)]="this.listDecimalRedondeo.valorPrimario">
+                    <div class="val-dec">
+                        <mat-radio-button class="mb-3 may-dec ft" [value]="type"
+                        *ngFor="let type of types "> {{type}}
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group>
+            
+            </div>
+        </div>       
+        <div class="col-sm-12 my-2 form-group text-right">
+            <button mat-button class="btn btn-sm btn-registrar" style="margin-right: 3rem; background-color: #679738; color:white"
+             (click)="saveSettings()" >
+                Guardar</button>
+        </div>
+        
+        <br>
+        <br>
+
+        <div class="row val-dec "style="width:5rem; ">
+            <div class="line-3">
+                -
+            </div>
+            <!-- decimal -->
+            <div class="group col-6">
+                <h2>Disponibilidad de Acta</h2>
+                <div class="val-dec" >
+                    <mat-label class="mb-8" value="theme-default" style="width: 12rem; padding-bottom: 1rem;">N. de Acta: </mat-label>
+                    <input matInput style="width: 17rem; padding-bottom: 2rem; text-decoration-line: underline;" 
+                    placeholder="Digitar el número de Acta" type="text" formControlName="numeroActa"
+                    >
+                </div>                
+                <!-- <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="disponibilidadActa">
+                    <div class="val-dispo">
+                        <mat-radio-button class="mb-3 may-dec ft" [value]="type"
+                        *ngFor="let type of typesDispo "> {{type}}
+                        </mat-radio-button>
+                    </div>
+                </mat-radio-group> -->
+                
+            </div>
+        </div> 
+        <div class="col-sm-12 my-2 form-group text-right">
+            <button mat-button class="btn btn-sm btn-registrar" style="margin-right: 3rem; background-color: #679738; color:white"
+             (click)="modalBuscarActa()" >
+                Buscar</button>
+        </div>
+
+
+    </form>
+    
+    
+</div>

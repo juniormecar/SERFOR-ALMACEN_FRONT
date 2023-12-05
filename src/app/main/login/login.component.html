@@ -1,0 +1,86 @@
+<!-- Define que el documento esta bajo el estandar de HTML 5 -->
+<!doctype html>
+<html>
+    <head>
+    </head>
+<body>
+    
+    <div id="contenedor">
+        
+        <div id="contenedorcentrado">
+
+        <div id="login" 
+         >
+
+        <div id="login-form">
+
+            <div class="logo">
+                <img src="assets/images/backgrounds/loguito.png">
+            </div>
+            <br>
+            <div  class="title"> <b> Login </b></div>
+            
+            <form name="loginForm" [formGroup]="loginForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Usuario</mat-label>
+                    <input matInput formControlName="email" #usuario>
+                    <mat-icon matSuffix class="secondary-text">perm_identity</mat-icon>
+              
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" formControlName="password" #pass>
+                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-error>
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                     fxLayoutAlign="space-between center">
+                    <mat-checkbox class="remember-me" aria-label="Remember Me">
+                        Recordarme
+                    </mat-checkbox>
+
+                    <a class="forgot-password">
+                        Olvidó la contraseña?
+                    </a>
+                </div>
+
+                <button mat-raised-button color="accent" style="background-color: #679738; color: white;" class="submit-button" aria-label="LOGIN"
+                        [disabled]="loginForm.invalid" (click)="login(usuario.value,pass.value)">
+                    LOGIN
+                </button>
+
+            </form>
+
+        </div>
+         </div>
+
+        <div id="derecho">
+
+            
+    
+            <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+               <b> BIENVENIDO AL SISTEMA DE ALMACÉN! </b>
+            </div>            
+    
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                Gracias por utilizar nuestro servicio de Almacén
+                 SERFOR
+            </div>
+
+            <div class="logod" >
+                <img src="assets/images/backgrounds/largologo.jpg">            
+            </div>
+    
+        </div>
+
+        </div>
+        
+    </div>
+    
+</body>
+</html>

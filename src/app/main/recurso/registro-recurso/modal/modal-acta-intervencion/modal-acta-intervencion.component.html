@@ -1,0 +1,438 @@
+<div class="dialog-content-wrapper" >
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"> <b> {{dialogTitle}} </b></span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0"  fusePerfectScrollbar>
+
+        <form name="inputActa" [formGroup]="inputActa" class="event-form w-100-p" fxLayout="column" fxFlex>
+
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="15">Fecha</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="15">Hora</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="70">Lugar</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pr-sm-8" fxFlex="15">
+                    <input matInput [matDatepicker]="startDatePicker" name="fechaIntervencion"
+                        formControlName="fechaIntervencion">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="15">
+                    <input matInput type="time" formControlName="hora">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="70">
+                    <input matInput type="text" formControlName="lugar" readonly>
+                    <mat-icon matSuffix class="secondary-text">add_location</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="30">N° de Documento</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="70">Nombre de la
+                    persona intervenida</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="30">
+                    <input matInput type="text" formControlName="numeroDNI" readonly>
+                    <mat-icon matSuffix class="secondary-text">featured_play_list</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="70">
+                    <input matInput type="text" formControlName="nombreIntervenido" readonly>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Domicilio de
+                    la persona intervenida</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <input matInput type="text" formControlName="domicilioIntervenido">
+                    <mat-icon matSuffix class="secondary-text">pin_drop</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Descripción
+                    de los hechos</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="descripcionHechos" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">assignment</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Conducta
+                    Infractora que se imputa</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="conductaInfractora" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">assignment</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="20">Tipo de Intervención: </span>
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" fxFlex="40" 
+                    formControlName="tipoInfraccion">
+                    <mat-radio-button class="example-radio-button pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="30"
+                        *ngFor="let season of seasons" [value]="season" (change)="onCheckboxChange(season)" disabled>
+                        {{season}}
+                    </mat-radio-button>
+                </mat-radio-group>
+                <div fxFlex="7"></div>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="20">Tipo de Sanción que corresponda: </span>
+                <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" fxFlex="40"
+                    formControlName="sancion">
+                    <mat-radio-button class="example-radio-button pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="50"
+                        *ngFor="let season of seasonsSancion" [value]="season" (change)="valoresCheckbox(season)" disabled>
+                        {{season}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <br><br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="40">Rango de la sanción / Monto(en caso de multa)</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="60">Sustento Normativo</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="40">
+                    <input matInput type="text" formControlName="montoMulta" >
+                    <mat-icon matSuffix class="secondary-text">attach_money</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="60">
+                    <input matInput type="text" formControlName="sustentoNormativoMulta" >
+                    <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                </mat-form-field>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="40">Autoridad instructora</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="60">Sustento Normativo</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="40">
+                    <input matInput type="text" formControlName="nombreAutoridadInstructora" > 
+                    <mat-icon matSuffix class="secondary-text">people_outline</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="60">
+                    <input matInput type="text" formControlName="sustentoNormativoInstructora"> 
+                    <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="40">Autoridad decisora</span>
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="60">Sustento Normativo</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="40">
+                    <input matInput type="text" formControlName="atutoridadDecisora" > 
+                    <mat-icon matSuffix class="secondary-text">people_outline</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="60">
+                    <input matInput type="text" formControlName="sustentoNormativoDecisora"> 
+                    <mat-icon matSuffix class="secondary-text">location_city</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Medios de prueba</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="mediosPrueba" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">touch_app</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Plazo para presentar descargos</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="plazoPresentacionEncargo" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">timer</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                <span class="pl-sm-8 no-errors-spacer text-primary-ir-center" fxFlex="100">De acuerdo al artículo 126° de la Ley N° 29763, Ley Forestal y de Fauna Silvestre...</span>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir"  fxFlex="100">Tipo de medida provisional</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <input matInput type="text" formControlName="medidaProvisional"/> 
+                    <mat-icon matSuffix class="secondary-text">speaker_notes</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Justificación</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="justificacion" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">speaker_notes</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start center">
+                <span class="pl-sm-8 no-errors-spacer text-primary-ir-center" fxFlex="100">ANEXO(de ser necesario)...</span>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Recursos Maderables</span>
+            </div>
+            <div class="example-container mat-elevation-z1 ">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="position">
+                        <th class="cabecera-table-especie" mat-header-cell *matHeaderCellDef style="width:10%; color: white;"> #</th>
+                        <td mat-cell *matCellDef="let element;let i = index;" style="width:10%">
+                            <div *ngIf="element.idEspecie !== 0">
+                                {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                            </div>                       
+                        </td>
+                    </ng-container>                  
+                    <ng-container matColumnDef="tipoProducto">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> TIPO DE PRODUCTO </th>
+                        <td mat-cell *matCellDef="let element" style="width: 24%">
+                            {{element.desctipoProducto}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nameComun">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> Nombre Común
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.nombreComun}}
+                        </td>
+                    </ng-container>    
+                    <ng-container matColumnDef="nameCientifico">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> Nombre Científico
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.nombreCientifico}}
+                        </td>
+                    </ng-container>                 
+                    <ng-container matColumnDef="unidadMedida">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> UNIDAD </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.unidadMedida}}                            
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cantidad">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:20%; color: white;"> CANTIDAD/VOLUMEN </th>
+                        <td mat-cell *matCellDef="let element" style="width:20%">
+                            {{element.txCantidadProducto}} / {{element.volumen!==null?element.volumen:''}}
+                        </td>
+                    </ng-container>                   
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                    [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Recursos No Maderables</span>
+            </div>
+            <div class="example-container mat-elevation-z1 ">
+                <table mat-table [dataSource]="dataSourceNoMad">
+                    <ng-container matColumnDef="position">
+                        <th class="cabecera-table-especie" mat-header-cell *matHeaderCellDef style="width:10%; color: white;"> #</th>
+                        <td mat-cell *matCellDef="let element;let i = index;" style="width:10%">
+                            <div *ngIf="element.idEspecie !== 0">
+                                {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                            </div>                       
+                        </td>
+                    </ng-container>    
+                    <ng-container matColumnDef="nameCientifico">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> Nombre Científico
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.nombreCientifico}}
+                        </td>
+                    </ng-container>  
+                    <ng-container matColumnDef="nameComun">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> Nombre Común
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.nombreComun}}
+                        </td>
+                    </ng-container>    
+                    <ng-container matColumnDef="cantidad">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:20%; color: white;"> CANTIDAD</th>
+                        <td mat-cell *matCellDef="let element" style="width:20%">
+                            {{element.txCantidadProducto}}
+                        </td>
+                    </ng-container>        
+                    <ng-container matColumnDef="unidadMedida">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:24%; color: white;"> UNIDAD </th>
+                        <td mat-cell *matCellDef="let element" style="width:24%">
+                            {{element.unidadMedida}}                            
+                        </td>
+                    </ng-container>
+                                   
+                    <mat-header-row *matHeaderRowDef="displayedColumnsNoMad"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsNoMad;"></mat-row>
+                </table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                    [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Fauna</span>
+            </div>
+            <div class="example-container mat-elevation-z1 ">
+                <table mat-table [dataSource]="dataSourceFA">
+                    <ng-container matColumnDef="position">
+                        <th class="cabecera-table-especie" mat-header-cell *matHeaderCellDef style="width:10%; color: white;"> #</th>
+                        <td mat-cell *matCellDef="let element;let i = index;" style="width:10%">
+                            <div *ngIf="element.idEspecie !== 0">
+                                {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                            </div>                       
+                        </td>
+                    </ng-container>   
+                    <ng-container matColumnDef="nameCientifico">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:40%; color: white;"> Nombre Científico
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:40%">
+                            {{element.nombreCientifico}}
+                        </td>
+                    </ng-container>  
+                    <ng-container matColumnDef="nameComun">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:40%; color: white;"> Nombre Común
+                        </th>
+                        <td mat-cell *matCellDef="let element" style="width:40%">
+                            {{element.nombreComun}}
+                        </td>
+                    </ng-container>    
+                    <ng-container matColumnDef="cantidad">
+                        <th class="cabecera-table-especie"  mat-header-cell *matHeaderCellDef style="width:20%; color: white;"> CANTIDAD </th>
+                        <td mat-cell *matCellDef="let element" style="width:20%">
+                            {{element.txCantidadProducto}}
+                        </td>
+                    </ng-container>                   
+                    <mat-header-row *matHeaderRowDef="displayedColumnsFA"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsFA;"></mat-row>
+                </table>
+                <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+                    [showFirstLastButtons]="true">
+                </mat-paginator>
+            </div>
+
+            <br>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Observaciones</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <textarea matInput type="text" formControlName="observaciones" rows="4"> </textarea>
+                    <mat-icon matSuffix class="secondary-text">speaker_notes</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Autoridad Instructora</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <input matInput type="text" formControlName="autoridadInstructora" /> 
+                    <mat-icon matSuffix class="secondary-text">people_outline</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Administrado</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <input matInput type="text" formControlName="nombreAdministrado" /> 
+                    <mat-icon matSuffix class="secondary-text">people_outline</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <span class="text-primary-ir" class="pl-sm-8 no-errors-spacer text-primary-ir" fxFlex="100">Participantes / Testigos</span>
+            </div>
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="pl-sm-8 no-errors-spacer" fxFlex="100">
+                    <input matInput type="text" formControlName="nombreTestigo" /> 
+                    <mat-icon matSuffix class="secondary-text">people_outline</mat-icon>
+                </mat-form-field>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="text-center" style="padding: 3%;">
+
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+            (click)="guardar()">Guardar</button>
+
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: rgb(243, 50, 50);"
+            (click)="close()">Cancelar</button>
+
+    </div>
+
+</div>
+
+<!--
+<div  style="max-height: 1000px; overflow: auto"  fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}"  >
+   
+    <div mat-dialog-actions class="text-center" style="padding: 3%;">
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+            (click)="guardar()">Guardar</button>
+
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: rgb(243, 50, 50);"
+            (click)="close()">Cancelar</button>
+
+    </div>
+
+   
+</div>
+
+-->

@@ -1,0 +1,84 @@
+<div id="academy-course" class="page-layout left-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> <b>  Devoluciones </b></span>
+                <button mat-icon-button (click)="_dialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+        <br><br>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="course-step">
+
+            <div id="course-step-content" class="course-step-content ">
+                <form [formGroup]="inputTransferirBeneficiario">
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="35">Tipo de Documento</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="35">N° de Documento</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="18"></span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                            fxFlex="35">
+                            <mat-select formControlName="tipoDocumento">
+                                <mat-option [value]="">
+                                    Seleccione
+                                </mat-option>
+                                <ng-container *ngFor="let item of listTipoDocumento">
+                                    <mat-option [value]="item.codigo">
+                                        {{item.valorPrimario}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div fxFlex="3"></div>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="35">
+                            <input matInput type="text" formControlName="numeroDocumento">
+                        </mat-form-field>
+                        <div fxFlex="3"></div>
+                        <button class="validate-dni" floatLabel="always" fxFlex="18">Consultar al PAS</button>
+                    </div>
+                    <br>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Acta de Entrega</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">N° de Resolución</span>                        
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                            <input matInput type="text" formControlName="actaEntrega">
+                        </mat-form-field>
+
+                        <div fxFlex="3"></div>
+                        <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                            <input matInput type="text" formControlName="nroResolucion">
+                        </mat-form-field>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+
+        </div>
+
+        <br> 
+        <div mat-dialog-actions class="text-center" style="padding: 3%;">            
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                        (click)="close()">Cancelar</button>
+        </div>
+        <div class="step-navigation">
+        </div>
+    </div>
+</div>

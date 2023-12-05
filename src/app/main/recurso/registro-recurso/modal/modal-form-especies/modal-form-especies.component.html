@@ -1,0 +1,92 @@
+<h1 mat-dialog-title class="text-left font-weight-bold">Especies</h1>
+<div mat-dialog-content class="repayment">
+
+    <div class="tab-content p-24" fxLayout="column">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+
+            <mat-form-field floatLabel="always" fxFlex="90">
+                <mat-label>Nombre Científico o Nombre Comun</mat-label>
+                <input matInput type="text" [(ngModel)]="name">
+            </mat-form-field>
+
+            <button mat-fab class="next green-600 fuse-white-fg" (click)="Search()">
+                <mat-icon>search</mat-icon>
+            </button>
+
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+            GitHub's API rate limit has been reached. It will be reset in one minute.
+        </div>
+    </div>
+    <div class="example-container mat-elevation-z1">
+        <table mat-table [dataSource]="dataSource">
+
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef style="width:2%"></th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox id="{{row.id}}" (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null; isSelectedTotal(row)">
+                    </mat-checkbox>
+                </td>
+
+            </ng-container>
+
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="nameCientifico">
+                <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Científico </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.nombreCientifico}}
+                </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="nameComun">
+                <th mat-header-cell *matHeaderCellDef style="width:38%"> Nombre Común o Comercial
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.nombreComun}}
+                </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="family">
+                <th mat-header-cell *matHeaderCellDef style="width:20%"> Familia </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.familia}}
+                </td>
+            </ng-container>
+
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </table>
+
+        <mat-paginator style="float:left" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+            [length]="especieResponse.totalRecords" [pageSize]="especieResponse.size" (page)="pageDataSource($event)"
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+
+
+</div>
+<br> <br>
+<div style="text-align: right;">
+    <button mat-fab class="next green-600 fuse-white-fg" (click)="accept()">
+        <mat-icon>check</mat-icon>
+    </button>
+    &nbsp;
+    <button mat-fab class="next red-600 fuse-white-fg mat-dialog-close" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

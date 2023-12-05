@@ -1,0 +1,83 @@
+<div id="academy-course" class="page-layout left-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center">
+        
+        <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+            <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> <b> Salidas </b> </span>
+                <button mat-icon-button (click)="_dialogRef.close()" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <br>
+        <div>
+            
+            <div class="ICONO">
+                <img src="assets/images/backgrounds/IconoTraslado.svg">
+            </div>
+            
+            <div mat-dialog-actions class="botones-y-descripciones" style="padding: 2%;">
+                <div class="boton-con-descripcion">
+                    <button mat-raised-button class="mat-accent mr-24" style="background-color: #679738; min-width: 4px; line-height: 20px; padding: 5px;"
+                                    (click)="openDialogBeneficiario()">
+                                    <mat-icon class="s-20">launch</mat-icon>
+                    </button>
+                    <div class="descripcion">
+                        <span class="titverde" style=" margin-top: 0%; font-weight: bold;">Donación</span>
+                        <p class="descrip" style="margin-bottom: 0%;">Donaciones a entidades públicas como municipalidades, vasos de leche, organizaciones del estado, etc.</p>
+                    </div>
+                </div>
+                &nbsp; &nbsp; &nbsp;
+
+                <div class="boton-con-descripcion">
+                    <button mat-raised-button class="mat-accent mr-24" style="background-color: #679738; min-width: 4px; line-height: 20px; padding: 5px; "
+                            (click)="openDialogAlmacen()">
+                            <mat-icon class="s-20">launch</mat-icon>
+                    </button>
+                    <div class="descripcion">
+                        <span class="titverde" style=" margin-top: 0%; font-weight: bold;">Traslado</span>
+                        <p class="descrip" style="margin-bottom: 0%;">Traslado de recursos de un almacén a otro, por diversos motivos.</p>
+                    </div>
+                </div>
+                &nbsp; &nbsp; &nbsp;
+
+                <div class="boton-con-descripcion">
+                    <button mat-raised-button class="mat-accent mr-24" style="background-color: #679738; min-width: 4px; line-height: 20px; padding: 5px;"
+                            (click)="openDialogDevolucion()"> 
+                            <mat-icon class="s-20">launch</mat-icon>
+                    </button>
+                    <div class="descripcion">
+                        <span class="titverde" style=" margin-top: 0%; font-weight: bold;">Devolución</span>
+                        <p class="descrip" style="margin-bottom: 0%;">Devolución del recurso al dueño, mediante una validación con el Sistema del PASS.</p>
+                    </div>
+                </div>  
+                &nbsp; &nbsp; &nbsp;
+
+                <div class="boton-con-descripcion">
+                    <button mat-raised-button class="mat-accent mr-24" style="background-color: #d33; min-width: 4px; line-height: 20px; padding: 5px;"
+                            (click)="openDialogBajas()">
+                            <mat-icon class="s-20">launch</mat-icon>
+                    </button>
+                    <div class="descripcion">
+                        <span class="titrojo" style=" margin-top: 0%; font-weight: bold;">Bajas</span>
+                        <p class="descrip" style="margin-bottom: 0%;">Baja por producto no apto para almacenaje o devolución, sujeta a una resolución administrativa.</p>
+                    </div>
+                </div>                      
+            </div>
+        </div> 
+
+        <div mat-dialog-actions class="text-center" style="padding: 3%;">
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                        (click)="close()">Cancelar</button>
+        </div>
+        
+        <div class="step-navigation">
+
+
+        </div>
+
+    </div>
+
+</div>

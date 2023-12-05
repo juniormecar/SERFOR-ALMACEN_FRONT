@@ -1,0 +1,20 @@
+export class Kardex {
+fechaRegistro?:Date;
+nombreCientifico?:string;
+nombreComun?:string;
+disponible?:string;
+tipoIngreso?:string;
+cantidadIngreso?:number;
+saldoTotalIngreso?:number;
+tipoSAlida?:string;
+cantidadSalida?:number;
+saldoTotalSalida?:number;
+nomAlmacen?:string;
+puestoControl?:string;
+atf?:string;
+cantidadM3Ingreso?:number;
+saldoTotalM3Ingreso?:number;
+cantidadM3Salida?:number;
+saldoTotalM3Salida?:number;
+tipoProducto?:string;
+}

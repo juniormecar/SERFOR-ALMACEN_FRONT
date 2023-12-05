@@ -1,0 +1,33 @@
+export class Transferencia {
+
+    nuIdTransferencia?:number;
+    nombre?:string;  
+    apellidos?:string;  
+    tipoDocumento?:string;  
+    documento?:string;  
+    nroActa?:string;  
+    nuIdRecurso?:number;
+    tipoTransferencia?:string;  
+    tipoTransferenciaDetalle?:string;  
+    estado?:string;  
+    nuIdUsuarioRegistro?:number;
+    feFechaRegistro?:Date;
+    nuIdUsuarioModificacion?:number;
+    feFechaModificacion?:Date;
+    nuIdUsuarioElimina?:number;
+    feFechaElimina?:Date;
+    observaciones?:string;
+    txCodigoPuntoControl?:string;
+    txCodigoPuntoControlDetalle?:string;
+    nuIdAlmacen?:number;
+    nombreCientifico?:string;
+    nombreComun?:string;   
+    almacenOrigen?:string;   
+    almacenDestino?:string;   
+    cantidadProducto?:number;
+    nroActaTransferencia?:string;   
+    nroResolucion?:string;   
+    nroActaTraslado?:string;   
+    metroCubico?:number;
+    faunaSalida?:string;   
+}

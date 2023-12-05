@@ -1,0 +1,82 @@
+<div id="academy-course" class="page-layout left-sidebar inner-scroll">
+    <div class="center">
+        <!-- HEADER -->
+        <div class="header green-600 p-5" fxLayout="row" fxLayoutAlign="start center">
+            <div>
+                <h2> Visualizar Detalle </h2>
+            </div>
+
+        </div>
+        <br>
+
+        <div id="course-content" class="content">
+
+            <ng-container>
+                <div class="course-step" fusePerfectScrollbar>
+                    <div id="course-step-content" class="course-step-content ">
+                        <div class="example-container mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource">
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 5%;"> #</th>
+                                    <td mat-cell *matCellDef="let element;let i = index;">
+                                        {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombreCientifico">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Nombre Cientifico </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.nombreCientifico}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="nombreComun">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Nombre Comun </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.nombreComun}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="tipo">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.familia}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="cantidad" class="text-center">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;">
+                                        Cantidad </th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">
+                                        {{element.txCantidadProducto}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="unidadMedida">
+                                    <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;"
+                                        class="center"> Unidad Medida </th>
+                                    <td mat-cell *matCellDef="let element" class="text-center">KG </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                            </table>
+                            <mat-paginator #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
+                                [length]="recursoResponse.totalElements" [pageSize]="recursoResponse.size"
+                                (page)="pageDataSource($event)" aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <br> <br><br><br><br><br><br><br><br><br><br><br><br><br><br>        
+        
+        <div mat-dialog-actions class="pt-12 text-center">
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                (click)="openDialogBeneficiario(idRecurso)">Transferencia a Beneficiario</button>
+
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                (click)="openDialogAlmacen(idRecurso)">Transferencia a Almacén</button>
+
+            <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
+                (click)="openDialogDevoluciones(idRecurso)">Transferencia a Decomisado</button>
+        </div>
+    
+    </div>
+
+</div>

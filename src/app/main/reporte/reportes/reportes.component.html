@@ -1,0 +1,188 @@
+<div id="academy-course" class="page-layout simple left-sidebar inner-scroll">
+
+    <div class="center">
+
+        <div class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
+
+            <div>
+                <h2> <b> Reportes </b></h2>
+            </div>
+
+        </div>
+        <div id="course-content" class="content">
+
+            <ng-container>
+
+                <div class="course-step" fusePerfectScrollbar>
+
+                    <div id="course-step-content" class="course-step-content ">
+                        <form [formGroup]="inputBandeja">
+                            <div id="dosfiltros" >
+                            <div id="filtros" >
+                                <h2 style="color: rgb(111, 42, 175);">Filtros de búsqueda</h2>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Almacén Origen</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="90">Almacén Destino</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="90">Tipo de Especie</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                fxFlex="30">
+                                <mat-select formControlName="almacen">
+                                    <mat-option [value]="">
+                                        Seleccione
+                                    </mat-option>
+                                    <ng-container *ngFor="let item of listAlmacen">
+                                        <mat-option [value]="item.nuIdAlmacen">
+                                            {{item.txNombreAlmacen}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>  
+                            <div fxFlex="5"></div>
+                            <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                            fxFlex="30">
+                            <mat-select formControlName="almacen">
+                                <mat-option [value]="">
+                                    Seleccione
+                                </mat-option>
+                                <ng-container *ngFor="let item of listAlmacen">
+                                    <mat-option [value]="item.nuIdAlmacen">
+                                        {{item.txNombreAlmacen}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field> 
+                        <div fxFlex="5"></div>
+                        <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
+                            <mat-select formControlName="tipoEspecie" >
+                                <mat-option [value]="">
+                                    Seleccione
+                                </mat-option>
+                                <ng-container *ngFor="let item of listTipoEspecie">
+                                    <mat-option [value]="item.codigo" >
+                                        {{item.valorPrimario}}
+                                    </mat-option>
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field> 
+                            </div>
+                        </div>
+                        <div id="filtroavanzado" >
+                            <h2 style="color: rgb(111, 42, 175);">Búsqueda avanzada</h2>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Almacén</span>                                
+                            </div>                             
+                            
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                fxFlex="78">
+                                <mat-select formControlName="almacen">
+                                    <mat-option [value]="">
+                                        Seleccione
+                                    </mat-option>
+                                    <ng-container *ngFor="let item of listAlmacen">
+                                        <mat-option [value]="item.nuIdAlmacen">
+                                            {{item.txNombreAlmacen}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field> 
+                            <button mat-mini-fab (click)="busquedaAvanzada()" 
+                            style="background-color: #4a962c;">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                            </div>
+                           
+                            
+                        </div>
+                    </div>
+                    
+                            <!-- <br>
+                            <br>
+
+                            <div class="col-sm-12 my-2 form-group text-center">
+                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+                                    (click)="limpiarCampos()">Limpiar</button>
+                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+                                    (click)="Search()">Buscar</button>    
+                                <button mat-button class="btn btn-sm btn-secondary mr-2" 
+                                    (click)="exportToExcel()">Exportar a Excel</button>
+                               
+
+                            </div> -->
+                            <br>
+                            <br>
+                            
+                            <div >
+                                
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="20">Periodo</span>                                
+                                </div>                             
+                                
+                                <div fxLayout="row" fxLayoutAlign="space-between">
+                                    <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                    fxFlex="20">
+                                    <mat-select formControlName="periodo">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listPeriodo">
+                                            <mat-option [value]="item.codigo">
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>                                
+                                </div>
+                               <br>
+                               <br>
+                               <div>
+                                <ngx-charts-bar-vertical-2d
+                            [view]="view"
+                            [scheme]="colorScheme"
+                            [results]="multi"
+                            
+                            [xAxis]="showXAxis"
+                            [yAxis]="showYAxis"
+                            [legend]="showLegend"
+                            [showXAxisLabel]="showXAxisLabel"
+                            [showYAxisLabel]="showYAxisLabel"
+                            [xAxisLabel]="xAxisLabel"
+                            
+                            [legendTitle]="legendTitle"
+                            (select)="onSelect($event)"
+                            (activate)="onActivate($event)"
+                            (deactivate)="onDeactivate($event)">
+                            </ngx-charts-bar-vertical-2d>
+                        </div>
+                            </div>
+                            <!--
+                             [yAxisLabel]="yAxisLabel"
+                            [gradient]="gradient"
+                            
+                         -->
+
+                            
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+                            <br><br>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </ng-container>
+
+        </div>
+
+    </div>

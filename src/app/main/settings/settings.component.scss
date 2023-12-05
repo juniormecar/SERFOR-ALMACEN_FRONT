@@ -1,0 +1,91 @@
+@import "src/@fuse/scss/fuse";
+
+@keyframes rotating {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+fuse-theme-options {
+    display: flex;
+    overflow: hidden;
+}
+
+.theme-options-panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    padding: 40px 24px 24px 24px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.header {
+    display: flex;
+    font-size: 2rem;
+    color: green;
+    margin-bottom: 32px;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    width: 100px;
+    margin-left: 3rem;
+    margin-top: 3rem;
+}
+
+.group {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    position: relative; 
+    border-radius: 2px;
+    padding: 28px 16px 8px 16px;
+    margin: 16px 0;
+
+}
+
+h2 {
+    position: absolute;
+    top: -11px;
+    left: 8px;
+    margin: 0;
+    padding: 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+form h2 {
+    font-size: 1.5rem;
+    color: green;
+}
+
+.may-dec {
+    padding-right: 2rem;
+}
+
+.rad-but {
+    padding-top: 1rem;
+}
+
+.ft{
+    font-size: 14px;
+}
+
+.val-dec{
+    display: inline-flex;
+}
+
+.title {
+    padding-right: 1rem;
+}
+
+.line-3{
+    background-color: green;
+    color: green;
+    width: 1rem;
+    margin-right: 20px;
+}

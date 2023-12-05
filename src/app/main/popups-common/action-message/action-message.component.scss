@@ -1,0 +1,37 @@
+
+.status-action-success {
+    background-color: #587fe9;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.status-action-warning {
+    background-color: #dd8736;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.status-action-error {
+    background-color: #e03a3a;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.status-action-icon {
+    color: #fff !important;
+}

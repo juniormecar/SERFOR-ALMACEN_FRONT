@@ -1,0 +1,36 @@
+export class ActaIntervencion {
+    idActa?:number;
+    nuIdRecurso?:number;
+    domicilioIntervenido?:string;
+    nombreAutoridadInstructora?:string;
+    nombreAdministrado?:string;
+    nombreTestigo?:string;
+    numeroDNI?:string;
+    tipoEspecimen?:string;
+    estado?:string;   
+    fechaIntervencion?:Date;
+    fechaRegistro?:Date;
+    flag?:number;
+    lugar?:string;
+    nombreIntervenido?:string;
+    hora?:string;
+    descripcionHechos?:string;
+    conductaInfractora?:string;
+    tipoInfraccion?:string;
+    atutoridadDecisora?:string;
+    sustentoNormativoDecisora?:string;
+    mediosPrueba?:string;
+    plazoPresentacionEncargo?:string;
+    medidaProvisional?:string;
+    justificacion?:string;
+    especie?:string;
+    unidad?:string;
+    observaciones?:string;
+    cantidadVolumen?:string;
+    autoridadInstructora?:string;
+    sustentoNormativoInstructora?:string;
+    sancion?:string;
+    montoMulta?:string;
+    sustentoNormativoMulta?:string;
+}
+

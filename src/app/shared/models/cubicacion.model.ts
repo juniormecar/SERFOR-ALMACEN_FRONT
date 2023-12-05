@@ -1,0 +1,21 @@
+export class Cubicacion {
+    idRecurProCubicacion?:number;
+    cantidad?:Number;
+    espesor?:Number;
+    ancho?:Number;
+    largo?:Number;
+    volumenPT?:Number;
+    volumenM3?:Number;
+    estado?:string;
+    idUsuarioRegistro?:Number;
+    fechaRegistro?:Date;
+    idUsuarioModificacion?:Number;
+    fechaModificacion?:Date;
+    idUsuarioElimina?:Number;
+    fechaElimina?:Date;
+    total?:Number;
+    nuIdRecursoProducto?:Number;
+    diametroPromedio?:Number;
+    longitud?:Number;
+    totalVolumenM3?:Number;
+}

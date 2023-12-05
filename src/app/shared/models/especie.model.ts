@@ -1,0 +1,28 @@
+export class Especie {
+    idEspecie?:Number;
+    codfor?:string;
+    nombreCientifico?:string;
+    nombreComun?:string;
+    autor?:string;
+    sinonimia?:string;
+    familia?:string;
+    numero_lista?:Number;
+    fuente?:string;
+    categoria?:string;
+    oficial?:string;
+    habitoCrecimiento?:string;
+    tipouso?:string;
+    cites?:string;
+    nombrecomercial?:string;
+    dmc?:Number;
+    idFuenteOficial?:Number;
+    idNombreComun?:Number;
+    especie?:string;
+    esMaderable?:string;
+    idsEspecie?:string;
+    isCite?:boolean;
+    add:boolean;
+    esAserrada?:string;
+    id?:Number;
+    cantidad?:Number;
+}
