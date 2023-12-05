@@ -16,10 +16,15 @@ export class AtfService {
     this.base = environment.urlProcesos + "/api/serfor/Atf";
   }
 
-  // getATFSearch(): Observable<ATF[]> {
-  //   let url = `${this.base}`;
-  //   return this.http.get<ATF[]>((url)).pipe(catchError(this.errorHandler));
-  // }
+  deleteAtf(idAtf:number): Observable<AtfResponse> {
+    let url = `${this.base}/eliminarATF?idAtf=${idAtf}&nuIdUsuarioElimina=1`;
+    return this.http.delete<AtfResponse>(url).pipe(catchError(this.errorHandler));
+  }
+
+  postAtf(request: ATF) {
+    let url = `${this.base}/registrarATF`;
+    return this.http.post(url, request).pipe(catchError(this.errorHandler));
+  }
 
   getATFSearch(atfRequest:ATF, page: number, size: number): Observable<AtfResponse> {
     let url = `${this.base}?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
