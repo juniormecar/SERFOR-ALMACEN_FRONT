@@ -26,6 +26,11 @@ export class ParametroService {
   //   return this.http.get<Parametro[]>((url)).pipe(catchError(this.errorHandler));
   // }
 
+  postAñadirParametro(request: Parametro) {
+    let url = `${this.base}/registrarParametro`;
+    return this.http.post(url, request).pipe(catchError(this.errorHandler));
+  }
+
   getParametroSearch(parametroRequest:Parametro, page: number, size: number): Observable<ParametroResponse> {
     let url = `${this.base}?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
     if(parametroRequest.prefijo){
@@ -34,8 +39,10 @@ export class ParametroService {
     return this.http.get<ParametroResponse>((url)).pipe(catchError(this.errorHandler));
   }
 
-
-
+  deleteParametro(idParametro:number): Observable<ParametroResponse> {
+    let url = `${this.base}/eliminarParametro?idParametro=${idParametro}&idUsuarioElimina=1`;
+    return this.http.delete<ParametroResponse>(url).pipe(catchError(this.errorHandler));
+  }
 
   errorHandler(error: HttpErrorResponse) {
     return observableThrowError(error || 'SERVER ERROR');

@@ -27,7 +27,7 @@ import { catchError } from 'rxjs/operators';
       return this.http.post(url, request).pipe(catchError(this.errorHandler));
     }
 
-    getATFSearch(atfRequest:TipoParametro, page: number, size: number): Observable<TipoParametroResponse> {
+    getTipoParametroSearch(atfRequest:TipoParametro, page: number, size: number): Observable<TipoParametroResponse> {
       let url = `${this.base}/listarTipoParametro?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
       return this.http.get<TipoParametroResponse>((url)).pipe(catchError(this.errorHandler));
     }

@@ -56,7 +56,7 @@ export class BandejaTipoParametroComponent implements OnInit {
   search() {
     this.dataSource = new MatTableDataSource<TipoParametro>([])
 
-    this.tipoParametroService.getATFSearch(this.tipoParametroRequest, this.tipoParametroResponse.pageNumber, this.tipoParametroResponse.pageSize).subscribe((response: TipoParametroResponse) => {
+    this.tipoParametroService.getTipoParametroSearch(this.tipoParametroRequest, this.tipoParametroResponse.pageNumber, this.tipoParametroResponse.pageSize).subscribe((response: TipoParametroResponse) => {
       if (response.success) {
         this.tipoParametroResponse = response;
         this.dataSource = new MatTableDataSource<TipoParametro>(response.data);
