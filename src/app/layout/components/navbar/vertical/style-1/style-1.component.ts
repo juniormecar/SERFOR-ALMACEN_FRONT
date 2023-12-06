@@ -19,6 +19,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     fuseConfig: any;
     navigation: any;
 
+    usuario:string='';
+    correoUsuario:string='';
+
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
     private _unsubscribeAll: Subject<any>;
@@ -102,6 +105,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                     }
                 }
             );
+
+            this.usuario =  localStorage.getItem('usuario');
+            this.correoUsuario = localStorage.getItem('correoUsuario');
+            console.log('localStoragelocalStoragelocalStoragelocalStoragelocalStorage',localStorage);
 
         // Subscribe to the config changes
         this._fuseConfigService.config

@@ -61,7 +61,7 @@ export class ReportesComponent implements OnInit {
   //yAxisLabel: string = 'Rango';
   legendTitle: string = 'Tipo'
   colorScheme = {
-    domain: ['#43a047', '#C9E0C0', '#AAAAAA']
+    domain: ['#89B361', '#C9E0C0', '#AAAAAA']
   };
 
     multi = [
