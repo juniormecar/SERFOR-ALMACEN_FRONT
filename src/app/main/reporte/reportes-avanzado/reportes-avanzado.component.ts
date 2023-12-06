@@ -63,6 +63,11 @@ export class ReportesAvanzadoComponent implements OnInit {
   legendPosition: string = 'below';
 
   idAlmacen:number=0;
+  tipoTransferenciaDetalle:string=null;
+
+  nombre:string='Destino';
+  ocultarBoton: number=0;
+
 
   colorScheme = {
     domain: ['#4a962c', '#C9E0C0', '#89B361', '#AAAAAA']
@@ -136,7 +141,8 @@ export class ReportesAvanzadoComponent implements OnInit {
     
 
     this.inputReporteAvanzado = this._formBuilder.group({
-      almacen: ['']
+      almacen: [''],
+      tipoTransferenciaDetalle: ['']
      // tipoAlmacen: ['', Validators.required]
     });
     this.almacenResponse.pageNumber = 1;
@@ -153,12 +159,15 @@ export class ReportesAvanzadoComponent implements OnInit {
   
 
   salidas(){
-    console.log("teeeeeest");
     this.tipoTransferencia = 'Salidas'
+    this.nombre = 'Destino';
+    this.ocultarBoton = 0;
     this.searchReportesAvanzados();
   }
   entradas(){
     this.tipoTransferencia = 'Entradas'
+    this.nombre = 'Origen';
+    this.ocultarBoton = 1;
     this.searchReportesAvanzados();
   }
   
@@ -179,7 +188,6 @@ export class ReportesAvanzadoComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchReportesAvanzados();
-    //this.searchATF();
     this.searchAlmacen();
     this.searchTipoTransferencia();
   } 
@@ -194,6 +202,22 @@ export class ReportesAvanzadoComponent implements OnInit {
     })
   }
  
+  cambioAlmacen()
+  {
+    this.idAlmacen = this.inputReporteAvanzado.get('almacen').value; 
+    this.searchReportesAvanzados();
+  }
+
+  cambioTransferencia()
+  {
+    this.tipoTransferenciaDetalle = this.inputReporteAvanzado.get('tipoTransferenciaDetalle').value; 
+    if(this.inputReporteAvanzado.get('tipoTransferenciaDetalle').value == undefined)
+    {
+      this.tipoTransferenciaDetalle = null;
+    }
+    this.searchReportesAvanzados();    
+  }
+
 
   async searchAlmacen() {
     this.dataSource = new MatTableDataSource<Almacen>([])
@@ -207,10 +231,12 @@ export class ReportesAvanzadoComponent implements OnInit {
   }
 
   async searchReportesAvanzados() {    
+    
     this.dataSource = new MatTableDataSource<Reportes>([])
     this.reportesRequest.nuIdAlmacen = this.idAlmacen; //this.inputReporteAvanzado.get('nombreAlmacen').value;
     this.reportesRequest.tipoTransferencia = this.tipoTransferencia;         
     this.reportesRequest.nuIdTransferencia = null;
+    this.reportesRequest.tipoTransferenciaDetalle = this.tipoTransferenciaDetalle;
     this.reportesService.getReportesAvanzadosSearch(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{
       if(response.success){ 
         this.reportesResponse = response;

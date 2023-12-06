@@ -25,7 +25,7 @@
         <mat-toolbar class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                 <span class="title dialog-title"><b>Reportes > Búsqueda Avanzada</b></span>  
-                <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F "
+                <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F; border: solid 2px #466E1F; "
                                     (click)="volver()">Volver</button>
             </mat-toolbar-row>
         </mat-toolbar>
@@ -41,14 +41,15 @@
                     
                     <div id="course-step-content" class="course-step-content ">
                         <form [formGroup]="inputReporteAvanzado">
-                            <div fxLayout="row" fxLayoutAlign="space-between">
+                            <!-- <div fxLayout="row" fxLayoutAlign="space-between">
                                 <span class="text-primary-ir" floatLabel="always" fxFlex="30">Almacén</span>
                                 
-                            </div>
+                            </div> -->
                             <div fxLayout="row" fxLayoutAlign="space-between">
                                 <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
                                 fxFlex="30">
-                                <mat-select formControlName="almacen">
+                                <mat-label style="color: #679738;">Almacén</mat-label>
+                                <mat-select formControlName="almacen" (selectionChange)="cambioAlmacen()">
                                     <mat-option [value]="">
                                         Seleccione
                                     </mat-option>
@@ -119,25 +120,31 @@
                             <div id="dosColumnas">
 
                                 <div id="primera">
-                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
-                            (click)="salidas()">                             
+                            <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #679738; border: solid 2px #679738;"
+                            (click)="salidas()" [fxHide]="ocultarBoton === 0">                             
+                             Salidas</button>                             
+                             <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738; border: solid 2px #679738; color: white; "
+                            (click)="salidas()" [fxHide]="ocultarBoton === 1">                             
                              Salidas</button>
                              &nbsp;
-                             <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
-                             (click)="entradas()">                             
-                              Entradas</button>   
+                             <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738; border: solid 2px #679738;"
+                             (click)="entradas()" [fxHide]="ocultarBoton === 0">                             
+                              Entradas</button>
+                              <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #679738; border: solid 2px #679738; "
+                             (click)="entradas()" [fxHide]="ocultarBoton === 1">                             
+                              Entradas</button> 
                             </div>
 
                             <div id="segunda">
                                 <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
                                 fxFlex="30">
                                 <mat-label style="color: #679738;">Tipo de transferencia</mat-label>
-                                <mat-select formControlName="almacen">
+                                <mat-select formControlName="tipoTransferenciaDetalle" (selectionChange)="cambioTransferencia()">
                                     <mat-option [value]="">
                                         Seleccione
                                     </mat-option>
                                     <ng-container *ngFor="let item of listTipoTransferencia">
-                                        <mat-option [value]="item.idTipoParametro">
+                                        <mat-option [value]="item.valorPrimario">
                                             {{item.valorPrimario}}
                                         </mat-option>
                                     </ng-container>
@@ -160,7 +167,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="destino">
-                                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                                        <th mat-header-cell *matHeaderCellDef> {{nombre}} </th>
                                         <td mat-cell *matCellDef="let element"> {{element.almacenDestino}} </td>
                                     </ng-container>
 

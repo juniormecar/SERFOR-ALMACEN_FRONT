@@ -40,7 +40,7 @@ export class TransferenciaService {
     } 
     if(nuIdTransferencia){
         url += `&nuIdTransferencia=${nuIdTransferencia}`
-    } 
+    }     
         
         return this.http.get<TransferenciaResponse>((url)).pipe(catchError(this.errorHandler));
     }
@@ -55,6 +55,9 @@ export class TransferenciaService {
     }   
     if (reportesRequest.nuIdTransferencia) {
         url += `&nuIdTransferencia=${reportesRequest.nuIdTransferencia}`
+    } 
+    if(reportesRequest.tipoTransferenciaDetalle){
+        url += `&tipoTransferenciaDetalle=${reportesRequest.tipoTransferenciaDetalle}`
     }     
         
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
