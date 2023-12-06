@@ -40,6 +40,7 @@ import { Decimal } from 'app/shared/models/settings.model';
 import { FaunaSalidaComponent } from 'app/main/transferencia/fauna-salida/fauna-salida.component';
 import { AtfResponse } from 'app/shared/models/response/atf-response';
 import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 @Component({
@@ -66,6 +67,8 @@ export class ActualizarAlmacenComponent implements OnInit {
   dataSourceMadSeparado = new MatTableDataSource<Recurso>([]);  
   dataSourceNoMadSeparado = new MatTableDataSource<Recurso>([]);  
   dataSourceFaunaSeparado = new MatTableDataSource<Recurso>([]);  
+
+  parametroResponse: ParametroResponse = new ParametroResponse();
 
 
   inputRegistro: FormGroup;
@@ -170,6 +173,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.atfResponse.pageSize = 100;
     this.puestoControlResponse.pageNumber = 1;
     this.puestoControlResponse.pageSize = 100;
+    this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -329,18 +334,27 @@ export class ActualizarAlmacenComponent implements OnInit {
     });
   }
 
+ 
+
   searchTipoAlmacen() {
-    this.parametroService.getParametroSearch(this.tipoAlmacen)
-      .subscribe((response: Parametro[]) => {
-        this.listTipoAlmacen = response;
-      });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoAlmacen;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoAlmacen=response.data;
+    })
   }
 
   searchTipoDocumento() {
-    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
-      this.listTipoDocumento = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoDocumento;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoDocumento=response.data;
+    })
   }
+
+  
 
   getValores() {
     if (this.dataAlmacen !== undefined) {
@@ -873,11 +887,14 @@ export class ActualizarAlmacenComponent implements OnInit {
       })
   }
 
+  
   searchUnidadMedida() {
-    this.parametroService.getParametroSearch(this.unidadMedida).subscribe((response: Parametro[]) => {
-      this.listUnidadMedida = response;
-      //////console.log("listUnidadMedida",this.listUnidadMedida)
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.unidadMedida;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listUnidadMedida=response.data;
+    })
   }
 
   pageDataSource(e: PageEvent, type: string): PageEvent {
@@ -1621,15 +1638,23 @@ export class ActualizarAlmacenComponent implements OnInit {
 
   }
 
+  
   searchTipoIngreso() {
-    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
-      this.listTipoIngreso = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoIngreso;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoIngreso=response.data;
+    })
   }
+
   searchTipo() {
-    this.parametroService.getParametroSearch(this.tipo).subscribe((response: Parametro[]) => {
-      this.listTipo = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipo;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipo=response.data;
+    })
   }
 
 }

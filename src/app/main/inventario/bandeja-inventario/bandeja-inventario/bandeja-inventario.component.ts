@@ -26,6 +26,7 @@ import { Parametro } from 'app/shared/models/parametro.model';
 import { Constants } from 'app/shared/models/util/constants';
 import { AtfResponse } from 'app/shared/models/response/atf-response';
 import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 @Component({
@@ -39,6 +40,8 @@ export class BandejaInventarioComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
+  parametroResponse: ParametroResponse = new ParametroResponse();
+
   displayedColumns: string[] = ['position','Tipo','disponibilidad', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','metroCubico'];
   inputBandeja: FormGroup;
   resultsLength = 0;
@@ -76,6 +79,8 @@ export class BandejaInventarioComponent implements OnInit {
   ) {
     this.recursoResponse.pageNumber = 1;
     this.recursoResponse.pageSize = 10;
+    this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -123,22 +128,34 @@ export class BandejaInventarioComponent implements OnInit {
    this.searchTipoEspecie();
   }
 
+ 
   searchTipoIngreso() {
-    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
-      this.listTipoIngreso = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoIngreso;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoIngreso=response.data;
+    })
   }
   searchDisponibilidadActa() {
-    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
-      this.listDisponibilidadActa = response;
-    });
-  }
-  searchTipoEspecie() {
-    this.parametroService.getParametroSearch(this.tipoEspecie).subscribe((response: Parametro[]) => {
-      this.listTipoEspecie = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.disponibilidadActa;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listDisponibilidadActa=response.data;
+    })
   }
 
+  searchTipoEspecie() {
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoEspecie;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoEspecie=response.data;
+    })
+  }
+
+  
   async Search() {
     this.recursoResponse.pageNumber = 1;
     this.recursoResponse.pageSize = 10;

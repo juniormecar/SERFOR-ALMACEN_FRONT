@@ -19,6 +19,7 @@ import { PuestoControl } from 'app/shared/models/puesto-control.model';
 import { PuestoControlService } from 'app/service/puesto-control.service';
 import { AtfResponse } from 'app/shared/models/response/atf-response';
 import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 interface DialogData{
@@ -38,6 +39,8 @@ export class AlmacenComponent implements OnInit {
   dataSourceSearch: any[] = [];
   transferencia: any[] = [];
   recursoResponse: BandejaRecursoResponse = new BandejaRecursoResponse();
+  parametroResponse: ParametroResponse = new ParametroResponse();
+
   //displayedColumns: string[] = ['position', 'nombreCientifico', 'nombreComun', 'tipo','cantidad','descontar','unidadMedida','FlagAgregar'];
   inputTransferirAlmacen: FormGroup;
   listTipoDocumento: Parametro[] = [];
@@ -63,6 +66,9 @@ export class AlmacenComponent implements OnInit {
       this.recursoResponse.pageSize = 5;
       this.atfResponse.pageNumber = 1;
       this.atfResponse.pageSize = 100;
+      this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
+
       this.puestoControlResponse.pageNumber = 1;
       this.puestoControlResponse.pageSize = 100;
       this.inputTransferirAlmacen = this._formBuilder.group({
@@ -215,13 +221,15 @@ export class AlmacenComponent implements OnInit {
       )
     }
   }
-
-  searchPuntoControl() {
-    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
-      this.listTipoDocumento = response;
-    });
+  
+  searchTipoIngreso() {
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoDocumento;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoDocumento=response.data;
+    })
   }
-
   close() {
     //console.log("cerrar");
     this._dialogRef.close(-1);

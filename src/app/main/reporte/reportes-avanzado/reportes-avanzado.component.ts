@@ -26,6 +26,7 @@ import { ReportesService } from 'app/service/reportes.service';
 import { TransferenciaService } from 'app/service/transferencia.service';
 import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 @Component({
   selector: 'app-reportes-avanzado',
@@ -52,6 +53,7 @@ export class ReportesAvanzadoComponent implements OnInit {
   tipoTransferencia: string = 'Salidas';
   transferenciaParametro: string = Constants.TIPO_TRANSFERENCIA;
   view: any[] = [450, 350];
+  parametroResponse: ParametroResponse = new ParametroResponse();
 
   // options
   gradient: boolean = true;
@@ -59,6 +61,8 @@ export class ReportesAvanzadoComponent implements OnInit {
   showLabels: boolean = true;
   isDoughnut: boolean = false;
   legendPosition: string = 'below';
+
+  idAlmacen:number=0;
 
   colorScheme = {
     domain: ['#4a962c', '#C9E0C0', '#89B361', '#AAAAAA']
@@ -103,6 +107,11 @@ export class ReportesAvanzadoComponent implements OnInit {
     ) {
       this.reportesResponse.pageNumber = 1;
       this.reportesResponse.pageSize = 10;
+      this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
+
+
+
  this._fuseConfigService.config = {
        layout: {
          navbar: {
@@ -120,6 +129,12 @@ export class ReportesAvanzadoComponent implements OnInit {
        }
      };
 
+     this.idAlmacen = window.history.state.idAlmacen;
+
+     
+      //this.inputReporteAvanzado.get('almacen').patchValue(182);      
+    
+
     this.inputReporteAvanzado = this._formBuilder.group({
       almacen: ['']
      // tipoAlmacen: ['', Validators.required]
@@ -127,7 +142,15 @@ export class ReportesAvanzadoComponent implements OnInit {
     this.almacenResponse.pageNumber = 1;
     this.almacenResponse.pageSize = 10;
     this.numeroDocumento = localStorage.getItem('usuario');
+
+    if(this.idAlmacen !== null && this.idAlmacen !== undefined)
+    {
+    this.inputReporteAvanzado.get("almacen").patchValue(this.idAlmacen);  
+    }
+
   }
+
+  
 
   salidas(){
     console.log("teeeeeest");
@@ -162,24 +185,16 @@ export class ReportesAvanzadoComponent implements OnInit {
   } 
 
  
-
-  // searchATF() {
-  //   this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-  //     this.listATF = response;
-  //   });
-  // }
-
   searchTipoTransferencia() {
-    this.parametroService.getParametroSearch(this.transferenciaParametro).subscribe((response: Parametro[]) => {
-      this.listTipoTransferencia = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.transferenciaParametro;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoTransferencia=response.data;
+    })
   }
+ 
 
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputReporteAvanzado.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-  //     this.listPuestoControl= response;
-  //   });
-  // }
   async searchAlmacen() {
     this.dataSource = new MatTableDataSource<Almacen>([])
     let almacenRequest:Almacen = new Almacen;
@@ -193,7 +208,7 @@ export class ReportesAvanzadoComponent implements OnInit {
 
   async searchReportesAvanzados() {    
     this.dataSource = new MatTableDataSource<Reportes>([])
-    this.reportesRequest.nuIdAlmacen = 182; //this.inputReporteAvanzado.get('nombreAlmacen').value;
+    this.reportesRequest.nuIdAlmacen = this.idAlmacen; //this.inputReporteAvanzado.get('nombreAlmacen').value;
     this.reportesRequest.tipoTransferencia = this.tipoTransferencia;         
     this.reportesRequest.nuIdTransferencia = null;
     this.reportesService.getReportesAvanzadosSearch(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{

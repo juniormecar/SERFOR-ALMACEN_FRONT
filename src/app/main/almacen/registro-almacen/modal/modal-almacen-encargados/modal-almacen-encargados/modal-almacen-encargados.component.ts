@@ -27,6 +27,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AtfResponse } from 'app/shared/models/response/atf-response';
 import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 interface General {
   dataEncargado:AlmacenResponsable,
   type: string
@@ -43,6 +44,8 @@ export class ModalAlmacenEncargadosComponent implements OnInit {
   selection = new SelectionModel<AlmacenResponsable>(true, []);
   almacenResponse: AlmacenResponsableResponse = new AlmacenResponsableResponse();
   almacenRequest:  AlmacenResponsable = new AlmacenResponsable();
+  parametroResponse: ParametroResponse = new ParametroResponse();
+
   inputRegistro: FormGroup;
   course: RegistroStep[] = RegistroListSteps;
   animationDirection: 'left' | 'right' | 'none';
@@ -87,6 +90,8 @@ export class ModalAlmacenEncargadosComponent implements OnInit {
     this.atfResponse.pageSize = 100;
     this.puestoControlResponse.pageNumber = 1;
     this.puestoControlResponse.pageSize = 100;
+    this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
        layout: {
          navbar: {
@@ -163,17 +168,26 @@ export class ModalAlmacenEncargadosComponent implements OnInit {
     });
   }
 
+  
+
   searchTipoAlmacen() {
-    this.parametroService.getParametroSearch(this.tipoAlmacen).subscribe((response: Parametro[]) => {
-      this.listTipoAlmacen = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoAlmacen;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoAlmacen=response.data;
+    })
   }
 
   searchTipoDocumento() {
-    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
-      this.listTipoDocumento = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoDocumento;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoDocumento=response.data;
+    })
   }
+
 
   agregarAlmacenResponsable() {
     let obj: AlmacenResponsable = new AlmacenResponsable();

@@ -13,6 +13,7 @@ import { RecursoProduco } from 'app/shared/models/recurso-producto.model';
 import { ParametroService } from 'app/service/parametro.service';
 import { TipoParametro } from 'app/shared/models/tipo-parametro.model';
 import { Parametro } from 'app/shared/models/parametro.model';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 interface DialogData {
   id: number,
@@ -57,7 +58,8 @@ export class ModalEspecieCubicacionComponent implements OnInit {
       cantidad: null,
       redondeo: null
   }
-
+  parametroResponse: ParametroResponse = new ParametroResponse();
+  
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     public dialogRef: MatDialogRef<ModalEspecieCubicacionComponent>,
@@ -73,6 +75,9 @@ export class ModalEspecieCubicacionComponent implements OnInit {
     this.tittleCubicacion = 'Hoja de cubicación de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' +this.txCantidadProducto+' piezas';
     this.cubicacionResponse.pageNumber = 1;
     this.cubicacionResponse.pageSize = 10;
+
+    this.parametroResponse.pageNumber = 1;
+    this.parametroResponse.pageSize = 1000;
   }
 
   ngOnInit(): void {
@@ -89,8 +94,10 @@ export class ModalEspecieCubicacionComponent implements OnInit {
   }
 
   getSettingDecimal(){
-    this._parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
-        this.listSettings = response;
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.prefijoDecimal;
+    this._parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+        this.listSettings = response.data;
         if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
             this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
             this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];

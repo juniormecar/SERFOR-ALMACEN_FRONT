@@ -43,6 +43,7 @@ import { ModalPasComponent } from './modal/modal-pas/modal-pas.component';
 import { RecursoPasResponse } from 'app/shared/models/response/recurso-pas-response';
 //import {default as _rollupMoment} from 'moment';
 import * as moment from 'moment';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 //const moment = _rollupMoment || _moment;
 
 interface General {
@@ -70,7 +71,7 @@ export class RegistroRecursoComponent implements OnInit {
     { value: 'PLANCONSO', viewValue: 'Plan de Manejo consolidado' },
     { value: 'OTRO', viewValue: 'Otros' }
   ];
-
+  parametroResponse: ParametroResponse = new ParametroResponse();
   listTipoDocumento: Parametro[] = [];
   listTipoProducto: Parametro[] = [];
   listTipoInfraccion: Parametro[] = [];
@@ -257,6 +258,8 @@ export class RegistroRecursoComponent implements OnInit {
     this.cubicacionResponse.pageNumber = 1;
     this.cubicacionResponse.pageSize = 10;
 
+    this.parametroResponse.pageNumber = 1;
+    this.parametroResponse.pageSize = 1000;
 
     this.dataRecurso = window.history.state.data;
     this.idRecurso = this.activaRoute.snapshot.paramMap.get('id');
@@ -1303,91 +1306,150 @@ export class RegistroRecursoComponent implements OnInit {
 
 
   searchTipoDocumento() {
-    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
-      this.listTipoDocumento = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoDocumento;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoDocumento=response.data;
+    })
   }
 
   searchTipoInfraccion() {
-    this.parametroService.getParametroSearch(this.tipoInfraccion).subscribe((response: Parametro[]) => {
-      this.listTipoInfraccion = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoInfraccion;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoInfraccion=response.data;
+    })
   }
 
   searchTipoSancion() {
-    this.parametroService.getParametroSearch(this.tipoSancion).subscribe((response: Parametro[]) => {
-      this.listTipoSancion = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoSancion;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoSancion=response.data;
+    })
   }
 
   searchTipoProducto() {
-    this.parametroService.getParametroSearch(this.tipoProducto).subscribe((response: Parametro[]) => {
-      this.listTipoProducto = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoProducto;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoProducto=response.data;
+    })
   }
 
   searchTipoProductoAcerrada() {
-    this.parametroService.getParametroSearch(this.tipoProductoAcerrada).subscribe((response: Parametro[]) => {
-      this.listTipoProductoAcerrada = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoProductoAcerrada;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoProductoAcerrada=response.data;
+    })
   }
 
   searchTipoProductoRolliza() {
-    this.parametroService.getParametroSearch(this.tipoProductoRolliza).subscribe((response: Parametro[]) => {
-      this.listTipoProductoRolliza = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoProductoRolliza;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoProductoRolliza=response.data;
+    })
   }
+
 
   // @ts-ignore
   dataArray(tipoProducto): (any)[] {
     if (tipoProducto === 'ACE') {
-      this.parametroService.getParametroSearch(this.tipoProductoAcerrada).subscribe((response: Parametro[]) => {
-        return this.listTipoProductoAcerrada = response;
+      let parametroRequest:Parametro = new Parametro;  
+      parametroRequest.prefijo = this.tipoProductoAcerrada;
+      this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+        this.parametroResponse =response;
+        return this.listTipoProductoAcerrada = response.data;
       });
+
     } else if (tipoProducto === 'ROLL') {
-      this.parametroService.getParametroSearch(this.tipoProductoRolliza).subscribe((response: Parametro[]) => {
-        return this.listTipoProductoAcerrada = response;
+      let parametroRequest:Parametro = new Parametro;  
+      parametroRequest.prefijo = this.tipoProductoRolliza;
+      this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+        this.parametroResponse =response;
+        return this.listTipoProductoAcerrada = response.data;
       });
     }
   }
 
+  // searchPresentacionTro() {
+  //   this.parametroService.getParametroSearch(this.presentacionMaderable).subscribe((response: Parametro[]) => {
+  //     this.listTipoPresMadTro = response;
+  //     this.listTipoPresMadTro = this.listTipoPresMadTro.filter(item => item.codigo === 'TIPOPREMADTRO');
+  //   });
+  // }
+
   searchPresentacionTro() {
-    this.parametroService.getParametroSearch(this.presentacionMaderable).subscribe((response: Parametro[]) => {
-      this.listTipoPresMadTro = response;
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.presentacionMaderable;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoPresMadTro=response.data;
       this.listTipoPresMadTro = this.listTipoPresMadTro.filter(item => item.codigo === 'TIPOPREMADTRO');
-    });
+    })
   }
 
   searchPresentacionPie() {
-    this.parametroService.getParametroSearch(this.presentacionMaderable).subscribe((response: Parametro[]) => {
-      this.listTipoPresMadPie = response;
-      this.listTipoPresMadPie = this.listTipoPresMadPie.filter(item => item.codigo === 'TIPOPREMADPIE');
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.presentacionMaderable;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoPresMadPie=response.data;
+      this.listTipoPresMadPie = this.listTipoPresMadTro.filter(item => item.codigo === 'TIPOPREMADPIE');
+    })
   }
+
+  // searchPresentacionPie() {
+  //   this.parametroService.getParametroSearch(this.presentacionMaderable).subscribe((response: Parametro[]) => {
+  //     this.listTipoPresMadPie = response;
+  //     this.listTipoPresMadPie = this.listTipoPresMadPie.filter(item => item.codigo === 'TIPOPREMADPIE');
+  //   });
+  // }
+
+  
 
   searchPresentacionNoMad() {
-    this.parametroService.getParametroSearch(this.presentacionNOMaderable).subscribe((response: Parametro[]) => {
-      this.listTipoPresNoMad = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.presentacionNOMaderable;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoPresNoMad=response.data;
+    })
   }
 
-
   searchTipoProductoCata() {
-    this.parametroService.getParametroSearch(this.tipoProductoCata).subscribe((response: Parametro[]) => {
-      this.listTipoProductoCata = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoProductoCata;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoProductoCata=response.data;
+    })
   }
 
   searchUnidadMedida() {
-    this.parametroService.getParametroSearch(this.unidadMedida).subscribe((response: Parametro[]) => {
-      this.listUnidadMedida = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.unidadMedida;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listUnidadMedida=response.data;
+    })
   }
 
   searchTipoIngreso() {
-    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
-      this.listTipoIngreso = response;
-    });
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.tipoIngreso;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+      this.parametroResponse =response;
+      this.listTipoIngreso=response.data;
+    })
   }
 
   async searchAlmacen() {
@@ -1758,9 +1820,13 @@ export class RegistroRecursoComponent implements OnInit {
     }
     )
   }
+
+
   getSettingDecimal(){
-    this._parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
-        this.listSettings = response;
+    let parametroRequest:Parametro = new Parametro;  
+    parametroRequest.prefijo = this.prefijoDecimal;
+    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
+        this.listSettings = response.data;
         if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
             this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
             this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];
