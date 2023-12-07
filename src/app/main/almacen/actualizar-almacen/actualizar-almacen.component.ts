@@ -64,12 +64,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   recursoResponseNoMad: BandejaRecursoResponse = new BandejaRecursoResponse();
   recursoResponseMad: BandejaRecursoResponse = new BandejaRecursoResponse();
 
-  dataSourceMadSeparado = new MatTableDataSource<Recurso>([]);  
-  dataSourceNoMadSeparado = new MatTableDataSource<Recurso>([]);  
-  dataSourceFaunaSeparado = new MatTableDataSource<Recurso>([]);  
-
   parametroResponse: ParametroResponse = new ParametroResponse();
-
 
   inputRegistro: FormGroup;
   inputProductos: FormGroup;
@@ -393,8 +388,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
-        let datafiltradaSeparado = response.data;
-
         this.totalRecordFauna = response.totalRecords;
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
@@ -475,7 +468,6 @@ export class ActualizarAlmacenComponent implements OnInit {
           
         })
         //console.log("lista ",lista);
-        this.dataSourceFaunaSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
         this.dataSourceFaunaFilter = new MatTableDataSource<Recurso>(lista);
         this.listFilterTotalFauna(this.dataSourceFaunaFilter.data);
         //this.calculateTotal(this.dataSource.data);
@@ -488,8 +480,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber, this.recursoResponseNoMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-
-        let datafiltradaSeparado = response.data;
 
         this.totalRecordNoMad = response.totalRecords;
         let datafiltrada = response.data.filter( 
@@ -571,7 +561,6 @@ export class ActualizarAlmacenComponent implements OnInit {
           }
           
         })
-        this.dataSourceNoMadSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
         //console.log("lista ",lista);
         this.dataSourceNoMadFilter = new MatTableDataSource<Recurso>(lista);
         this.listFilterTotalNoMad(this.dataSourceNoMadFilter.data);
@@ -585,9 +574,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'MAD',null,
     null,null,this.recursoResponseMad.pageNumber, this.recursoResponseMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-
-        let datafiltradaSeparado = response.data;
-        console.log('datafiltradaSeparado',datafiltradaSeparado);
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
         );
@@ -672,7 +658,6 @@ export class ActualizarAlmacenComponent implements OnInit {
         })
         //console.log("lista ",lista);
         this.dataSourceMadFilter = new MatTableDataSource<Recurso>(lista);
-        this.dataSourceMadSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
         this.listFilterTotalMad(this.dataSourceMadFilter.data);
         //this.calculateTotal(this.dataSource.data);
         //this.listFilterTotal();
@@ -1518,11 +1503,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   btnBuscarRecursos(type: string) {
     let  listadoFauna: Recurso[] = [];
     let  listadoNoMad: Recurso[] = [];
-    let  listadoMad: Recurso[] = [];
-
-    let  listadoMadSeparado: Recurso[] = [];
-    let  listadoNoMadSeparado: Recurso[] = [];
-    let  listadoFaunaSeparado: Recurso[] = [];
+    let  listadoMad: Recurso[] = [];  
     
     this.queryFauna = this.inputProductos.get('nombreProducto').value;
     this.nroGuia = this.inputProductos.get('numeroGuia').value;
@@ -1531,11 +1512,7 @@ export class ActualizarAlmacenComponent implements OnInit {
 
     listadoMad = this.dataSourceMadFilter.data;
     listadoFauna = this.dataSourceFaunaFilter.data;
-    listadoNoMad = this.dataSourceNoMadFilter.data;
-
-    listadoMadSeparado = this.dataSourceMadSeparado.data;
-    listadoNoMadSeparado = this.dataSourceNoMadSeparado.data;
-    listadoFaunaSeparado = this.dataSourceFaunaSeparado.data;
+    listadoNoMad = this.dataSourceNoMadFilter.data; 
     
 
     if((this.queryFauna == null || this.queryFauna == '') && (this.nroGuia == null || this.nroGuia == '') && (this.nroActa == null || this.nroActa == '') 
@@ -1556,7 +1533,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoFauna = listadoFauna.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoFaunaSeparado = listadoFaunaSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoFauna = listadoFauna.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       } 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== ''){
         listadoFauna = listadoFauna.filter( (c: any) => c.disponibilidadActa.includes(this.tipoIngresoForm));
@@ -1579,7 +1556,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoNoMad = listadoNoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoNoMadSeparado = listadoNoMadSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoNoMad = listadoNoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       }
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
         listadoNoMad = listadoNoMad.filter( (c: any) => c.tipoIngreso===this.tipoIngresoForm);
@@ -1599,7 +1576,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoMad = listadoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){        
-        listadoMadSeparado = listadoMadSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));  
+        listadoMad = listadoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));  
       }
 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
@@ -1619,20 +1596,9 @@ export class ActualizarAlmacenComponent implements OnInit {
       this.listFilterTotalFauna(listadoNoMad);
     }else{
 
-      
-      
-      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== '')
-      {
-        this.listFilterTotalMad(listadoMadSeparado);
-        this.listFilterTotalNoMad(listadoNoMadSeparado);
-        this.listFilterTotalFauna(listadoFaunaSeparado);
-      }
-      else{
-        this.listFilterTotalMad(listadoMad);
-        this.listFilterTotalNoMad(listadoNoMad);
-        this.listFilterTotalFauna(listadoFauna);
-      }
-      
+      this.listFilterTotalFauna(listadoFauna);
+      this.listFilterTotalMad(listadoMad);
+      this.listFilterTotalNoMad(listadoNoMad);
       
     }
 
