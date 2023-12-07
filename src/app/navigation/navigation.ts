@@ -103,13 +103,13 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id   : '3',
-                        title: 'Bandeja de Tipo Parametro',
+                        title: 'Bandeja de Tipo Parámetro',
                         type : 'item',
                         url  : '/bandeja-tipoParametro'
                     },
                     {
                         id   : '4',
-                        title: 'Bandeja de Parametro',
+                        title: 'Bandeja de Parámetro',
                         type : 'item',
                         url  : '/bandeja-parametro'
                     }
