@@ -38,9 +38,6 @@ import { ModalAlmacenEncargadosComponent } from 'app/main/almacen/registro-almac
 import { DeleteAlmacenResponsableResponse } from 'app/shared/models/response/delete-almacen-responsable-response';
 import { Decimal } from 'app/shared/models/settings.model';
 import { FaunaSalidaComponent } from 'app/main/transferencia/fauna-salida/fauna-salida.component';
-import { AtfResponse } from 'app/shared/models/response/atf-response';
-import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 @Component({
@@ -63,14 +60,6 @@ export class ActualizarAlmacenComponent implements OnInit {
   recursoResponseFauna: BandejaRecursoResponse = new BandejaRecursoResponse();
   recursoResponseNoMad: BandejaRecursoResponse = new BandejaRecursoResponse();
   recursoResponseMad: BandejaRecursoResponse = new BandejaRecursoResponse();
-
-  dataSourceMadSeparado = new MatTableDataSource<Recurso>([]);  
-  dataSourceNoMadSeparado = new MatTableDataSource<Recurso>([]);  
-  dataSourceFaunaSeparado = new MatTableDataSource<Recurso>([]);  
-
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
-
   inputRegistro: FormGroup;
   inputProductos: FormGroup;
   course: ActualizarStep[] = ActualizarListSteps;
@@ -136,9 +125,6 @@ export class ActualizarAlmacenComponent implements OnInit {
 
   typeRecurso: string = '';
 
-  atfResponse: AtfResponse = new AtfResponse();
-  puestoControlRequest:PuestoControl = new PuestoControl; 
-  puestoControlResponse: PuestoControlResponse = new PuestoControlResponse();
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private _recursoService: RecursoService,
@@ -169,12 +155,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.recursoResponseMad.pageSize = 3000;
     this.almacenResponse.pageNumber = 1;
     this.almacenResponse.pageSize = 3000;
-    this.atfResponse.pageNumber = 1;
-    this.atfResponse.pageSize = 100;
-    this.puestoControlResponse.pageNumber = 1;
-    this.puestoControlResponse.pageSize = 100;
-    this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -294,67 +274,37 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.titleStep = this.course[this.currentStep].title
   }
 
-  // searchATF() {
-  //   this.atfService.getATFSearch()
-  //     .pipe(finalize(() => this.searchPuestoControl()))
-  //     .subscribe((response: ATF[]) => {
-  //       this.listATF = response;
-  //       if (this.dataAlmacen !== undefined) {
-  //         this.inputRegistro.get('numeroATF').patchValue(Number(this.dataRecurso.txNumeroATF));
-  //       }
-  //     });
-  // }
-
   searchATF() {
-    let atfRequest:ATF = new ATF;    
-    this.atfService.getATFSearch(atfRequest,this.atfResponse.pageNumber,this.atfResponse.pageSize)
-    .pipe(finalize(() => this.searchPuestoControl()))
-    .subscribe((response:AtfResponse)=>{
-    this.atfResponse =response;
-    this.listATF=response.data;
+    this.atfService.getATFSearch()
+      .pipe(finalize(() => this.searchPuestoControl()))
+      .subscribe((response: ATF[]) => {
+        this.listATF = response;
         if (this.dataAlmacen !== undefined) {
           this.inputRegistro.get('numeroATF').patchValue(Number(this.dataRecurso.txNumeroATF));
         }
-      })
+      });
   }
-
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputRegistro.get('numeroATF').value)
-  //     .pipe(finalize(() => this.getValores()))
-  //     .subscribe((response: PuestoControl[]) => {
-  //       this.listPuestoControl = response;
-  //     });
-  // }
 
   searchPuestoControl() {
-    this.puestoControlRequest.idAtf = this.inputRegistro.get('numeroATF').value;    
-    this.puestoControlService.getPuestoControlSearch(this.puestoControlRequest,this.puestoControlResponse.pageNumber,this.puestoControlResponse.pageSize).pipe(finalize(() => this.getValores())).subscribe((response: PuestoControlResponse) => {
-      this.puestoControlResponse = response;
-      this.listPuestoControl= response.data;
-    });
+    this.puestoControlService.getPuestoControlSearch(this.inputRegistro.get('numeroATF').value)
+      .pipe(finalize(() => this.getValores()))
+      .subscribe((response: PuestoControl[]) => {
+        this.listPuestoControl = response;
+      });
   }
 
- 
-
   searchTipoAlmacen() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoAlmacen;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoAlmacen=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoAlmacen)
+      .subscribe((response: Parametro[]) => {
+        this.listTipoAlmacen = response;
+      });
   }
 
   searchTipoDocumento() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoDocumento;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoDocumento=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
+      this.listTipoDocumento = response;
+    });
   }
-
-  
 
   getValores() {
     if (this.dataAlmacen !== undefined) {
@@ -392,8 +342,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'FA',null,
     null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-
-        let datafiltradaSeparado = response.data;
 
         this.totalRecordFauna = response.totalRecords;
         let datafiltrada = response.data.filter( 
@@ -475,7 +423,6 @@ export class ActualizarAlmacenComponent implements OnInit {
           
         })
         //console.log("lista ",lista);
-        this.dataSourceFaunaSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
         this.dataSourceFaunaFilter = new MatTableDataSource<Recurso>(lista);
         this.listFilterTotalFauna(this.dataSourceFaunaFilter.data);
         //this.calculateTotal(this.dataSource.data);
@@ -488,8 +435,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber, this.recursoResponseNoMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-
-        let datafiltradaSeparado = response.data;
 
         this.totalRecordNoMad = response.totalRecords;
         let datafiltrada = response.data.filter( 
@@ -571,7 +516,6 @@ export class ActualizarAlmacenComponent implements OnInit {
           }
           
         })
-        this.dataSourceNoMadSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
         //console.log("lista ",lista);
         this.dataSourceNoMadFilter = new MatTableDataSource<Recurso>(lista);
         this.listFilterTotalNoMad(this.dataSourceNoMadFilter.data);
@@ -586,8 +530,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     null,null,this.recursoResponseMad.pageNumber, this.recursoResponseMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
-        let datafiltradaSeparado = response.data;
-        console.log('datafiltradaSeparado',datafiltradaSeparado);
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
         );
@@ -672,12 +614,22 @@ export class ActualizarAlmacenComponent implements OnInit {
         })
         //console.log("lista ",lista);
         this.dataSourceMadFilter = new MatTableDataSource<Recurso>(lista);
-        this.dataSourceMadSeparado = new MatTableDataSource<Recurso>(datafiltradaSeparado);
+        
         this.listFilterTotalMad(this.dataSourceMadFilter.data);
         //this.calculateTotal(this.dataSource.data);
         //this.listFilterTotal();
       })
   }
+
+  /*calculateTotal(datasource: any) {
+    let listProducto = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'FA');
+    let listProductoNoMad = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'NOMAD');
+    let listProductoMad = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'MAD');
+
+   // this.getListProductosFauna(listProducto);
+   // this.getListProductosNoMad(listProductoNoMad);
+    this.getListProductosMad(listProductoMad);
+   }*/
 
   getListProductosFauna(listProducto: any, totalRecords: any){
     this.totalToneladas = 0;
@@ -853,12 +805,6 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,null,null,
       null,null,this.recursoResponse.pageNumber, this.recursoResponse.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-
-
-        let datafiltradaSeparado = response.data;
-        console.log('datafiltradaSeparadoJUNIOOOOOOOOOR',datafiltradaSeparado);
-
-
         //////console.log("response.data", response.data);
         let contador:number=0;
         response.data.forEach((item:any) => {
@@ -887,14 +833,11 @@ export class ActualizarAlmacenComponent implements OnInit {
       })
   }
 
-  
   searchUnidadMedida() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.unidadMedida;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listUnidadMedida=response.data;
-    })
+    this.parametroService.getParametroSearch(this.unidadMedida).subscribe((response: Parametro[]) => {
+      this.listUnidadMedida = response;
+      //////console.log("listUnidadMedida",this.listUnidadMedida)
+    });
   }
 
   pageDataSource(e: PageEvent, type: string): PageEvent {
@@ -1448,6 +1391,17 @@ export class ActualizarAlmacenComponent implements OnInit {
     
   }
 
+  /*listFilterTotal() {
+    this.productosResponse.data = this.dataSourceFilter.data;
+    this.productosResponse.totalRecords = this.dataSourceFilter.data.length;
+    //let actual = this.especieResponse.page * this.especieResponse.size
+    this.productosResponse.data = this.productosResponse.data.slice(
+      this.productosResponse.pageNumber,
+      this.productosResponse.pageNumber + this.productosResponse.pageSize
+    );
+    //this.dataSource = this.productosResponse.data;
+    this.calculateTotal(this.productosResponse.data);
+  }*/
 
   listFilterTotalFauna(dataSourceFaunaFilter: any) {
     console.log("dataSourceFaunaFilter ",dataSourceFaunaFilter)
@@ -1506,7 +1460,47 @@ export class ActualizarAlmacenComponent implements OnInit {
     //this.dataSource = this.productosResponse.data;
     ////console.log("actual",actual)
     this.getListProductosMad(this.productosResponse.data);
-  } 
+  }
+
+  /*btnBuscarRecursos() {
+    let  listado: Recurso[] = [];
+    this.queryFauna = this.inputProductos.get('nombreProducto').value;
+    this.nroGuia = this.inputProductos.get('numeroGuia').value;
+    this.nroActa = this.inputProductos.get('numeroActa').value;
+
+    if((this.queryFauna == null || this.queryFauna == '') && (this.nroGuia == null || this.nroGuia == '') && (this.nroActa == null || this.nroActa == '') ){
+      listado = this.dataSourceFilter.data;
+      //////console.log("validación cero")
+    } else {
+
+      if(this.queryFauna !== null || this.queryFauna !== ''){
+        //////console.log("validación uno")
+        listado = this.dataSourceFilter.data.filter( (c: any) => c.nombreComun.toUpperCase().includes(this.queryFauna.toUpperCase())
+      || c.nombreCientifico.toUpperCase().includes(this.queryFauna.toUpperCase()));
+      
+      } 
+      if(this.nroGuia !== null && this.nroGuia !== undefined && this.nroGuia !== ''){
+        listado = this.dataSourceFilter.data.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
+        
+      }       
+      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
+        listado = this.dataSourceFilter.data.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        
+      }   
+    }
+
+    //////console.log("listado",listado);
+    this.productosResponse.data = listado;
+    this.productosResponse.totalRecords = listado.length;
+    if(this.productosResponse.totalRecords > 10){
+      this.productosResponse.data = this.productosResponse.data.slice(
+        this.productosResponse.pageNumber,
+        this.productosResponse.pageNumber + this.productosResponse.pageSize
+      );
+    }
+    //////console.log("this.productosResponse.data",this.productosResponse.data);
+    this.calculateTotal(this.productosResponse.data);
+  }*/
 
   btnBuscar(){
     this.productosResponse.pageNumber = 0;
@@ -1519,24 +1513,15 @@ export class ActualizarAlmacenComponent implements OnInit {
     let  listadoFauna: Recurso[] = [];
     let  listadoNoMad: Recurso[] = [];
     let  listadoMad: Recurso[] = [];
-
-    let  listadoMadSeparado: Recurso[] = [];
-    let  listadoNoMadSeparado: Recurso[] = [];
-    let  listadoFaunaSeparado: Recurso[] = [];
     
     this.queryFauna = this.inputProductos.get('nombreProducto').value;
     this.nroGuia = this.inputProductos.get('numeroGuia').value;
     this.nroActa = this.inputProductos.get('numeroActa').value;
     this.tipoIngresoForm = this.inputProductos.get('tipoIngresoForm').value;
-
     listadoMad = this.dataSourceMadFilter.data;
     listadoFauna = this.dataSourceFaunaFilter.data;
     listadoNoMad = this.dataSourceNoMadFilter.data;
-
-    listadoMadSeparado = this.dataSourceMadSeparado.data;
-    listadoNoMadSeparado = this.dataSourceNoMadSeparado.data;
-    listadoFaunaSeparado = this.dataSourceFaunaSeparado.data;
-    
+    ////console.log("this.tipoIngresoForm-btnBuscarRecursos", this.tipoIngresoForm)
 
     if((this.queryFauna == null || this.queryFauna == '') && (this.nroGuia == null || this.nroGuia == '') && (this.nroActa == null || this.nroActa == '') 
         && (this.tipoIngresoForm == null || this.tipoIngresoForm == '') ){
@@ -1556,7 +1541,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoFauna = listadoFauna.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoFaunaSeparado = listadoFaunaSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoFauna = listadoFauna.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       } 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== ''){
         listadoFauna = listadoFauna.filter( (c: any) => c.disponibilidadActa.includes(this.tipoIngresoForm));
@@ -1579,7 +1564,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoNoMad = listadoNoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoNoMadSeparado = listadoNoMadSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoNoMad = listadoNoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       }
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
         listadoNoMad = listadoNoMad.filter( (c: any) => c.tipoIngreso===this.tipoIngresoForm);
@@ -1598,8 +1583,8 @@ export class ActualizarAlmacenComponent implements OnInit {
       if(this.nroGuia !== null && this.nroGuia !== undefined && this.nroGuia !== ''){
         listadoMad = listadoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
-      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){        
-        listadoMadSeparado = listadoMadSeparado.filter( (c: any) => c.numeroActa.includes(this.nroActa));  
+      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
+        listadoMad = listadoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       }
 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
@@ -1618,43 +1603,22 @@ export class ActualizarAlmacenComponent implements OnInit {
     }else if( type == 'F'){
       this.listFilterTotalFauna(listadoNoMad);
     }else{
-
-      
-      
-      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== '')
-      {
-        this.listFilterTotalMad(listadoMadSeparado);
-        this.listFilterTotalNoMad(listadoNoMadSeparado);
-        this.listFilterTotalFauna(listadoFaunaSeparado);
-      }
-      else{
-        this.listFilterTotalMad(listadoMad);
-        this.listFilterTotalNoMad(listadoNoMad);
-        this.listFilterTotalFauna(listadoFauna);
-      }
-      
-      
+      this.listFilterTotalFauna(listadoFauna);
+      this.listFilterTotalMad(listadoMad);
+      this.listFilterTotalNoMad(listadoNoMad);
     }
 
   }
 
-  
   searchTipoIngreso() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoIngreso;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoIngreso=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
+      this.listTipoIngreso = response;
+    });
   }
-
   searchTipo() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipo;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipo=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipo).subscribe((response: Parametro[]) => {
+      this.listTipo = response;
+    });
   }
 
 }

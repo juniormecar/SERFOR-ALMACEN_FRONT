@@ -24,9 +24,6 @@ import * as XLSX from 'xlsx';
 import { ParametroService } from 'app/service/parametro.service';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Constants } from 'app/shared/models/util/constants';
-import { AtfResponse } from 'app/shared/models/response/atf-response';
-import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 @Component({
@@ -40,8 +37,6 @@ export class BandejaInventarioComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   displayedColumns: string[] = ['position','Tipo','disponibilidad', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','metroCubico'];
   inputBandeja: FormGroup;
   resultsLength = 0;
@@ -63,9 +58,6 @@ export class BandejaInventarioComponent implements OnInit {
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
   tipoEspecie: string = Constants.TIPO_PRODUCTO_CATA;
   listTipoEspecie: Parametro[] = [];
-  atfResponse: AtfResponse = new AtfResponse();
-  puestoControlRequest:PuestoControl = new PuestoControl; 
-  puestoControlResponse: PuestoControlResponse = new PuestoControlResponse();
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -79,8 +71,6 @@ export class BandejaInventarioComponent implements OnInit {
   ) {
     this.recursoResponse.pageNumber = 1;
     this.recursoResponse.pageSize = 10;
-    this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -98,11 +88,7 @@ export class BandejaInventarioComponent implements OnInit {
       }
     };
     this.almacenResponse.pageNumber = 1;
-    this.almacenResponse.pageSize = 1000;
-    this.atfResponse.pageNumber = 1;
-    this.atfResponse.pageSize = 100;
-    this.puestoControlResponse.pageNumber = 1;
-    this.puestoControlResponse.pageSize = 100;
+     this.almacenResponse.pageSize = 1000;
     this.inputBandeja = this._formBuilder.group({
       nombreEspecie: [''],
       numeroATF: [''],
@@ -128,34 +114,22 @@ export class BandejaInventarioComponent implements OnInit {
    this.searchTipoEspecie();
   }
 
- 
   searchTipoIngreso() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoIngreso;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoIngreso=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
+      this.listTipoIngreso = response;
+    });
   }
   searchDisponibilidadActa() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.disponibilidadActa;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listDisponibilidadActa=response.data;
-    })
+    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
+      this.listDisponibilidadActa = response;
+    });
   }
-
   searchTipoEspecie() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoEspecie;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoEspecie=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoEspecie).subscribe((response: Parametro[]) => {
+      this.listTipoEspecie = response;
+    });
   }
 
-  
   async Search() {
     this.recursoResponse.pageNumber = 1;
     this.recursoResponse.pageSize = 10;
@@ -209,32 +183,16 @@ export class BandejaInventarioComponent implements OnInit {
     })
   }
 
-  // searchATF() {
-  //   this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-  //     this.listATF = response;
-  //   });
-  // }
-
   searchATF() {
-    let atfRequest:ATF = new ATF;  
-    this.atfService.getATFSearch(atfRequest,this.atfResponse.pageNumber,this.atfResponse.pageSize).subscribe((response:AtfResponse)=>{
-      this.atfResponse =response;
-      this.listATF=response.data;
-    })
+    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
+      this.listATF = response;
+    });
   }
 
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputBandeja.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-  //     this.listPuestoControl= response;
-  //     this.listAlmacen = [];
-  //   });
-  // }
-  
   searchPuestoControl() {
-    this.puestoControlRequest.idAtf = this.inputBandeja.get('numeroATF').value;    
-    this.puestoControlService.getPuestoControlSearch(this.puestoControlRequest,this.puestoControlResponse.pageNumber,this.puestoControlResponse.pageSize).subscribe((response: PuestoControlResponse) => {
-      this.puestoControlResponse = response;
-      this.listPuestoControl= response.data;
+    this.puestoControlService.getPuestoControlSearch(this.inputBandeja.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
+      this.listPuestoControl= response;
+      this.listAlmacen = [];
     });
   }
  

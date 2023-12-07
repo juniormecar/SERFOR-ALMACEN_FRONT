@@ -13,7 +13,6 @@ import { Parametro } from 'app/shared/models/parametro.model';
 import { Constants } from 'app/shared/models/util/constants';
 import { FaunaDetalleResponse } from 'app/shared/models/response/fauna-detalle-response';
 import { FaunaDetalleService } from 'app/service/fauna-detalle.service';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 interface DialogData {
   id: number,
@@ -58,7 +57,6 @@ export class ModalFaunaDetalleComponent implements OnInit {
       cantidad: null,
       redondeo: null
   }
-  parametroResponse: ParametroResponse = new ParametroResponse();
   edadEspecie: string = Constants.EDAD_ESPECIE;
   estadoEspecie: string = Constants.ESTADO_ESPECIE;
 
@@ -77,9 +75,6 @@ export class ModalFaunaDetalleComponent implements OnInit {
     this.tittleFaunaDetalle = 'Detalle de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' + '/ ' + this.txCantidadProducto+' piezas';
     this.faunaDetalleResponse.pageNumber = 1;
     this.faunaDetalleResponse.pageSize = 10;
-
-    this.parametroResponse.pageNumber = 1;
-    this.parametroResponse.pageSize = 1000;
   }
 
   ngOnInit(): void {    
@@ -90,32 +85,21 @@ export class ModalFaunaDetalleComponent implements OnInit {
     this.searchEstadoEspecie();
   }
 
- 
   searchEdadEspecie() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.edadEspecie;
-    this._parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listEdadEspecie=response.data;
-    })
+    this._parametroService.getParametroSearch(this.edadEspecie).subscribe((response: Parametro[]) => {
+      this.listEdadEspecie = response;
+    });
   }
 
   searchEstadoEspecie() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.estadoEspecie;
-    this._parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listEstadoEspecie=response.data;
-    })
+    this._parametroService.getParametroSearch(this.estadoEspecie).subscribe((response: Parametro[]) => {
+      this.listEstadoEspecie = response;
+    });
   }
 
-  
-
   getSettingDecimal(){
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.prefijoDecimal;
-    this._parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-        this.listSettings = response.data;
+    this._parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
+        this.listSettings = response;
         if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
             this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
             this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];

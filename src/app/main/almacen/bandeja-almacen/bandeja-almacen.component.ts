@@ -22,8 +22,6 @@ import { BandejaRecursoResponse } from 'app/shared/models/response/bandeja-recur
 import { RecursoService } from 'app/service/recurso.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActionMessageComponent } from 'app/main/popups-common/action-message/action-message.component';
-import { AtfResponse } from 'app/shared/models/response/atf-response';
-import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
 
 
 @Component({
@@ -44,9 +42,6 @@ export class BandejaAlmacenComponent implements OnInit {
   inputBandeja: FormGroup;  
   listATF: ATF[] = [];
   listPuestoControl: PuestoControl[] = [];
-  atfResponse: AtfResponse = new AtfResponse();
-  puestoControlRequest:PuestoControl = new PuestoControl; 
-  puestoControlResponse: PuestoControlResponse = new PuestoControlResponse();
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -60,10 +55,6 @@ export class BandejaAlmacenComponent implements OnInit {
     ) {
       this.almacenResponse.pageNumber = 1;
       this.almacenResponse.pageSize = 10;
-      this.atfResponse.pageNumber = 1;
-      this.atfResponse.pageSize = 100;
-      this.puestoControlResponse.pageNumber = 1;
-      this.puestoControlResponse.pageSize = 100;
  this._fuseConfigService.config = {
        layout: {
          navbar: {
@@ -101,31 +92,15 @@ export class BandejaAlmacenComponent implements OnInit {
       this._router.navigate(['registro-almacen']);       
   }
 
-  // searchATF() {
-  //   this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-  //     this.listATF = response;
-  //   });
-  // }
-
   searchATF() {
-    let atfRequest:ATF = new ATF;  
-    this.atfService.getATFSearch(atfRequest,this.atfResponse.pageNumber,this.atfResponse.pageSize).subscribe((response:AtfResponse)=>{
-      this.atfResponse =response;
-      this.listATF=response.data;
-    })
+    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
+      this.listATF = response;
+    });
   }
 
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputBandeja.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-  //     this.listPuestoControl= response;
-  //   });
-  // }
-
   searchPuestoControl() {
-    this.puestoControlRequest.idAtf = this.inputBandeja.get('numeroATF').value;    
-    this.puestoControlService.getPuestoControlSearch(this.puestoControlRequest,this.puestoControlResponse.pageNumber,this.puestoControlResponse.pageSize).subscribe((response: PuestoControlResponse) => {
-      this.puestoControlResponse = response;
-      this.listPuestoControl= response.data;
+    this.puestoControlService.getPuestoControlSearch(this.inputBandeja.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
+      this.listPuestoControl= response;
     });
   }
 

@@ -19,34 +19,23 @@
         </button>
 
     </div>
-    
 
 </div>
 
-<div id="dosColumnas">
-    <div id="foto">       
-            <img class="avatar" src="assets/images/avatars/vincent.jpg">        
-    </div>
-<div id="datos">
-<div class="h3 username" style="color: white;"> {{usuario}}</div>
- <div class="h5 email mt-8" style="color: white;">{{correoUsuario}}</div>
-</div>
-
- </div>
 
 <div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
      fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" 
     >
-<!-- 
+
     <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" >
+
+        <div class="h3 username" style="color: white;">Usuario</div>
+        <div class="h5 email mt-8" style="color: white;">usuario@mail.com</div>
         <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
             <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
         </div>
-        <div class="h3 username" style="color: white;">Usuario</div>
-        <div class="h5 email mt-8" style="color: white;">usuario@mail.com</div>
-        
 
-    </div> -->
+    </div>
 
     <div class="navbar-content">
         <fuse-navigation class="material2" layout="vertical"></fuse-navigation>

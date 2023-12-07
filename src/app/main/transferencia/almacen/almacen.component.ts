@@ -17,9 +17,6 @@ import { AtfService } from 'app/service/atf.service';
 import { ATF } from 'app/shared/models/atf.model';
 import { PuestoControl } from 'app/shared/models/puesto-control.model';
 import { PuestoControlService } from 'app/service/puesto-control.service';
-import { AtfResponse } from 'app/shared/models/response/atf-response';
-import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 interface DialogData{
@@ -39,8 +36,6 @@ export class AlmacenComponent implements OnInit {
   dataSourceSearch: any[] = [];
   transferencia: any[] = [];
   recursoResponse: BandejaRecursoResponse = new BandejaRecursoResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   //displayedColumns: string[] = ['position', 'nombreCientifico', 'nombreComun', 'tipo','cantidad','descontar','unidadMedida','FlagAgregar'];
   inputTransferirAlmacen: FormGroup;
   listTipoDocumento: Parametro[] = [];
@@ -49,9 +44,6 @@ export class AlmacenComponent implements OnInit {
   lstAlmacen: any[]=[];// new MatTableDataSource<Almacen>([]);
   listATF: ATF[] = [];
   listPuestoControl: PuestoControl[] = [];
-  atfResponse: AtfResponse = new AtfResponse();
-  puestoControlRequest:PuestoControl = new PuestoControl; 
-  puestoControlResponse: PuestoControlResponse = new PuestoControlResponse();
   constructor(public _dialogRef: MatDialogRef<AlmacenComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -64,13 +56,6 @@ export class AlmacenComponent implements OnInit {
     private almacenService: AlmacenService) {
       this.recursoResponse.pageNumber = 1;
       this.recursoResponse.pageSize = 5;
-      this.atfResponse.pageNumber = 1;
-      this.atfResponse.pageSize = 100;
-      this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
-
-      this.puestoControlResponse.pageNumber = 1;
-      this.puestoControlResponse.pageSize = 100;
       this.inputTransferirAlmacen = this._formBuilder.group({
         numeroATF: ['', Validators.required],
         idPuntoControl: ['', Validators.required],
@@ -140,31 +125,15 @@ export class AlmacenComponent implements OnInit {
     return [...new Map(almacenesMap).values()];
   }
 
-  // searchATF() {
-  //   this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-  //     this.listATF = response;
-  //   });
-  // }
-
   searchATF() {
-    let atfRequest:ATF = new ATF;  
-    this.atfService.getATFSearch(atfRequest,this.atfResponse.pageNumber,this.atfResponse.pageSize).subscribe((response:AtfResponse)=>{
-      this.atfResponse =response;
-      this.listATF=response.data;
-    })
+    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
+      this.listATF = response;
+    });
   }
 
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputTransferirAlmacen.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-  //     this.listPuestoControl= response;
-  //   });
-  // }
-
   searchPuestoControl() {
-    this.puestoControlRequest.idAtf = this.inputTransferirAlmacen.get('numeroATF').value;    
-    this.puestoControlService.getPuestoControlSearch(this.puestoControlRequest,this.puestoControlResponse.pageNumber,this.puestoControlResponse.pageSize).subscribe((response: PuestoControlResponse) => {
-      this.puestoControlResponse = response;
-      this.listPuestoControl= response.data;
+    this.puestoControlService.getPuestoControlSearch(this.inputTransferirAlmacen.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
+      this.listPuestoControl= response;
     });
   }
 
@@ -221,15 +190,13 @@ export class AlmacenComponent implements OnInit {
       )
     }
   }
-  
-  searchTipoIngreso() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoDocumento;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoDocumento=response.data;
-    })
+
+  searchPuntoControl() {
+    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
+      this.listTipoDocumento = response;
+    });
   }
+
   close() {
     //console.log("cerrar");
     this._dialogRef.close(-1);

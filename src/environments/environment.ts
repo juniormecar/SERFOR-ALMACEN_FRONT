@@ -6,8 +6,8 @@ export const environment = {
     production: true,
     hmr       : false,
     urlProcesos: "http://localhost:8080",  // almacen
-    urlServiciosExternos: 'http://10.6.1.162/mcsniffsextserv-rest/',   // servicios externos
-    urlSeguridad: "https://qa.serfor.gob.pe/sgiseguridad/",   // seguridad
+    urlServiciosExternos: 'http://10.6.1.162/mcsniffsextserv-rest/',  // servicios externos
+    urlSeguridad: "https://qa.serfor.gob.pe/seguridad/",   // seguridad
     urlNewCoreCentral:"https://qa.serfor.gob.pe/corecentral/", // core central
     urlBaseImagen:"/almacen"//NO
 };

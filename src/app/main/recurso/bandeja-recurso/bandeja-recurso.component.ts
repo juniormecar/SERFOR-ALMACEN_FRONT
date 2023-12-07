@@ -17,7 +17,6 @@ import { DeleteRecursoResponse } from 'app/shared/models/response/delete-recurso
 import { Almacen } from 'app/shared/models/almacen.model';
 import { AlmacenService } from 'app/service/almacen.service';
 import { BandejaAlmacenResponse } from 'app/shared/models/response/bandeja-almacen-response';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 
@@ -39,7 +38,6 @@ export class BandejaRecursoComponent implements OnInit {
   inputBandeja: FormGroup;  
   resultsLength = 0;
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
 
   idRecurso: string;
   dataRecurso = new Recurso();
@@ -73,11 +71,6 @@ export class BandejaRecursoComponent implements OnInit {
      };
      this.almacenResponse.pageNumber = 1;
      this.almacenResponse.pageSize = 1000;
-
-     this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
-
-
     this.inputBandeja = this._formBuilder.group({
       numeroDocumento: [''],
       numeroActa: [''],
@@ -98,38 +91,16 @@ export class BandejaRecursoComponent implements OnInit {
     this.searchDisponibilidadActa();
   }
 
-  // searchTipoIngreso() {
-  //   this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
-  //     this.listTipoIngreso = response;
-  //   });
-  // }
-
   searchTipoIngreso() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoIngreso;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoIngreso=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
+      this.listTipoIngreso = response;
+    });
   }
-
-
-  // searchDisponibilidadActa() {
-  //   this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
-  //     this.listDisponibilidadActa = response;
-  //   });
-  // }
-
   searchDisponibilidadActa() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.disponibilidadActa;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listDisponibilidadActa=response.data;
-    })
+    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
+      this.listDisponibilidadActa = response;
+    });
   }
-
-
   async searchAlmacen() {
     this.dataSource = new MatTableDataSource<Recurso>([])
     let almacenRequest:Almacen = new Almacen;

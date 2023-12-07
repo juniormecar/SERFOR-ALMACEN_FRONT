@@ -5,7 +5,6 @@ export enum Constants{
     PUNTO_CONTROL = 'PCONTROL',
     TIPO_ALMACEN = 'TPOALMC',
     TIPO_INGRESO = 'TIPINGR',
-    PERIODO = 'PERIODO',
     TITLE_ACTA = 'Registro de Acta de Intervención',
     TIPO_PRODUCTO_CATA = 'TPRODING',
     PRODUCTO_MADERABLE ='MAD',
@@ -26,6 +25,5 @@ export enum Constants{
     DISPONIBLE = 'D',
     EDAD_ESPECIE = 'EDADE',
     ESTADO_ESPECIE = 'ESTADOE',
-    INTERVENCION = 'TIPINGRINTER',
-    TIPO_TRANSFERENCIA = 'TPTRANS'
+    INTERVENCION = 'TIPINGRINTER'
 }

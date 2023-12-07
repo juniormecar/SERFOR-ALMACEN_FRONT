@@ -90,7 +90,7 @@
                                     </ng-container>
                                 </mat-select>
                             </mat-form-field> 
-                            <button mat-mini-fab (click)="busquedaAvanzada()" 
+                            <button mat-mini-fab
                             style="background-color: #4a962c;">
                             <mat-icon>search</mat-icon>
                         </button>
@@ -99,7 +99,6 @@
                             
                         </div>
                     </div>
-                    
                             <!-- <br>
                             <br>
 
@@ -115,66 +114,33 @@
                             </div> -->
                             <br>
                             <br>
-                            
+
                             <div >
                                 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
-                                    <span class="text-primary-ir" floatLabel="always" fxFlex="20">Periodo</span>                                
+                                    <span class="text-primary-ir" floatLabel="always" fxFlex="20">Almacén</span>                                
                                 </div>                             
                                 
                                 <div fxLayout="row" fxLayoutAlign="space-between">
                                     <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
-                                    fxFlex="20">
-                                    <mat-select formControlName="periodo">
+                                    fxFlex="21">
+                                    <mat-select formControlName="almacen">
                                         <mat-option [value]="">
                                             Seleccione
                                         </mat-option>
-                                        <ng-container *ngFor="let item of listPeriodo">
-                                            <mat-option [value]="item.codigo">
-                                                {{item.valorPrimario}}
+                                        <ng-container *ngFor="let item of listAlmacen">
+                                            <mat-option [value]="item.nuIdAlmacen">
+                                                {{item.txNombreAlmacen}}
                                             </mat-option>
                                         </ng-container>
                                     </mat-select>
                                 </mat-form-field>                                
                                 </div>
-                               <br>
-                               <br>
-                               <div>
-                                <ngx-charts-bar-vertical-2d
-                            [view]="view"
-                            [scheme]="colorScheme"
-                            [results]="multi"
-                            
-                            [xAxis]="showXAxis"
-                            [yAxis]="showYAxis"
-                            [legend]="showLegend"
-                            [showXAxisLabel]="showXAxisLabel"
-                            [showYAxisLabel]="showYAxisLabel"
-                            [xAxisLabel]="xAxisLabel"
-                            
-                            [legendTitle]="legendTitle"
-                            (select)="onSelect($event)"
-                            (activate)="onActivate($event)"
-                            (deactivate)="onDeactivate($event)">
-                            </ngx-charts-bar-vertical-2d>
-                        </div>
+                               
+                                
                             </div>
-                            <!--
-                             [yAxisLabel]="yAxisLabel"
-                            [gradient]="gradient"
-                            
-                         -->
-
-                            
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
-                            <br><br>
+                            <br>
+                            <br>
 
                         </form>
                     </div>

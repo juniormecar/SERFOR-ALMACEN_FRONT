@@ -11,7 +11,6 @@ import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 interface DialogData{ 
   id: number;
@@ -30,8 +29,6 @@ export class BeneficiarioComponent implements OnInit {
   dataSourceSearch: any[] = [];
   transferencia: any[] = [];
   recursoResponse: BandejaProductoResponse = new BandejaProductoResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   //displayedColumns: string[] = ['position', 'nombreCientifico', 'nombreComun', 'tipo','cantidad','descontar','unidadMedida','FlagAgregar'];
   inputTransferirBeneficiario: FormGroup;
   tipoTransferencia: 'TPTRANS001';
@@ -49,9 +46,6 @@ export class BeneficiarioComponent implements OnInit {
     ) {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
-      this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
-
       this.inputTransferirBeneficiario = this._formBuilder.group({
         nombreBeneficiario: ['', Validators.required],
         //apellidosBeneficiario: ['', Validators.required],
@@ -79,14 +73,10 @@ export class BeneficiarioComponent implements OnInit {
      return e;
    }
 
-  
-  searchTipoDocumento() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoDocumento;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoDocumento=response.data;
-    })
+   searchTipoDocumento() {
+    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
+      this.listTipoDocumento = response;
+    });
   }
 
    getRecursosEspecies(idRecurso: any) {

@@ -11,7 +11,6 @@ import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 interface DialogData{
@@ -36,8 +35,6 @@ export class DevolucionesComponent implements OnInit {
   tipoTransferencia: 'TPTRANS001';
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   listTipoDocumento: Parametro[] = [];
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   validaDNIClass: boolean = false;
   constructor(    public _dialogRef: MatDialogRef<DevolucionesComponent>,
     private _recursoService: RecursoService,
@@ -50,9 +47,6 @@ export class DevolucionesComponent implements OnInit {
     ) {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
-      this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
-
       this.inputTransferirBeneficiario = this._formBuilder.group({
         nombreBeneficiario: ['', Validators.required],
         // apellidosBeneficiario: ['', Validators.required],
@@ -77,14 +71,11 @@ export class DevolucionesComponent implements OnInit {
      this.getRecursosEspecies(this._data.id)
      return e;
    }
-  
-  searchTipoDocumento() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoDocumento;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoDocumento=response.data;
-    })
+
+   searchTipoDocumento() {
+    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
+      this.listTipoDocumento = response;
+    });
   }
 
    getRecursosEspecies(idRecurso: any) {

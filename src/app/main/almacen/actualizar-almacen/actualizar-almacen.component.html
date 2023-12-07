@@ -321,9 +321,7 @@
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 11%;">N° Acta</th>
-                                                <td mat-cell *matCellDef="let element">
-                                                    <div *ngIf="element.tipoIngreso !=='Hallazgo'">{{element.numeroActa}}</div>                                                     
-                                                    </td>
+                                                <td mat-cell *matCellDef="let element"> {{element.numeroActa}} </td>
                                             </ng-container>
                             
                                             <ng-container matColumnDef="nombreCientifico">
@@ -468,9 +466,7 @@
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Acta</th>
-                                                <td mat-cell *matCellDef="let element"> 
-                                                <div *ngIf="element.tipoIngreso !=='Hallazgo'">{{element.numeroActa}}</div>                                                     
-                                                    </td>
+                                                <td mat-cell *matCellDef="let element"> {{element.numeroActa}} </td>
                                             </ng-container>
                             
                                             <ng-container matColumnDef="nombreCientifico">
@@ -614,9 +610,7 @@
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Acta</th>
-                                                <td mat-cell *matCellDef="let element"> 
-                                                    <div *ngIf="element.tipoIngreso !=='Hallazgo'">{{element.numeroActa}}</div>                                                     
-                                                </td>
+                                                <td mat-cell *matCellDef="let element"> {{element.numeroActa}} </td>
                                             </ng-container>
                             
                                             <ng-container matColumnDef="nombreCientifico">

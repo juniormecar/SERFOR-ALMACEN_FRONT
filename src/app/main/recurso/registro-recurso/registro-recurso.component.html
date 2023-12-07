@@ -54,7 +54,8 @@
                         <form [formGroup]="inputRegistro">
 
                             <mat-accordion>                                
-                                <mat-expansion-panel >
+                                <mat-expansion-panel (opened)="panelOpenState = true"
+                                                     (closed)="panelOpenState = false">
                                   <mat-expansion-panel-header>
                                     <mat-panel-title style="color: white;">
                                         <b> Datos del Ingreso</b>

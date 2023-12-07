@@ -2,13 +2,11 @@
 export const environment = {
     production: true,
     hmr       : false,
-    urlProcesos: "http://localhost:8080",
-    urlServiciosExternos: 'http://10.6.1.162/mcsniffsextserv-rest/', 
-    urlCoreCentral:"http://10.6.1.162/mcsniffsentcore-rest/",
-    urlAdicionales:"http://10.6.1.162/mcsniffs-rest/",
-    urlSeguridad: "https://qa.serfor.gob.pe/sgiseguridad/",
-    urlNewCoreCentral:"https://qa.serfor.gob.pe/corecentral/",
-    urlBaseImagen:""
+    urlProcesos: "https://qa.serfor.gob.pe/AlmacenBackend",  // almacen
+    urlServiciosExternos: 'http://10.6.1.162/mcsniffsextserv-rest/',   // servicios externos
+    urlSeguridad: "https://qa.serfor.gob.pe/sgiseguridad/",   // seguridad
+    urlNewCoreCentral:"https://qa.serfor.gob.pe/corecentral/", // core central
+    urlBaseImagen:"/almacen"//NO
 };
 
 /*

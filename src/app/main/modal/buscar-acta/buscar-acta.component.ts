@@ -12,7 +12,6 @@ import { Parametro } from 'app/shared/models/parametro.model';
 import { CreateRecursoProductoResponse } from 'app/shared/models/response/recurso-especie-response';
 import Swal from 'sweetalert2';
 import { Constants } from 'app/shared/models/util/constants';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 interface DialogData {
   numeroActa: string
 }
@@ -28,8 +27,6 @@ export class BuscarActaComponent implements OnInit {
   listDataMad: RecursoProduco[] = [];
   listDataNoMad: RecursoProduco[] = [];
   listDataFa: RecursoProduco[] = [];
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   dataSource = new MatTableDataSource<RecursoProduco>(this.listDataMad);
   dataSourceFauna = new MatTableDataSource<RecursoProduco>([]);
   dataSourceNoMad = new MatTableDataSource<RecursoProduco>([]);
@@ -73,8 +70,6 @@ export class BuscarActaComponent implements OnInit {
     this.recursoResponseNoMad.pageSize = 10;
     this.recursoResponseMad.pageNumber = 1;
     this.recursoResponseMad.pageSize = 10;
-    this.parametroResponse.pageNumber = 1;
-    this.parametroResponse.pageSize = 1000;
     this.tittle= 'Productos de Acta N° ' +  this.data.numeroActa ;
    }
 
@@ -84,10 +79,8 @@ export class BuscarActaComponent implements OnInit {
   }
 
   getSettingDecimal(){
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.prefijoDecimal;
-    this._parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-        this.listSettings = response.data;
+    this._parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
+        this.listSettings = response;
         if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
             this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
             this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];

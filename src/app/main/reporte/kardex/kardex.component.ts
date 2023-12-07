@@ -16,7 +16,6 @@ import * as XLSX from 'xlsx';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { ParametroService } from 'app/service/parametro.service';
 import { Constants } from 'app/shared/models/util/constants';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 @Component({
   selector: 'app-kardex',
   templateUrl: './kardex.component.html',
@@ -32,8 +31,6 @@ export class KardexComponent implements OnInit {
   listKardex: Kardex[] = [];
   displayedColumns: string[] = ['fecha','Tipo','nombreCientifico','nombreComun','documento','tipoI','cantidadI','cantidadM3I', 'totalI','totalM3I', 'tipoS','cantidadS','cantidadM3S', 'totalS','totalM3S' ];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   inputBandeja: FormGroup; 
   resultsLength = 0;
   numeroDocumento: string = '44691637';
@@ -53,8 +50,6 @@ export class KardexComponent implements OnInit {
     ) {
      this.kardexResponse.pageNumber = 1;
      this.kardexResponse.pageSize = 10;
-     this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
  this._fuseConfigService.config = {
        layout: {
          navbar: {
@@ -91,33 +86,22 @@ export class KardexComponent implements OnInit {
     this.searchDisponibilidadActa();
     this.searchTipoEspecie();
   }
+
   searchTipoIngreso() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoIngreso;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoIngreso=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
+      this.listTipoIngreso = response;
+    });
   }
-
   searchDisponibilidadActa() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.disponibilidadActa;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listDisponibilidadActa=response.data;
-    })
+    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
+      this.listDisponibilidadActa = response;
+    });
   }
-
   searchTipoEspecie() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoEspecie;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoEspecie=response.data;
-    })
-  }  
-  
+    this.parametroService.getParametroSearch(this.tipoEspecie).subscribe((response: Parametro[]) => {
+      this.listTipoEspecie = response;
+    });
+  }
 
   async Search() {
     this.kardexResponse.pageNumber = 1;

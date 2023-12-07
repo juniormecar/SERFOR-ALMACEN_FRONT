@@ -25,9 +25,6 @@ import { PideService } from 'app/service/pide.service';
 import { MatDialog} from '@angular/material/dialog';
 import { ModalAlmacenEncargadosComponent } from 'app/main/almacen/registro-almacen/modal/modal-almacen-encargados/modal-almacen-encargados/modal-almacen-encargados.component';
 import { DeleteAlmacenResponsableResponse } from 'app/shared/models/response/delete-almacen-responsable-response';
-import { AtfResponse } from 'app/shared/models/response/atf-response';
-import { PuestoControlResponse } from 'app/shared/models/response/puestocontrol-response';
-import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 
 
@@ -40,8 +37,6 @@ export class RegistroAlmacenComponent implements OnInit {
   dataSource = new MatTableDataSource<AlmacenResponsable>([]);
   selection = new SelectionModel<Almacen>(true, []);
   almacenResponsableResponse: AlmacenResponsableResponse = new AlmacenResponsableResponse();
-  parametroResponse: ParametroResponse = new ParametroResponse();
-
   almacenRequest:  Almacen = new Almacen();
   inputRegistro: FormGroup;
   course: RegistroStep[] = RegistroListSteps;
@@ -64,9 +59,6 @@ export class RegistroAlmacenComponent implements OnInit {
   setStep(index: number) {
     this.step = index;
   }
-  atfResponse: AtfResponse = new AtfResponse();
-  puestoControlRequest:PuestoControl = new PuestoControl; 
-  puestoControlResponse: PuestoControlResponse = new PuestoControlResponse();
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private almacenService: AlmacenService,
@@ -78,12 +70,6 @@ export class RegistroAlmacenComponent implements OnInit {
     private pideService: PideService) {
       this.almacenResponsableResponse.pageNumber = 1;
       this.almacenResponsableResponse.pageSize = 10;
-      this.atfResponse.pageNumber = 1;
-      this.atfResponse.pageSize = 100;
-      this.puestoControlResponse.pageNumber = 1;
-      this.puestoControlResponse.pageSize = 100;
-      this.parametroResponse.pageNumber = 1;
-      this.parametroResponse.pageSize = 1000;
     this._fuseConfigService.config = {
        layout: {
          navbar: {
@@ -125,56 +111,32 @@ export class RegistroAlmacenComponent implements OnInit {
     this.searchATF();
     this.searchTipoAlmacen();
     this.searchTipoDocumento();
-    //this.searchAlmacenResponsable();
+    this.searchAlmacenResponsable();
   }
-
-  // searchATF() {
-  //   this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-  //     this.listATF = response;
-  //   });
-  // }
 
   searchATF() {
-    let atfRequest:ATF = new ATF;  
-    this.atfService.getATFSearch(atfRequest,this.atfResponse.pageNumber,this.atfResponse.pageSize).subscribe((response:AtfResponse)=>{
-      this.atfResponse =response;
-      this.listATF=response.data;
-    })
-  }
-
-  // searchPuestoControl() {
-  //   this.puestoControlService.getPuestoControlSearch(this.inputRegistro.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-  //     this.listPuestoControl= response;
-  //   });
-  // }
-
-  searchPuestoControl() {
-    this.puestoControlRequest.idAtf = this.inputRegistro.get('numeroATF').value;    
-    this.puestoControlService.getPuestoControlSearch(this.puestoControlRequest,this.puestoControlResponse.pageNumber,this.puestoControlResponse.pageSize).subscribe((response: PuestoControlResponse) => {
-      this.puestoControlResponse = response;
-      this.listPuestoControl= response.data;
+    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
+      this.listATF = response;
     });
   }
 
-  
+  searchPuestoControl() {
+    this.puestoControlService.getPuestoControlSearch(this.inputRegistro.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
+      this.listPuestoControl= response;
+    });
+  }
+
   searchTipoAlmacen() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoAlmacen;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoAlmacen=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoAlmacen).subscribe((response: Parametro[]) => {
+      this.listTipoAlmacen = response;
+    });
   }
+
   searchTipoDocumento() {
-    let parametroRequest:Parametro = new Parametro;  
-    parametroRequest.prefijo = this.tipoDocumento;
-    this.parametroService.getParametroSearch(parametroRequest,this.parametroResponse.pageNumber,this.parametroResponse.pageSize).subscribe((response:ParametroResponse)=>{
-      this.parametroResponse =response;
-      this.listTipoDocumento=response.data;
-    })
+    this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {
+      this.listTipoDocumento = response;
+    });
   }
-
-
 
   registerAlmacen() {
     let obj: Almacen = new Almacen();
