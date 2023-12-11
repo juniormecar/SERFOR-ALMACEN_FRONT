@@ -312,7 +312,7 @@ export class BandejaInventarioComponent implements OnInit {
         item.nombreCientifico,
         item.nombreComun,
         item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        item.txCantidadProducto,
+        Number(item.txCantidadProducto),
         item.metroCubico,
         
       ])];
@@ -331,7 +331,7 @@ export class BandejaInventarioComponent implements OnInit {
         item.nombreCientifico,
         item.nombreComun,
         item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        item.txCantidadProducto,
+        Number(item.txCantidadProducto),
         item.metroCubico,
         
       ])];
