@@ -6,85 +6,12 @@ mat-form-field {
     width: 100%;
 }
 
-.validate-dni{
-    height: 50px;
-    background-color: #fff;
-    border: solid 2px #43a047; 
-    color: #43a047;
-    border-radius: 5px;
-}
-
-.validate-dni:hover{
-    background-color: #C9E0C0;
-    color: #fff;
-}
-
-textarea.mat-input-element {
-    height: 100px;
-}
-
-.rounded-circle {
-    border-radius: 50%;
-    overflow: hidden;
-    width: 150px;
-    height: 150px;
-    margin-top: 40px;
-    margin-bottom: 5px;
-    margin-right: 40px;
-}
-
-.rounded-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .example-full-width {
     width: 100%;
 }
 
 td {
     padding-right: 8px;
-}
-
-.tittle-especie{
-    color:#C9E0C0;
-}
-
-.next,
-.done {
-    margin-left: auto;
-}
-
-h1{
-    color:#4a962c;
-}
-table {
-    width: 2500px;
-
-    th {
-        background-color: #89B361;
-        color: white;
-        text-align: center;
-        font-weight: 600;
-    }
-
-    td {
-        text-align: center;
-    }
-}
-
-.mat-row,
-.mat-header-row {
-    display: table-row;
-}
-
-.accept{
-    background-color: #4a962c;
-}
-
-.close{
-    background-color: #BF3F23;
 }
 
 .example-headers-align .mat-expansion-panel-header-title {
@@ -139,18 +66,13 @@ fieldset {
 }
 
 .example-container {
-     display: flex;
-     flex-direction: column;
-    // min-width: 300px;
-     overflow: auto;
-    // width: 100%;
-    max-width: 2500px;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
     overflow: auto;
+    width: 100%;
 }
-.mat-row,
-  .mat-header-row {
-    display: table-row;
-  }
+
 .mat-table {
     overflow: auto;
     max-height: 500px;
@@ -160,6 +82,28 @@ fieldset {
     text-align: right;
 }
 
+
+
+.form-input {
+    border-color: black;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+table {
+    width: 1100px;
+
+    th {
+        background-color: #89B361;
+        color: white;
+        text-align: center;
+        font-weight:600;
+    }
+
+    td {
+        text-align: center;
+    }
+}
 
 .mat-row,
 .mat-header-row {
@@ -194,9 +138,8 @@ fieldset {
                     .index {
 
                         span {
-                            border: 2px solid #43a047;
-                            background-color: #43a047;
-                            color: white;
+                            border: 2px solid;
+
                         }
                     }
 
@@ -270,11 +213,10 @@ fieldset {
                         max-width: 28px;
                         height: 28px;
                         border-radius: 100%;
-                        border: 2px solid #C9E0C0;
+                        border: 2px solid;
                         font-weight: bold;
                         font-size: 12px;
                         z-index: 10;
-                        color: #C9E0C0;
                     }
                 }
 
@@ -298,10 +240,11 @@ fieldset {
         .content {
             position: relative;
             display: flex;
+            //background-image: url('/almacen/assets/images/backgrounds/bosque2T.svg'); 
             background-image: url('/assets/images/backgrounds/bosque2T.svg'); 
             background-size: cover;
             // z-index: -1;
-            // color: chartreuse;
+            color: black;
             .course-step {
                 position: absolute;
                 top: 0;
@@ -352,6 +295,7 @@ fieldset {
                 margin-left: auto;
             }
         }
+
         .btn-primary2, .btn-primary2:hover {
             background: #4a962c;
             border: 0;
@@ -376,10 +320,37 @@ fieldset {
             border-radius: 7px;
             margin: 0 10px;
         }
+        .btn-registrar{            
+            background: #679738 !important;
+            border: 0;
+            color: white !important;
+            border: 2px solid #679738 !important;
+            //padding: 4px 14px;
+            font-size: 11px;
+            min-width: 120px;
+            min-height: 32px;
+            border-radius: 7px;
+            margin: 0 10px;
+        }
+
+        table {
+            width: 100%;
+          }
+
     }
 }
 
-.mat-form-field-appearance-outline{
+mat-icon{
+    width: 15%;
+}
+
+.swal2-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px !important;
+    color: green !important;
+  }
+
+  .mat-form-field-appearance-outline{
     font-size: 13px;
     border-radius: 25px;
 }
@@ -388,44 +359,53 @@ fieldset {
     color: #89B361;
 }
 
-.content-tab {
-    flex: 1;
 
-    mat-tab-group {
-        height: 100%;
-
-        
-        .mat-tab-body-wrapper {
-            flex-grow: 1;
-        }
-    }
-
-    .mat-tab-label-container {
-        padding: 0 24px;
-    }
-}
-
-::ng-deep.mat-tab-label.mat-tab-label-active:not(.mat-tab-disabled),
-::ng-deep.mat-tab-label.mat-tab-label-active.cdk-keyboard-focused:not(.mat-tab-disabled) {
-  color: #4a962c; /* Color que desees */
-  background-color: #C9E0C0;
-  opacity: 1;
-}
-#dosfiltros{
+#tresColumnas{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
-#filtros {
-    width: 70%; 
+  #columna1 {
+    width: 33%; 
  padding-right: 24px;
- border-right:2px solid #C9E0C0;
- padding-bottom: 24px;
- border-bottom:2px solid #C9E0C0;
   }
-  #filtroavanzado {
-    padding-left: 24px;
-    width: 30%;
-    padding-bottom: 24px;
-    border-bottom:2px solid #C9E0C0;
+  #columna2 {
+    width: 33%; 
+ padding-right: 24px;
+  }
+  #columna3 {
+    width: 33%; 
+  }
+
+
+#dosGrillas{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+#grilla1 {
+    width: 50%; 
+ padding-right: 10px;
+  }
+  #grilla2 {
+    width: 50%; 
+  }
+  .mat-raised-button{
+    min-width: 48px;  
+  }
+
+  #dosColumnas{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  #primera {
+    width: 27%; 
+    padding-top: 8px;
+ //padding-right: 10px;
+  }
+  #segunda {
+    width: 73%; 
+    
+ 
   }

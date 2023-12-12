@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { Observable, throwError as observableThrowError } from 'rxjs';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { TipoParametro } from 'app/shared/models/tipo-parametro.model';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,26 @@ export class ParametroService {
     return this.http.get<Parametro[]>((url)).pipe(catchError(this.errorHandler));
   }
 
+  getParametroSearchBandeja(parametroRequest:Parametro, page: number, size: number): Observable<ParametroResponse> {
+    let url = `${this.base}/listarBandejaParametro?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
+    if(parametroRequest.prefijo){
+      url += `&prefijo=${parametroRequest.prefijo}`
+    }
+    return this.http.get<ParametroResponse>((url)).pipe(catchError(this.errorHandler));
+  }
+
+
   errorHandler(error: HttpErrorResponse) {
     return observableThrowError(error || 'SERVER ERROR');
   }
 
+  postAñadirParametro(request: Parametro) {
+    let url = `${this.base}/registrarParametro`;
+    return this.http.post(url, request).pipe(catchError(this.errorHandler));
+  }
+  deleteParametro(idParametro:number): Observable<ParametroResponse> {
+    let url = `${this.base}/eliminarParametro?idParametro=${idParametro}&idUsuarioElimina=1`;
+    return this.http.delete<ParametroResponse>(url).pipe(catchError(this.errorHandler));
+  }
 
 }

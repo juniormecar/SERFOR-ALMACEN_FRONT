@@ -1,0 +1,134 @@
+
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+      <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+  
+        <span class="title dialog-title"> <b> Registro de Puesto de Control</b></span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+  
+      </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <br><br>
+  
+    <div class="center">
+  
+      <div id="course-content" class="content">
+  
+        <ng-container>
+  
+          <!-- [@slideIn]="animationDirection" -->
+          <div class="course-step">
+  
+            <div id="course-step-content" class="course-step-content ">
+              <form [formGroup]="inputRegistroPuestoControl">
+  
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Nombre de Puesto de Control</span>
+                  <div fxFlex="3"></div>
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Control Obligatorio</span>
+                  <!-- <div fxFlex="3"></div> -->
+                </div>
+  
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="nombrePuestoControl">
+                  </mat-form-field>
+                  <div fxFlex="3"></div>
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="controlObligatorio">
+                  </mat-form-field>
+                </div>
+
+                <br>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <span class="text-primary-ir" floatLabel="always" fxFlex="30">Departamento</span>
+                    <div fxFlex="3"></div>
+                    <span class="text-primary-ir" floatLabel="always" fxFlex="30">Provincia</span>
+                    <div fxFlex="3"></div>
+                    <span class="text-primary-ir" floatLabel="always" fxFlex="30">Distrito</span>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">                    
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                      <input matInput type="text" formControlName="departamento">
+                    </mat-form-field>
+                    <div fxFlex="3"></div>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                      <input matInput type="text" formControlName="provincia">
+                    </mat-form-field>
+                    <div fxFlex="3"></div>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                        <input matInput type="text" formControlName="distrito">
+                      </mat-form-field>
+                </div>
+
+                <br>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <span class="text-primary-ir" floatLabel="always" fxFlex="47">Coordenadas Norte</span>
+                    <div fxFlex="3"></div>
+                    <span class="text-primary-ir" floatLabel="always" fxFlex="47">Coordenadas Este</span>
+                    
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                      <input matInput type="text" formControlName="coordenadasNorte">
+                    </mat-form-field>
+                    <div fxFlex="3"></div>
+                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                      <input matInput type="text" formControlName="coordenadasEste">
+                    </mat-form-field>
+                </div>
+  
+                <br>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">Zona UTM</span>
+                  <div fxFlex="3"></div>
+                  <span class="text-primary-ir" floatLabel="always" fxFlex="47">ATF</span>
+                  <!-- <div fxFlex="3"></div> -->
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    
+                  <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                    <input matInput type="text" formControlName="zonaUTM">
+                  </mat-form-field>
+                  <div fxFlex="3"></div>
+                  <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                    <mat-select formControlName="idAtf">
+                        <mat-option [value]="">
+                            Seleccione
+                        </mat-option>
+                        <ng-container *ngFor="let item of listATF">
+                            <mat-option [value]="item.idAtf">
+                                {{item.nombreAtf}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+              <br>
+  
+                <div mat-dialog-actions class="text-center" style="padding: 3%;">
+                  <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                    (click)="registrar()">Guardar</button>
+                  <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                    (click)="close()">Cancelar</button>
+                </div>
+  
+              </form>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>

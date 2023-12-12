@@ -7,6 +7,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
+import Swal from 'sweetalert2'
 
 @Component({
     selector     : 'navbar-vertical-style-1',
@@ -18,6 +19,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 {
     fuseConfig: any;
     navigation: any;
+
+    usuario:string='';
+    correoUsuario:string='';
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -103,6 +107,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
                 }
             );
 
+            this.usuario =  localStorage.getItem('usuario');
+            this.correoUsuario = localStorage.getItem('correoUsuario');
+            console.log('localStoragelocalStoragelocalStoragelocalStoragelocalStorage',localStorage);
+
         // Subscribe to the config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -149,5 +157,23 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     toggleSidebarFolded(): void
     {
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
+    }
+
+    exit_to_app():void
+    {
+        Swal.fire({
+            title: '¿Desea cerrar la sesión?',
+            text: "Sistema de ALMACÉN",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#679738',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+                if (result.isConfirmed) {
+                    this._router.navigate(['login']);
+                }
+          }) 
     }
 }

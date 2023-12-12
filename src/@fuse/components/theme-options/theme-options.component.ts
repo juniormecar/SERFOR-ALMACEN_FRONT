@@ -138,7 +138,7 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy
             children: [
                 {
                     id      : 'customize',
-                    title   : 'Customize',
+                    title   : 'Opciones',
                     type    : 'item',
                     icon    : 'settings',
                     function: () => {

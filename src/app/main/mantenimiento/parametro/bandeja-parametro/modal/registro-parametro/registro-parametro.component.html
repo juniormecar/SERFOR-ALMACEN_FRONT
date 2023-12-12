@@ -1,0 +1,100 @@
+<div class="dialog-content-wrapper">
+
+  <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+    <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+
+      <span class="title dialog-title"> <b> Registro de Parámetro</b></span>
+      <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <br><br>
+
+  <div class="center">
+
+    <div id="course-content" class="content">
+
+      <ng-container>
+
+        <!-- [@slideIn]="animationDirection" -->
+        <div class="course-step">
+
+          <div id="course-step-content" class="course-step-content ">
+            <form [formGroup]="inputRegistroParametro">
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Código</span>
+                <div fxFlex="3"></div>
+                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Valor Primario</span>
+                <!-- <div fxFlex="3"></div> -->
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                  <input matInput type="text" formControlName="codigo">
+                </mat-form-field>
+                <div fxFlex="3"></div>
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                  <input matInput type="text" formControlName="valorPrimario">
+                </mat-form-field>
+              </div>
+
+              <br>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Valor Secundario</span>
+                <div fxFlex="3"></div>
+                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Valor Terciario</span>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                  <input matInput type="text" formControlName="valorSecundario">
+                </mat-form-field>
+                <div fxFlex="3"></div>
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                  <input matInput type="text" formControlName="valorTerciario">
+                </mat-form-field>
+              </div>
+
+              <br>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Tipo Parámetro</span>
+                <div fxFlex="3"></div>
+              </div>
+
+              <div fxLayout="row" fxLayoutAlign="space-between">
+                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                  <mat-select formControlName="idTipoParametro">
+                    <mat-option [value]="">
+                      Seleccione
+                    </mat-option>
+                    <ng-container *ngFor="let item of listTipoParametro">
+                      <mat-option [value]="item.idTipoParametro">
+                        {{item.prefijo}}
+                      </mat-option>
+                    </ng-container>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <br>
+
+              <div mat-dialog-actions class="text-center" style="padding: 3%;">
+                <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                  (click)="registrar()">Guardar</button>
+                <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                  (click)="close()">Cancelar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>

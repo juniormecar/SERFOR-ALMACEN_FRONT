@@ -9,8 +9,8 @@ mat-form-field {
 .validate-dni{
     height: 50px;
     background-color: #fff;
-    border: solid 2px #43a047; 
-    color: #43a047;
+    border: solid 2px #679738; 
+    color: #679738;
     border-radius: 5px;
 }
 
@@ -27,10 +27,10 @@ textarea.mat-input-element {
     border-radius: 50%;
     overflow: hidden;
     width: 150px;
-    height: 150px;
-    margin-top: 40px;
+    height: 130px;
+    margin-top: 5px;
     margin-bottom: 5px;
-    margin-right: 40px;
+    margin-right: 25px;
 }
 
 .rounded-circle img {
@@ -59,14 +59,16 @@ td {
 h1{
     color:#4a962c;
 }
+
 table {
-    width: 2500px;
+    width: 100%;
 
     th {
-        background-color: #89B361;
-        color: white;
+        background-color: #C9E0C0;
+        color: black;
         text-align: center;
-        font-weight: 600;
+        font-weight: bold;
+        padding-bottom: 20px;
     }
 
     td {
@@ -139,18 +141,12 @@ fieldset {
 }
 
 .example-container {
-     display: flex;
-     flex-direction: column;
-    // min-width: 300px;
-     overflow: auto;
-    // width: 100%;
-    max-width: 2500px;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
     overflow: auto;
+    width: 100%;
 }
-.mat-row,
-  .mat-header-row {
-    display: table-row;
-  }
 .mat-table {
     overflow: auto;
     max-height: 500px;
@@ -159,6 +155,24 @@ fieldset {
 .text-right {
     text-align: right;
 }
+
+table {
+    width: 100%;
+
+    th {
+        background-color: #C9E0C0;
+        color: black;
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 20px;
+    }
+
+    td {
+        text-align: center;
+        padding:5px
+    }
+}
+
 
 
 .mat-row,
@@ -171,7 +185,7 @@ fieldset {
 }
 
 // @import "src/@fuse/scss/fuse";
-@import "../../../../@fuse/scss/fuse.scss";
+@import "../../../../../../../@fuse/scss/fuse.scss";
 
 
 #academy-course {
@@ -298,10 +312,7 @@ fieldset {
         .content {
             position: relative;
             display: flex;
-            background-image: url('/assets/images/backgrounds/bosque2T.svg'); 
-            background-size: cover;
-            // z-index: -1;
-            // color: chartreuse;
+
             .course-step {
                 position: absolute;
                 top: 0;
@@ -367,8 +378,8 @@ fieldset {
         .btn-secondary {            
             background: #fff !important;
             border: 0;
-            color: #89B361 !important;
-            border: 2px solid #89B361 !important;
+            color: #4a962c !important;
+            border: 2px solid #4a962c !important;
             //padding: 4px 14px;
             font-size: 11px;
             min-width: 120px;
@@ -411,21 +422,3 @@ fieldset {
   background-color: #C9E0C0;
   opacity: 1;
 }
-#dosfiltros{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-#filtros {
-    width: 70%; 
- padding-right: 24px;
- border-right:2px solid #C9E0C0;
- padding-bottom: 24px;
- border-bottom:2px solid #C9E0C0;
-  }
-  #filtroavanzado {
-    padding-left: 24px;
-    width: 30%;
-    padding-bottom: 24px;
-    border-bottom:2px solid #C9E0C0;
-  }

@@ -1,44 +1,62 @@
 <!--<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">-->
-<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
- <!--
-    <div class="logo">
-        <img class="logo-icon" src="assets/images/backgrounds/logo_serfor.png">
-       <span class="logo-text secondary-text">SISTEMA DE ALMACEN</span>
-    </div>
--->
-    <div class="buttons">
+    <div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
+        <!--
+           <div class="logo">
+               <img class="logo-icon" src="assets/images/backgrounds/logo_serfor.png">
+              <span class="logo-text secondary-text">SISTEMA DE ALMACEN</span>
+           </div>
+       -->
+           <div class="buttons">
+       
+               <button mat-icon-button class="toggle-sidebar-folded"
+                       (click)="toggleSidebarFolded()" fxHide.lt-lg>
+                   <mat-icon class="secondary-text">menu</mat-icon>
+               </button>               
 
-        <button mat-icon-button class="toggle-sidebar-folded"
-                (click)="toggleSidebarFolded()" fxHide.lt-lg>
-            <mat-icon class="secondary-text">menu</mat-icon>
-        </button>
-
-        <button mat-icon-button class="toggle-sidebar-opened"
-                (click)="toggleSidebarOpened()" fxHide.gt-md>
-            <mat-icon class="secondary-text">arrow_back</mat-icon>
-        </button>
-
-    </div>
-
-</div>
-
-
-<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
-     fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" 
-    >
-
-    <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" >
-
-        <div class="h3 username" style="color: white;">Usuario</div>
-        <div class="h5 email mt-8" style="color: white;">usuario@mail.com</div>
-        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
-            <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
+               <button mat-icon-button class="toggle-sidebar-opened"
+                       (click)="toggleSidebarOpened()" fxHide.gt-md>
+                   <mat-icon class="secondary-text">arrow_back</mat-icon>
+               </button>
+       
+           </div>
+           
+       
+       </div>
+       
+       <div id="dosColumnas">
+           <div id="foto">       
+                   <img class="avatar" src="assets/images/avatars/vincent.jpg">        
+           </div>
+       <div id="datos">
+       <div class="h3 username" style="color: white;"> {{usuario}}</div>
+        <div class="h5 email mt-8" style="color: white;">{{correoUsuario}}</div>
+       </div>
+       
         </div>
-
-    </div>
-
-    <div class="navbar-content">
-        <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
-    </div>
-
-</div>
+       
+       <div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
+            fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}" 
+           >
+       <!-- 
+           <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" >
+               <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
+                   <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
+               </div>
+               <div class="h3 username" style="color: white;">Usuario</div>
+               <div class="h5 email mt-8" style="color: white;">usuario@mail.com</div>
+               
+       
+           </div> -->
+       
+           <div class="navbar-content">
+               <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
+           </div>
+           <div style="padding-left: 30px; padding-bottom: 15px;">
+            <button mat-icon-button class="toggle-sidebar-folded"
+           (click)="exit_to_app()" fxHide.lt-lg> logout
+             <mat-icon class="secondary-text">exit_to_app</mat-icon>
+                </button>
+           </div>
+           
+       </div>
+       

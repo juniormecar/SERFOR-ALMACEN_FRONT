@@ -200,5 +200,33 @@ navbar {
             }
         }
     }
-   
+    #dosColumnas{        
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        background-color: #89B361;
+        
+        //background:linear-gradient(30deg, #679738,#89B361, #89B361, #89B361, #679738);
+    }
+   #foto{
+    width: 35%;    
+    padding-left: 30px;
+    padding-bottom: 20px;
+   }
+   #datos{
+    width: 65%;
+    padding-top: 10px;    
+    padding-left: 30px;
+    padding-bottom: 20px;
+   }
+   .fuse-navy-900 {
+    background-color: #89B361!important;
+    color: rgba(0, 0, 0, 0.87) !important;
+    min-height: 200px;
+}
+.avatar {
+    min-width: 70px;
+    min-height: 70px;
+}
+
 }

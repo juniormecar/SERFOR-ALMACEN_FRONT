@@ -66,6 +66,17 @@ import { ModalFaunaDetalleComponent } from './main/recurso/registro-recurso/moda
 import { ModalPasComponent } from './main/recurso/registro-recurso/modal/modal-pas/modal-pas.component';
 import { FaunaSalidaComponent } from './main/transferencia/fauna-salida/fauna-salida.component';
 import { ReportesComponent } from './main/reporte/reportes/reportes.component';
+import { BandejaATFComponent } from './main/mantenimiento/atf/bandeja-atf/bandeja-atf.component';
+import { RegistroAtfComponent } from './main/mantenimiento/atf/bandeja-atf/modal/registro-atf/registro-atf.component';
+import { BandejaPuestoControlComponent } from './main/mantenimiento/puesto-control/bandeja-puesto-control/bandeja-puesto-control.component';
+import { RegistroPuestoControlComponent } from './main/mantenimiento/puesto-control/bandeja-puesto-control/modal/registro-puesto-control/registro-puesto-control.component';
+import { BandejaTipoParametroComponent } from './main/mantenimiento/tipo-parametro/bandeja-tipo-parametro/bandeja-tipo-parametro.component';
+
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ReportesAvanzadoComponent } from './main/reporte/reportes-avanzado/reportes-avanzado.component';
+import { RegistroTipoParametroComponent } from './main/mantenimiento/tipo-parametro/bandeja-tipo-parametro/modal/registro-tipo-parametro/registro-tipo-parametro.component';
+import { BandejaParametroComponent } from './main/mantenimiento/parametro/bandeja-parametro/bandeja-parametro.component';
+import { RegistroParametroComponent } from './main/mantenimiento/parametro/bandeja-parametro/modal/registro-parametro/registro-parametro.component';
 
 const appRoutes: Routes = [
     {
@@ -124,6 +135,33 @@ const appRoutes: Routes = [
         path: 'reportes',
         component: ReportesComponent
     },
+    
+    {
+
+        path: 'bandeja-atf',
+        component: BandejaATFComponent
+    },
+
+    {
+        path: 'bandeja-puestoControl',
+        component: BandejaPuestoControlComponent
+    },
+
+    {
+        path: 'bandeja-tipoParametro',
+        component: BandejaTipoParametroComponent
+    },
+
+    {
+        path: 'bandeja-parametro',
+        component: BandejaParametroComponent
+    },
+        
+    {
+        path: 'reportes-avanzado',
+        component: ReportesAvanzadoComponent
+
+    },
     {
         path: '',
         pathMatch:'full',
@@ -164,7 +202,20 @@ const appRoutes: Routes = [
         ModalFaunaDetalleComponent,
         ModalPasComponent,
         FaunaSalidaComponent,
-        ReportesComponent
+        ReportesComponent,
+        BandejaATFComponent,
+        RegistroAtfComponent,
+        BandejaPuestoControlComponent,
+        RegistroPuestoControlComponent,
+        BandejaTipoParametroComponent,
+
+        ReportesAvanzadoComponent,
+
+        RegistroTipoParametroComponent,
+
+        BandejaParametroComponent,
+
+        RegistroParametroComponent
     ],
     imports: [
         BrowserModule,
@@ -217,7 +268,8 @@ const appRoutes: Routes = [
         
         MatIconModule,
         MatTabsModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        NgxChartsModule
     ],
     exports: [
         MatInputModule,

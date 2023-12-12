@@ -16,6 +16,7 @@ import * as XLSX from 'xlsx';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { ParametroService } from 'app/service/parametro.service';
 import { Constants } from 'app/shared/models/util/constants';
+import { ParametroResponse } from 'app/shared/models/response/parametro-response';
 @Component({
   selector: 'app-reportes',
   templateUrl: './reportes.component.html',
@@ -36,10 +37,157 @@ export class ReportesComponent implements OnInit {
   numeroDocumento: string = '44691637';
   listTipoIngreso: Parametro[] = [];
   listTipoEspecie: Parametro[] = [];
+  listPeriodo: Parametro[] = [];
   listDisponibilidadActa: Parametro[] = [];
   tipoIngreso: string = Constants.TIPO_INGRESO;
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
   tipoEspecie: string = Constants.TIPO_PRODUCTO_CATA;
+  periodo: string = Constants.PERIODO;
+  parametroResponse: ParametroResponse = new ParametroResponse();
+
+
+
+  //multi: [];
+  view: [number,number] = [1500, 400];
+
+  // options
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Mes';
+  showYAxisLabel: boolean = true;
+  //yAxisLabel: string = 'Rango';
+  legendTitle: string = 'Tipo'
+  colorScheme = {
+    domain: ['#89B361', '#C9E0C0', '#AAAAAA']
+  };
+
+    multi = [
+    {
+      "name": "Enero",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 73
+        },
+        {
+          "name": "Salida",
+          "value": 89
+        }
+      ]
+    },
+  
+    {
+      "name": "Febrero",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 78
+        },
+        {
+          "name": "Salida",
+          "value": 82
+        }
+      ]
+    },
+  
+    {
+      "name": "Marzo",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 50
+        },
+        {
+          "name": "Salida",
+          "value": 58
+        }
+      ]
+    },
+    {
+      "name": "Abril",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 70
+        },
+        {
+          "name": "Salida",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "name": "Mayo",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 30
+        },
+        {
+          "name": "Salida",
+          "value": 28
+        }
+      ]
+    },
+    {
+      "name": "Junio",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 90
+        },
+        {
+          "name": "Salida",
+          "value": 78
+        }
+      ]
+    },
+    {
+      "name": "Julio",
+      "series": [
+        {
+          "name": "Entrada",
+          "value": 40
+        },
+        {
+          "name": "Salida",
+          "value": 78
+        }
+      ]
+    }
+  ];
+  
+  
+
+
+
+  // constructor() {
+  //   Object.assign(this, { multi })
+  // }
+
+ onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
+
+
+
+
+
+
+
+
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -48,6 +196,7 @@ export class ReportesComponent implements OnInit {
     public _router: Router,
     private parametroService: ParametroService,    
     ) {
+      //Object.assign(this, { multi });
      this.kardexResponse.pageNumber = 1;
      this.kardexResponse.pageSize = 10;
  this._fuseConfigService.config = {
@@ -68,12 +217,15 @@ export class ReportesComponent implements OnInit {
      };
      this.almacenResponse.pageNumber = 1;
      this.almacenResponse.pageSize = 1000;
+     this.parametroResponse.pageNumber = 1;
+      this.parametroResponse.pageSize = 1000;
     this.inputBandeja = this._formBuilder.group({
       almacen: [''],      
       tipoIngreso: [''], 
       disponibilidadActa: [''], 
       especie: [''], 
       tipoEspecie: [''], 
+      periodo: [''], 
     });    
     this.numeroDocumento = localStorage.getItem('usuario');
   }
@@ -83,18 +235,20 @@ export class ReportesComponent implements OnInit {
     //this.Search();   
     this.searchAlmacen();
     this.searchTipoIngreso();
-    this.searchDisponibilidadActa();
     this.searchTipoEspecie();
+    this.searchPeriodo();
   }
+ 
 
   searchTipoIngreso() {
     this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
       this.listTipoIngreso = response;
     });
   }
-  searchDisponibilidadActa() {
-    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
-      this.listDisponibilidadActa = response;
+
+  searchPeriodo() {
+    this.parametroService.getParametroSearch(this.periodo).subscribe((response: Parametro[]) => {
+      this.listPeriodo = response;
     });
   }
   searchTipoEspecie() {
@@ -102,25 +256,15 @@ export class ReportesComponent implements OnInit {
       this.listTipoEspecie = response;
     });
   }
+  
+
+  busquedaAvanzada() {    
+    let url = 'reportes-avanzado/';
+    this._router.navigate([url], { state: { idAlmacen: this.inputBandeja.get('almacen').value} });
+  } 
 
   async Search() {
-    this.kardexResponse.pageNumber = 1;
-     this.kardexResponse.pageSize = 10;
-    this.dataSource = new MatTableDataSource<Kardex>([])
-    this.kardexService.getKardexSearch(
-    this.inputBandeja.get('almacen').value,
-    this.inputBandeja.get('especie').value,
-    this.inputBandeja.get('tipoEspecie').value,
-    this.inputBandeja.get('tipoIngreso').value,
-    this.inputBandeja.get('disponibilidadActa').value,
-    this.kardexResponse.pageNumber,this.kardexResponse.pageSize).subscribe((response:KardexResponse)=>{
-      if(response.success){
-        this.kardexResponse =response;
-        this.dataSource = new MatTableDataSource<Kardex>(response.data);
-        this.resultsLength=response.totalRecords;
-      }
-    })
-    this.SearchKardex();
+    
   }  
 
   async SearchPage() {
@@ -141,21 +285,7 @@ export class ReportesComponent implements OnInit {
     })
   }  
 
-  async SearchKardex() {
-    
-    this.kardexService.getKardexSearch(
-      this.inputBandeja.get('almacen').value,
-      this.inputBandeja.get('especie').value,
-      this.inputBandeja.get('tipoEspecie').value,
-      this.inputBandeja.get('tipoIngreso').value,
-      this.inputBandeja.get('disponibilidadActa').value,
-    this.kardexResponse.pageNumber,9999999).subscribe((response:KardexResponse)=>{
-      if(response.success){
-        this.listKardex = response.data;
-      }
-    })
-  } 
-
+ 
   async searchAlmacen() {
     this.dataSource = new MatTableDataSource<Kardex>([])
     let almacenRequest:Almacen = new Almacen;
