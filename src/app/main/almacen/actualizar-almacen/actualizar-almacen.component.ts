@@ -183,7 +183,9 @@ export class ActualizarAlmacenComponent implements OnInit {
       tipoDocumento: ['', Validators.required],
       numeroDocumento: ['', Validators.required],
       nombreEncargado: ['', Validators.required],
-      nuCapacidadAlmacen: ['', Validators.required],
+      capacidadMaderable: ['', Validators.required],
+      capacidadNoMaderable: ['', Validators.required],
+      capacidadFauna: ['', Validators.required],
       direccionAlmacen: ['', Validators.required]
     });
     this.inputProductos = this._formBuilder.group({
@@ -202,7 +204,9 @@ export class ActualizarAlmacenComponent implements OnInit {
       this.inputRegistro.get('tipoDocumento').patchValue(this.dataRecurso.txTipoDocumento);
       this.inputRegistro.get('numeroDocumento').patchValue(this.dataRecurso.txNumeroDocumento);
       this.inputRegistro.get('nombreEncargado').patchValue(this.dataRecurso.txNombresEncargado);
-      this.inputRegistro.get('nuCapacidadAlmacen').patchValue(this.dataRecurso.nuCapacidadAlmacen);
+      this.inputRegistro.get('capacidadMaderable').patchValue(this.dataRecurso.capacidadMaderable);
+      this.inputRegistro.get('capacidadNoMaderable').patchValue(this.dataRecurso.capacidadNoMaderable);
+      this.inputRegistro.get('capacidadFauna').patchValue(this.dataRecurso.capacidadFauna);
       this.inputRegistro.get('direccionAlmacen').patchValue(this.dataRecurso.direccionAlmacen);
       this.photo = this.dataRecurso.foto;
     }
@@ -862,7 +866,9 @@ export class ActualizarAlmacenComponent implements OnInit {
     obj.txTipoDocumento = this.inputRegistro.get('tipoDocumento').value
     obj.txNumeroDocumento = this.inputRegistro.get('numeroDocumento').value
     obj.txNombresEncargado = this.inputRegistro.get('nombreEncargado').value
-    obj.nuCapacidadAlmacen = this.inputRegistro.get('nuCapacidadAlmacen').value
+    obj.capacidadMaderable = this.inputRegistro.get('capacidadMaderable').value
+    obj.capacidadNoMaderable = this.inputRegistro.get('capacidadNoMaderable').value
+    obj.capacidadFauna = this.inputRegistro.get('capacidadFauna').value
     obj.txNumeroATF = this.inputRegistro.get('numeroATF').value
     obj.txPuestoControl = this.inputRegistro.get('puestoControl').value
     obj.foto = this.photo;

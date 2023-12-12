@@ -114,20 +114,35 @@
                             </div>
                             <br>      
                             <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tamaño de Almacén</span>     
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">TDirección de Almacén</span>     
                                 <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Dirección de Almacén</span>                       
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Capacidad Maderable</span>                       
                             </div>
                             <div fxLayout="row" fxLayoutAlign="space-between">                                
                                 <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="nuCapacidadAlmacen">
+                                    <input matInput type="text" formControlName="direccionAlmacen">
                                 </mat-form-field>
                                 <div fxFlex="5"></div>
                                 <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="direccionAlmacen">
+                                    <input matInput type="text" formControlName="capacidadMaderable">
                                 </mat-form-field>
                             </div>
-                            <br>                        
+                            <br>     
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Capacidad No Maderable</span>      
+                                <div fxFlex="5"></div>                                  
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Capacidad Fauna</span>                      
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between"> 
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="capacidadNoMaderable">
+                                </mat-form-field>
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="capacidadFauna">
+                                </mat-form-field>
+                            </div>
+                                <br>                    
                             <div  id="course-step-content" mat-dialog-content class="repayment">
 
                                 <div  fxLayout="column">

@@ -98,7 +98,9 @@ export class RegistroAlmacenComponent implements OnInit {
       txTipoDocumento: ['', Validators.required],
       txNumeroDocumento: ['', Validators.required],
       txNombreEncargado: ['', Validators.required],
-      nuCapacidadAlmacen: ['', Validators.required],
+      capacidadMaderable: ['', Validators.required],
+      capacidadNoMaderable: ['', Validators.required],
+      capacidadFauna: ['', Validators.required],
       direccionAlmacen: ['', Validators.required]
     });
 
@@ -146,7 +148,9 @@ export class RegistroAlmacenComponent implements OnInit {
     obj.txTipoDocumento = this.inputRegistro.get('txTipoDocumento').value
     obj.txNumeroDocumento = this.inputRegistro.get('txNumeroDocumento').value
     obj.txNombresEncargado = this.inputRegistro.get('txNombreEncargado').value
-    obj.nuCapacidadAlmacen = this.inputRegistro.get('nuCapacidadAlmacen').value
+    obj.capacidadMaderable = this.inputRegistro.get('capacidadMaderable').value
+    obj.capacidadNoMaderable = this.inputRegistro.get('capacidadNoMaderable').value
+    obj.capacidadFauna = this.inputRegistro.get('capacidadFauna').value
     obj.txNumeroATF = this.inputRegistro.get('numeroATF').value
     obj.txPuestoControl = this.inputRegistro.get('puestoControl').value
     obj.foto = this.photo;

@@ -24,4 +24,7 @@ export class Almacen {
     foto?:string;
     direccionAlmacen?:string;
     lstAlmacenResponsable: AlmacenResponsable[] = [];
+    capacidadNoMaderable?:number=0;
+    capacidadFauna?:number=0;
+    capacidadMaderable?:number=0;
 }
