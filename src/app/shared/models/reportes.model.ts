@@ -20,4 +20,5 @@ export class Reportes {
     metroCubico?:number;
     faunaSalida?:string;   
     tipoEspecie?:string;
+    periodo?:string;
 }

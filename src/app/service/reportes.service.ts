@@ -12,7 +12,7 @@ export class ReportesService {
     private base: string = '';
 
     constructor(private http: HttpClient) {
-      this.base = environment.urlProcesos + "/api/serfor/reportes";
+      this.base = environment.urlProcesos + "/api/serfor/reporte";
     }
 
     postTransferencia(request: any) {
@@ -35,5 +35,25 @@ export class ReportesService {
         
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
     }
+
+    getReporteSalidas(reportesRequest:Reportes, page: number, size: number): Observable<ReportesResponse> {
+        let url = `${this.base}/reporteSalidas?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
+        if (reportesRequest.nuIdAlmacen) {
+          url += `&nuIdAlmacen=${reportesRequest.nuIdAlmacen}`
+      }
+        if (reportesRequest.tipoEspecie) {
+            url += `&tipoEspecie=${reportesRequest.tipoEspecie}`
+        }   
+        if (reportesRequest.tipoTransferenciaDetalle) {
+            url += `&tipoTransferenciaDetalle=${reportesRequest.tipoTransferenciaDetalle}`
+        }    
+        if (reportesRequest.periodo) {
+            url += `&periodo=${reportesRequest.periodo}`
+        }  
+ 
+
+        return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
+    }
+    
 
 }

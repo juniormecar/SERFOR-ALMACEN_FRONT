@@ -77,6 +77,9 @@ import { ReportesAvanzadoComponent } from './main/reporte/reportes-avanzado/repo
 import { RegistroTipoParametroComponent } from './main/mantenimiento/tipo-parametro/bandeja-tipo-parametro/modal/registro-tipo-parametro/registro-tipo-parametro.component';
 import { BandejaParametroComponent } from './main/mantenimiento/parametro/bandeja-parametro/bandeja-parametro.component';
 import { RegistroParametroComponent } from './main/mantenimiento/parametro/bandeja-parametro/modal/registro-parametro/registro-parametro.component';
+import { ReportesDonacionesComponent } from './main/reporte/reportes-donaciones/reportes-donaciones.component';
+import { ReportesSalidasComponent } from './main/reporte/reportes-salidas/reportes-salidas.component';
+import { ReportesIndicadoresComponent } from './main/reporte/reportes-indicadores/reportes-indicadores.component';
 
 const appRoutes: Routes = [
     {
@@ -163,6 +166,21 @@ const appRoutes: Routes = [
 
     },
     {
+        path: 'reportes-donaciones',
+        component: ReportesDonacionesComponent
+
+    },
+    {
+        path: 'reportes-salidas',
+        component: ReportesSalidasComponent
+
+    },
+    {
+        path: 'reportes-indicadores',
+        component: ReportesIndicadoresComponent
+
+    },
+    {
         path: '',
         pathMatch:'full',
         redirectTo: 'login',
@@ -215,7 +233,13 @@ const appRoutes: Routes = [
 
         BandejaParametroComponent,
 
-        RegistroParametroComponent
+        RegistroParametroComponent,
+
+        ReportesDonacionesComponent,
+
+        ReportesSalidasComponent,
+
+        ReportesIndicadoresComponent
     ],
     imports: [
         BrowserModule,

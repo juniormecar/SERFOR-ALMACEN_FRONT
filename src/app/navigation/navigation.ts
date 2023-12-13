@@ -63,9 +63,21 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id   : '2',
-                        title: 'Reportes',
+                        title: 'Reporte de Donaciones',
                         type : 'item',
-                        url  : '/reportes'
+                        url  : '/reportes-donaciones'
+                    },
+                    {
+                        id   : '3',
+                        title: 'Reporte de Salidas',
+                        type : 'item',
+                        url  : '/reportes-salidas'
+                    },
+                    {
+                        id   : '4',
+                        title: 'Reporte de Indicadores',
+                        type : 'item',
+                        url  : '/reportes-indicadores'
                     },
                 ]
             },
