@@ -40,7 +40,7 @@ export class ReportesDonacionesComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['fecha','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie'];
+  displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
@@ -206,7 +206,7 @@ export class ReportesDonacionesComponent implements OnInit {
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Fecha','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
+      const headers = ['Almacen','Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [
         nombreAlmacen ,
         item.feFechaRegistro,
@@ -224,7 +224,7 @@ export class ReportesDonacionesComponent implements OnInit {
     
       XLSX.writeFile(wb, 'Reporte.xlsx');
     }else{
-      const headers = ['Fecha','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
+      const headers = ['Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [        
         item.feFechaRegistro,
         item.almacenDestino,
