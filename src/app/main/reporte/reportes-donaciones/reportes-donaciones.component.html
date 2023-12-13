@@ -97,8 +97,18 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="tipoEspecie">
-                                        <th mat-header-cell *matHeaderCellDef> Tipo Especie</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.tipoEspecie }} </td>
+                                        <th mat-header-cell *matHeaderCellDef> Tipo de Especie </th>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <div *ngIf="element.tipoEspecie === 'MAD'">
+                                                 Maderable
+                                            </div>
+                                            <div *ngIf="element.tipoEspecie === 'NOMAD'">
+                                               No Maderable
+                                           </div>
+                                           <div *ngIf="element.tipoEspecie === 'FA'">
+                                            Fauna
+                                       </div>
+                                        </td>
                                     </ng-container>
 
                                     

@@ -46,7 +46,7 @@ export class ReportesDonacionesComponent implements OnInit {
   idAlmacen: any;
   reportesResponse: ReportesResponse = new ReportesResponse();
   numeroDocumento: string = '44691637';
-  listInventario: Recurso[] = [];
+  listReporte: Reportes[] = [];
   listPuestoControl: PuestoControl[] = [];
   listATF: ATF[] = [];
   reportesRequest:  Reportes = new Reportes();
@@ -201,49 +201,45 @@ export class ReportesDonacionesComponent implements OnInit {
 
 
   exportToExcel() {
-    const dataToExport = this.listInventario; 
+    const dataToExport = this.listReporte; 
     var nombreAlmacen='';
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+      const headers = ['Almacen','Fecha','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [
         nombreAlmacen ,
-        item.tipo === 'MAD' ? 'Maderable' :
-        item.tipo === 'NOMAD' ? 'No Maderable' :
-        item.tipo === 'FA' ? 'Fauna' : item.tipo,
+        item.feFechaRegistro,
+        item.almacenDestino,
         item.nombreCientifico,
         item.nombreComun,
-        item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        Number(item.txCantidadProducto),
-        item.metroCubico,
+        item.cantidadProducto,
+       item.tipoEspecie
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
     
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+      XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
     
-      XLSX.writeFile(wb, 'Inventario.xlsx');
+      XLSX.writeFile(wb, 'Reporte.xlsx');
     }else{
-      const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
-      const data = [headers, ...dataToExport.map(item => [
-        item.tipo === 'MAD' ? 'Maderable' :
-        item.tipo === 'NOMAD' ? 'No Maderable' :
-        item.tipo === 'FA' ? 'Fauna' : item.tipo,
+      const headers = ['Fecha','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
+      const data = [headers, ...dataToExport.map(item => [        
+        item.feFechaRegistro,
+        item.almacenDestino,
         item.nombreCientifico,
         item.nombreComun,
-        item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        Number(item.txCantidadProducto),
-        item.metroCubico,
+        item.cantidadProducto,
+       item.tipoEspecie
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
     
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+      XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
     
-      XLSX.writeFile(wb, 'Inventario.xlsx');
+      XLSX.writeFile(wb, 'Reporte.xlsx');
     }
     
       
