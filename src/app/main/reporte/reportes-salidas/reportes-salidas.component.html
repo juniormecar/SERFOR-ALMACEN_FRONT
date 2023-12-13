@@ -90,10 +90,32 @@
                                         <td mat-cell *matCellDef="let element"> {{element.feFechaRegistro | date: "dd/MM/yyyy h:mm:ss a" : "UTC" }} </td>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="destino">
-                                        <th mat-header-cell *matHeaderCellDef> Destino</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.almacenDestino }} </td>
+                                    <ng-container matColumnDef="origen">
+                                        <th mat-header-cell *matHeaderCellDef> Origen</th>
+                                        <td mat-cell *matCellDef="let element"> {{element.almacenOrigen }} </td>
                                     </ng-container>
+                                  
+
+                                    <ng-container matColumnDef="destino">
+                                        <th mat-header-cell *matHeaderCellDef> Destino </th>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <div *ngIf="element.tipoTransferencia === 'TPTRANS001'">
+                                                 {{element.nombre}}
+                                            </div>
+                                            <div *ngIf="element.tipoTransferencia === 'TPTRANS006'">
+                                               {{element.faunaSalida}}
+                                           </div>
+                                           <div *ngIf="element.tipoTransferencia === 'TPTRANS002'">
+                                            {{element.almacenDestino}}
+                                       </div>
+                                        </td>
+                                    </ng-container>
+
+
+
+
+
+
                                                                
                                     
                                     <ng-container matColumnDef="nombreCientifico">
