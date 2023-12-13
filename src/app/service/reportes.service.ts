@@ -44,9 +44,25 @@ export class ReportesService {
         if (reportesRequest.tipoEspecie) {
             url += `&tipoEspecie=${reportesRequest.tipoEspecie}`
         }   
-        if (reportesRequest.tipoTransferenciaDetalle) {
-            url += `&tipoTransferenciaDetalle=${reportesRequest.tipoTransferenciaDetalle}`
+        if (reportesRequest.tipoTransferencia) {
+            url += `&tipoTransferencia=${reportesRequest.tipoTransferencia}`
         }    
+        if (reportesRequest.periodo) {
+            url += `&periodo=${reportesRequest.periodo}`
+        }  
+ 
+
+        return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
+    }
+
+    getReporteIndicadores(reportesRequest:Reportes, page: number, size: number): Observable<ReportesResponse> {
+        let url = `${this.base}/reporteIndicadores?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
+        if (reportesRequest.nuIdAlmacen) {
+          url += `&nuIdAlmacen=${reportesRequest.nuIdAlmacen}`
+      }
+        if (reportesRequest.tipoAccion) {
+            url += `&tipoAccion=${reportesRequest.tipoAccion}`
+        }             
         if (reportesRequest.periodo) {
             url += `&periodo=${reportesRequest.periodo}`
         }  

@@ -24,30 +24,37 @@ import * as XLSX from 'xlsx';
 import { ParametroService } from 'app/service/parametro.service';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Constants } from 'app/shared/models/util/constants';
+import { ReportesResponse } from 'app/shared/models/response/reportes-response';
+import { Reportes } from 'app/shared/models/reportes.model';
+import { ReportesService } from 'app/service/reportes.service';
 
 
 @Component({
   selector: 'app-reportes-indicadores',
-  templateUrl: './reportes-indicadores.component.html',
-  styleUrls: ['./reportes-indicadores.component.scss']
+templateUrl: './reportes-indicadores.component.html',
+styleUrls: ['./reportes-indicadores.component.scss']
 })
 export class ReportesIndicadoresComponent implements OnInit {
 
-  dataSource = new MatTableDataSource<Recurso>([]);
+  dataSource = new MatTableDataSource<Reportes>([]);
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['position','Tipo','disponibilidad', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','metroCubico'];
+  displayedColumns: string[] = ['almacen', 'nombreCientifico', 'nombreComun', 'cantidad'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
-  recursoResponse: BandejaRecursoResponse = new BandejaRecursoResponse();
+  reportesResponse: ReportesResponse = new ReportesResponse();
   numeroDocumento: string = '44691637';
   listInventario: Recurso[] = [];
   listPuestoControl: PuestoControl[] = [];
   listATF: ATF[] = [];
-
-  lstDecimal = new Decimal();
+  reportesRequest:  Reportes = new Reportes();
+  listPeriodo: Parametro[] = [];
+  listTipoAccion: Parametro[] = [];
+  periodo: string = Constants.PERIODO;
+  tipoAccion: string = Constants.TIPOACCION;
+  lstDecimal = new Decimal();    
   cantidadPipe!: string;
   cantidad!: number;
   redondeo!: string;
@@ -63,14 +70,14 @@ export class ReportesIndicadoresComponent implements OnInit {
     private _formBuilder: FormBuilder,
     public _router: Router,
     public _dialog: MatDialog,
-    private _recursoService: RecursoService,
+    private _reportesService: ReportesService,
     private puestoControlService: PuestoControlService,
     private atfService: AtfService,
     private almacenService: AlmacenService,
     private parametroService: ParametroService, 
   ) {
-    this.recursoResponse.pageNumber = 1;
-    this.recursoResponse.pageSize = 10;
+    this.reportesResponse.pageNumber = 1;
+    this.reportesResponse.pageSize = 10;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -90,13 +97,9 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.almacenResponse.pageNumber = 1;
      this.almacenResponse.pageSize = 1000;
     this.inputBandeja = this._formBuilder.group({
-      nombreEspecie: [''],
-      numeroATF: [''],
-      puestoControl: [''],
-      almacen: [''],   
-      tipoIngreso: [''],
-      disponibilidadActa: [''], 
-      tipoEspecie: [''], 
+      almacen: [''],      
+      tipoAccion: [''], 
+      periodo: [''], 
     });
 
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
@@ -107,133 +110,73 @@ export class ReportesIndicadoresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-   this.searchATF();
-   this.searchTipoIngreso();
-   this.searchDisponibilidadActa();
-   this.searchTipoEspecie();
+   this.searchAlmacen();
+   this.searchTipoEspecie();     
+   this.searchPeriodo();
+   this.searchTipoAccion();
+   //this.Search();
   }
 
-  searchTipoIngreso() {
-    this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
-      this.listTipoIngreso = response;
-    });
+  async searchAlmacen() {
+    this.dataSource = new MatTableDataSource<Reportes>([])
+    let almacenRequest:Almacen = new Almacen;
+    almacenRequest.txNombreAlmacen='';
+    almacenRequest.txNumeroDocumento = this.numeroDocumento;
+    this.almacenService.getAlmacenSearch(almacenRequest,this.almacenResponse.pageNumber,this.almacenResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+    this.almacenResponse =response;
+    this.listAlmacen=response.data;
+    })
   }
-  searchDisponibilidadActa() {
-    this.parametroService.getParametroSearch(this.disponibilidadActa).subscribe((response: Parametro[]) => {
-      this.listDisponibilidadActa = response;
-    });
-  }
+ 
   searchTipoEspecie() {
     this.parametroService.getParametroSearch(this.tipoEspecie).subscribe((response: Parametro[]) => {
       this.listTipoEspecie = response;
     });
   }
 
-  async Search() {
-    this.recursoResponse.pageNumber = 1;
-    this.recursoResponse.pageSize = 10;
-    this.nameAlmacen = this.inputBandeja.get('almacen').value;
-    this._recursoService.getRecursoSearchVerProductos(null, null, null, this.inputBandeja.get('nombreEspecie').value, null, null, this.numeroDocumento, null,null,null,
-    this.inputBandeja.get('numeroATF').value,
-    this.inputBandeja.get('puestoControl').value,    
-    this.inputBandeja.get('almacen').value,
-    this.inputBandeja.get('tipoEspecie').value,null,
-    this.inputBandeja.get('tipoIngreso').value,
-    this.inputBandeja.get('disponibilidadActa').value,
-      this.recursoResponse.pageNumber, this.recursoResponse.pageSize,'DESC')
-      .subscribe((response: BandejaRecursoResponse) => {
-        if (response.success) {
-          this.listInventario = response.data;
-          //console.log("this.listInventario ",this.listInventario)
-          this.SearchInventario();
-        }
-      })
+  searchPeriodo() {
+    this.parametroService.getParametroSearch(this.periodo).subscribe((response: Parametro[]) => {
+      this.listPeriodo = response;
+    });
   }
 
-  async SearchInventario() {
-    this.dataSource = new MatTableDataSource<Recurso>([])
-        if (this.listInventario.length>0) {
-          this.recursoResponse.data = this.listInventario;
-          this.recursoResponse.totalRecords = this.listInventario.length;
-          if(this.recursoResponse.totalRecords>=10){
-            let actual = this.recursoResponse.pageNumber * this.recursoResponse.pageSize
-            this.recursoResponse.data = this.listInventario.slice(
-              (actual - this.recursoResponse.pageSize),
-              actual
-            );
-          }
-          this.dataSource = new MatTableDataSource<Recurso>(this.recursoResponse.data);
-          this.dataSource.data.forEach((element: any) => {
-            element.metroCubico  = this.cutDecimalsWithoutRounding(element.metroCubico, this.cantidad);
-            element.cantidadProducto  = this.cutDecimalsWithoutRounding(element.cantidadProducto, this.cantidad) ;
-          });
-        }
+  searchTipoAccion() {
+    this.parametroService.getParametroSearch(this.tipoAccion).subscribe((response: Parametro[]) => {
+      this.listTipoAccion= response;
+    });
   }
-  
-  async searchAlmacen() {
-    this.dataSource = new MatTableDataSource<Recurso>([])
-    let almacenRequest:Almacen = new Almacen;
-    almacenRequest.txNombreAlmacen='';
-    almacenRequest.txNumeroDocumento = this.numeroDocumento;
-    almacenRequest.txPuestoControl = this.inputBandeja.get('puestoControl').value
-    this.almacenService.getAlmacenSearch(almacenRequest,this.almacenResponse.pageNumber,this.almacenResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
-    this.almacenResponse =response;
-    this.listAlmacen=response.data;
+
+  async SearchReportes() {
+    this.dataSource = new MatTableDataSource<Reportes>([])
+    this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
+    this.reportesRequest.tipoAccion = this.inputBandeja.get('tipoAccion').value;    
+    this.reportesRequest.periodo = this.inputBandeja.get('periodo').value;  
+    this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+      if(response.success){
+        this.reportesResponse = response;
+        this.dataSource = new MatTableDataSource<Reportes>(response.data);
+        this.resultsLength=response.totalRecords;
+      }
     })
   }
-
-  searchATF() {
-    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
-      this.listATF = response;
-    });
-  }
-
-  searchPuestoControl() {
-    this.puestoControlService.getPuestoControlSearch(this.inputBandeja.get('numeroATF').value).subscribe((response: PuestoControl[]) => {
-      this.listPuestoControl= response;
-      this.listAlmacen = [];
-    });
-  }
+  
+  
  
   pageDataSource(e: PageEvent): PageEvent {
-    this.recursoResponse.pageNumber = e.pageIndex + 1;
-    this.recursoResponse.pageSize = e.pageSize;
-    this.SearchInventario();
+    this.reportesResponse.pageNumber = e.pageIndex + 1;
+    this.reportesResponse.pageSize = e.pageSize;
+    this.SearchReportes();
     return e;
   }
 
   limpiarCampos(): void {
-    this.inputBandeja.get('nombreEspecie').setValue('');
-    this.inputBandeja.get('numeroATF').setValue('');
-    this.inputBandeja.get('puestoControl').setValue('');
     this.inputBandeja.get('almacen').setValue('');
-    this.inputBandeja.get('tipoIngreso').setValue('');
-    this.inputBandeja.get('disponibilidadActa').setValue('');
-    this.inputBandeja.get('tipoEspecie').setValue('');
-    this.recursoResponse.pageNumber = 1;
-    this.recursoResponse.pageSize = 10;
+    this.inputBandeja.get('tipoAccion').setValue('');   
+    this.inputBandeja.get('periodo').setValue('');   
+    this.reportesResponse.pageNumber = 1;
+    this.reportesResponse.pageSize = 10;
   }
 
-  verDetalleProducto(idEspecie: number, nombreCientifico: string, nombreComun: string) {
-    console.log("bandeja",this.inputBandeja.get('almacen').value)
-    let data = [];
-    const dialogRef = this._dialog.open(DetalleComponent, {
-      width: '1200px',
-      height: '700px',
-      data: { idEspecie: idEspecie, nombreCientifico: nombreCientifico, nombreComun: nombreComun, nombreAlmacen: this.inputBandeja.get('almacen').value}
-    });
-  }
-
-  verDetalleAlmacen(idEspecie: number, nombreCientifico: string, nombreComun: string) {
-    console.log("bandeja",this.inputBandeja.get('almacen').value)
-    let data = [];
-    const dialogRef = this._dialog.open(DetalleAlmacenComponent, {
-      width: '1200px',
-      height: '700px',
-      data: { idEspecie: idEspecie, nombreCientifico: nombreCientifico, nombreComun: nombreComun, nombreAlmacen: this.inputBandeja.get('almacen').value }
-    });
-  }
 
   cutDecimalsWithoutRounding(numFloat: number, toFixed: number) {
 
@@ -276,26 +219,6 @@ export class ReportesIndicadoresComponent implements OnInit {
   }
 
 
-  /*exportToExcel() {
-    
-    const dataToExport = this.dataSource.data;
-  
-    const headers = ['Nombre Científico','Nombre Comun','Cantidad','Metro Cubico'];
-  
-    const data = [headers, ...dataToExport.map(item => [
-      item.nombreCientifico,
-      item.nombreComun,
-      item.txCantidadProducto,
-      item.metroCubico,
-    ])];
-    
-    const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
-  
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
- 
-    XLSX.writeFile(wb, 'Inventario.xlsx');
-  }*/
 
   exportToExcel() {
     const dataToExport = this.listInventario; 

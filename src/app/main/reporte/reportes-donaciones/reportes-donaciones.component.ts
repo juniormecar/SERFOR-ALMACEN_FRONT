@@ -131,7 +131,7 @@ export class ReportesDonacionesComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Reportes>([])
     this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
     this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
-    this.reportesRequest.tipoTransferenciaDetalle = 'TPTRANS001';  
+    this.reportesRequest.tipoTransferencia = 'TPTRANS001';  
     this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
         this.reportesResponse = response;

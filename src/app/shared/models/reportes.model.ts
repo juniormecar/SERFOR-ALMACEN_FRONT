@@ -21,4 +21,5 @@ export class Reportes {
     faunaSalida?:string;   
     tipoEspecie?:string;
     periodo?:string;
+    tipoAccion?:string;
 }
