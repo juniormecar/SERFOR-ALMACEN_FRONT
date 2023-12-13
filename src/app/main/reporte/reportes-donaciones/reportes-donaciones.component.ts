@@ -40,7 +40,7 @@ export class ReportesDonacionesComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['position','fecha','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie'];
+  displayedColumns: string[] = ['fecha','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;

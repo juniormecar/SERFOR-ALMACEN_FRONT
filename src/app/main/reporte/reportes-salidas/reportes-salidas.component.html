@@ -82,19 +82,12 @@
                             <br>
 
                             <div class="example-container mat-elevation-z8">
-                                <table mat-table [dataSource]="dataSource">
-
-                                    <ng-container matColumnDef="position">
-                                        <th mat-header-cell *matHeaderCellDef> #</th>
-                                        <td mat-cell *matCellDef="let element;let i = index;">
-                                            {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
-                                        </td>
-                                    </ng-container>    
+                                <table mat-table [dataSource]="dataSource">                                  
 
                                     
                                     <ng-container matColumnDef="fecha">
                                         <th mat-header-cell *matHeaderCellDef> Fecha</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.feFechaRegistro }} </td>
+                                        <td mat-cell *matCellDef="let element"> {{element.feFechaRegistro | date: "dd/MM/yyyy h:mm:ss a" : "UTC" }} </td>
                                     </ng-container>
 
                                     <ng-container matColumnDef="destino">
