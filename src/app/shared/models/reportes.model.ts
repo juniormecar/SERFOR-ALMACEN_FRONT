@@ -23,4 +23,5 @@ export class Reportes {
     periodo?:string;
     tipoAccion?:string;
     nombre?:string;
+    disponibilidadActa?:string;
 }

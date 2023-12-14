@@ -37,7 +37,7 @@
   export class ReportesSalidasComponent implements OnInit {
   
     dataSource = new MatTableDataSource<Reportes>([]);
-    selection = new SelectionModel<Reportes>(true, []);
+    selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
     displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie','tipoTransferenciaDetalle'];
@@ -46,7 +46,7 @@
     idAlmacen: any;
     reportesResponse: ReportesResponse = new ReportesResponse();
     numeroDocumento: string = '44691637';
-    listReporte: Reportes[] = [];
+    listInventario: Recurso[] = [];
     listPuestoControl: PuestoControl[] = [];
     listATF: ATF[] = [];
     reportesRequest:  Reportes = new Reportes();
@@ -238,40 +238,54 @@
   
   
     exportToExcel() {
-      const dataToExport = this.listReporte;            
+      const dataToExport = this.listInventario; 
+      var nombreAlmacen='';
       
-        const headers = ['Fecha','Origen', 'Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
+      if(this.inputBandeja.get('almacen').value){
+        nombreAlmacen=this.inputBandeja.get('almacen').value;
+        const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
         const data = [headers, ...dataToExport.map(item => [
-          item.feFechaRegistro,
-          item.almacenOrigen,
-
-          item.tipoTransferencia === 'TPTRANS001' ? item.nombre :
-          item.tipoTransferencia === 'TPTRANS006' ? item.faunaSalida :
-          item.tipoTransferencia === 'TPTRANS002' ? item.almacenDestino : item.almacenDestino,
-          
-
-
-          item.almacenOrigen,
+          nombreAlmacen ,
+          item.tipo === 'MAD' ? 'Maderable' :
+          item.tipo === 'NOMAD' ? 'No Maderable' :
+          item.tipo === 'FA' ? 'Fauna' : item.tipo,
           item.nombreCientifico,
           item.nombreComun,
-          Number(item.cantidadProducto),
-          item.tipoEspecie === 'MAD' ? 'Maderable' :
-          item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
-          item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
-          item.tipoTransferenciaDetalle          
+          item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
+          Number(item.txCantidadProducto),
+          item.metroCubico,
           
         ])];
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
       
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
+        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
       
-        XLSX.writeFile(wb, 'Reporte.xlsx');
+        XLSX.writeFile(wb, 'Inventario.xlsx');
+      }else{
+        const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+        const data = [headers, ...dataToExport.map(item => [
+          item.tipo === 'MAD' ? 'Maderable' :
+          item.tipo === 'NOMAD' ? 'No Maderable' :
+          item.tipo === 'FA' ? 'Fauna' : item.tipo,
+          item.nombreCientifico,
+          item.nombreComun,
+          item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
+          Number(item.txCantidadProducto),
+          item.metroCubico,
+          
+        ])];
+        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
+      
+        const wb: XLSX.WorkBook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+      
+        XLSX.writeFile(wb, 'Inventario.xlsx');
       }
       
         
       
-    
+    }
   
   }
   
