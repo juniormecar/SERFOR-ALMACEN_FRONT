@@ -104,11 +104,6 @@ export class ReportesDonacionesComponent implements OnInit {
       fechaFin: [''], 
     });
 
-    
-    this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = Number(this.lstDecimal.cantidad);
-    this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = this.lstDecimal.redondeo;
     this.numeroDocumento = localStorage.getItem('usuario'); 
   }
 
@@ -179,50 +174,7 @@ export class ReportesDonacionesComponent implements OnInit {
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
   }
-
-
-  cutDecimalsWithoutRounding(numFloat: number, toFixed: number) {
-
-    let numFloat_bf = '0';
-    let numFloat_af  = '0';
-
-    if(this.redondeo === 'Mayor'){
-      //console.log("numFloat",numFloat);
-      return (numFloat > 0) ? Number(numFloat).toFixed(this.cantidad): numFloat;
-    } else{
-      let isNegative = false;
-
-        if ( numFloat < 0 ) {
-          numFloat *= -1; // Equivale a Math.abs();     
-          isNegative = true;
-        }
-        // Recogemos el valor ANTES del separador
-        if(numFloat !== undefined ){
-          numFloat_bf = numFloat.toString().split('.')[0];
-        // Recogemos el valor DESPUÉS del separador
-         numFloat_af = numFloat.toString().split('.')[1];
-        }
-         
   
-        if(numFloat_af != null || numFloat_af != undefined){
-          // Recortar los decimales según el valor de 'toFixed'
-          if (numFloat_af.length > toFixed ) {
-            numFloat_af = `.${numFloat_af.slice(0, -numFloat_af.length + toFixed)}`; 
-          } else {
-            numFloat_af = `.`+`${numFloat_af}`; 
-          }
-
-          return parseFloat(`${( isNegative ? '-': '' )}${numFloat_bf}${numFloat_af}`);
-      } else {
-        return (numFloat > 0) ? Number(numFloat).toFixed(this.cantidad): numFloat;
-      }
-
-    }
-
-  }
-
-
-
   exportToExcel() {
     console.log('Datos a exportar:', this.listReporte);
     /*const dataToExport = this.listReporte; */
