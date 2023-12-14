@@ -212,53 +212,68 @@
   
   
     exportToExcel() {
-      const dataToExport = this.listInventario; 
+      //const dataToExport = this.listInventario; 
+      const dataToExport = this.dataSource.data;
       var nombreAlmacen='';
       
       if(this.inputBandeja.get('almacen').value){
         nombreAlmacen=this.inputBandeja.get('almacen').value;
-        const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+        const headers = ['Almacen','Fecha','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
         const data = [headers, ...dataToExport.map(item => [
           nombreAlmacen ,
-          item.tipo === 'MAD' ? 'Maderable' :
-          item.tipo === 'NOMAD' ? 'No Maderable' :
-          item.tipo === 'FA' ? 'Fauna' : item.tipo,
+          this.formatDateToUTC(item.feFechaRegistro),
+          item.tipoEspecie === 'MAD' ? 'Maderable' :
+          item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+          item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
           item.nombreCientifico,
           item.nombreComun,
           item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-          Number(item.txCantidadProducto),
+          Number(item.cantidadProducto),
           item.metroCubico,
           
         ])];
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
       
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+        XLSX.utils.book_append_sheet(wb, ws, 'ReporteSalidas');
       
-        XLSX.writeFile(wb, 'Inventario.xlsx');
+        XLSX.writeFile(wb, 'ReporteSalidas.xlsx');
       }else{
-        const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+        const headers = ['Fecha','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
         const data = [headers, ...dataToExport.map(item => [
-          item.tipo === 'MAD' ? 'Maderable' :
-          item.tipo === 'NOMAD' ? 'No Maderable' :
-          item.tipo === 'FA' ? 'Fauna' : item.tipo,
+          this.formatDateToUTC(item.feFechaRegistro),
+          item.tipoEspecie === 'MAD' ? 'Maderable' :
+          item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+          item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
           item.nombreCientifico,
           item.nombreComun,
           item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-          Number(item.txCantidadProducto),
+          Number(item.cantidadProducto),
           item.metroCubico,
           
         ])];
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
       
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+        XLSX.utils.book_append_sheet(wb, ws, 'ReporteSalidas');
       
-        XLSX.writeFile(wb, 'Inventario.xlsx');
+        XLSX.writeFile(wb, 'ReporteSalidas.xlsx');
       }
       
-        
-      
+    }
+
+    formatDateToUTC(date) {
+      const dateInUTC = new Date(date);
+      const year = dateInUTC.getUTCFullYear();
+      const month = dateInUTC.getUTCMonth() + 1;
+      const day = dateInUTC.getUTCDate();
+      const hours = dateInUTC.getUTCHours();
+      const minutes = dateInUTC.getUTCMinutes();
+      const seconds = dateInUTC.getUTCSeconds();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const formattedHours = hours % 12 || 12; 
+      const formattedDate = `${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+      return formattedDate;
     }
   
   }

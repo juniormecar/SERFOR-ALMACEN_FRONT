@@ -201,7 +201,9 @@ export class ReportesDonacionesComponent implements OnInit {
 
 
   exportToExcel() {
-    const dataToExport = this.listReporte; 
+    console.log('Datos a exportar:', this.listReporte);
+    /*const dataToExport = this.listReporte; */
+    const dataToExport = this.dataSource.data;
     var nombreAlmacen='';
     
     if(this.inputBandeja.get('almacen').value){
@@ -209,41 +211,63 @@ export class ReportesDonacionesComponent implements OnInit {
       const headers = ['Almacen','Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [
         nombreAlmacen ,
-        item.feFechaRegistro,
-        item.almacenDestino,
+        this.formatDateToUTC(item.feFechaRegistro),
+        //item.feFechaRegistro,
+        item.almacenOrigen,
+        item.nombre,
         item.nombreCientifico,
         item.nombreComun,
         item.cantidadProducto,
-       item.tipoEspecie
+        item.tipoEspecie === 'MAD' ? 'Maderable' :
+        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie
+        //item.tipoEspecie
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
     
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
+      XLSX.utils.book_append_sheet(wb, ws, 'ReporteDonaciones');
     
-      XLSX.writeFile(wb, 'Reporte.xlsx');
+      XLSX.writeFile(wb, 'ReporteDonaciones.xlsx');
     }else{
       const headers = ['Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [        
-        item.feFechaRegistro,
-        item.almacenDestino,
+        //item.feFechaRegistro,
+        this.formatDateToUTC(item.feFechaRegistro),
+        item.almacenOrigen,
+        item.nombre,
         item.nombreCientifico,
         item.nombreComun,
         item.cantidadProducto,
-       item.tipoEspecie
+       //item.tipoEspecie
+        item.tipoEspecie === 'MAD' ? 'Maderable' :
+        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
     
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
+      XLSX.utils.book_append_sheet(wb, ws, 'ReporteDonaciones');
     
-      XLSX.writeFile(wb, 'Reporte.xlsx');
+      XLSX.writeFile(wb, 'ReporteDonaciones.xlsx');
     }
     
-      
-    
+  }
+
+  formatDateToUTC(date) {
+    const dateInUTC = new Date(date);
+    const year = dateInUTC.getUTCFullYear();
+    const month = dateInUTC.getUTCMonth() + 1;
+    const day = dateInUTC.getUTCDate();
+    const hours = dateInUTC.getUTCHours();
+    const minutes = dateInUTC.getUTCMinutes();
+    const seconds = dateInUTC.getUTCSeconds();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; 
+    const formattedDate = `${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
+    return formattedDate;
   }
 
 }
