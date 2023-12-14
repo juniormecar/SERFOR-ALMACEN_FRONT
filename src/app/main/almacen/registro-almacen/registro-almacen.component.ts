@@ -98,9 +98,9 @@ export class RegistroAlmacenComponent implements OnInit {
       txTipoDocumento: ['', Validators.required],
       txNumeroDocumento: ['', Validators.required],
       txNombreEncargado: ['', Validators.required],
-      capacidadMaderable: ['', Validators.required],
-      capacidadNoMaderable: ['', Validators.required],
-      capacidadFauna: ['', Validators.required],
+      capacidadMaderable: ['' ],
+      capacidadNoMaderable: [''],
+      capacidadFauna: [''],
       direccionAlmacen: ['', Validators.required]
     });
 
