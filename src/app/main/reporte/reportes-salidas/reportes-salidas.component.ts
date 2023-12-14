@@ -161,6 +161,7 @@
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
       this.reportesRequest.periodo = this.varPeriodo;
+      this.reportesRequest.numeroDocumento =  this.numeroDocumento;
       this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
         if(response.success){
           this.reportesResponse = response;

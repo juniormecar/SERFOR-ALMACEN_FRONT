@@ -26,4 +26,5 @@ export class Reportes {
     disponibilidadActa?:string;
     fechaInicio?:Date;
     fechaFin?:Date;
+    numeroDocumento?:string;
 }

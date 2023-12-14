@@ -148,6 +148,7 @@ export class ReportesDonacionesComponent implements OnInit {
     this.reportesRequest.tipoTransferencia = 'TPTRANS001'; 
     this.reportesRequest.fechaInicio = this.fechaInicio;
     this.reportesRequest.fechaFin = this.fechaFin;
+    this.reportesRequest.numeroDocumento =  this.numeroDocumento;
     this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
         this.reportesResponse = response;

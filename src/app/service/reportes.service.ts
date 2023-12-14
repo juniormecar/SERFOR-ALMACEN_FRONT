@@ -56,6 +56,9 @@ export class ReportesService {
         if (reportesRequest.fechaFin) {
             url += `&fechaFin=${reportesRequest.fechaFin}`
         }
+        if (reportesRequest.numeroDocumento) {
+            url += `&numeroDocumento=${reportesRequest.numeroDocumento}`
+        }
  
 
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
