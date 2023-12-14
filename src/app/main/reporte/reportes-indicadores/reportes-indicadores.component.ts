@@ -52,7 +52,7 @@ export class ReportesIndicadoresComponent implements OnInit {
   reportesRequest:  Reportes = new Reportes();
   listPeriodo: Parametro[] = [];
   listTipoAccion: Parametro[] = [];
-  periodo: string = Constants.PERIODO;
+  periodo: string = Constants.PERIODO_TRI;
   tipoAccion: string = Constants.TIPOACCION;
   lstDecimal = new Decimal();    
   cantidadPipe!: string;
