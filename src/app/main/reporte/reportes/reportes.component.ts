@@ -42,7 +42,7 @@ export class ReportesComponent implements OnInit {
   tipoIngreso: string = Constants.TIPO_INGRESO;
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
   tipoEspecie: string = Constants.TIPO_PRODUCTO_CATA;
-  periodo: string = Constants.PERIODO;
+  periodo: string = Constants.PERIODO_TRI;
   parametroResponse: ParametroResponse = new ParametroResponse();
 
 
