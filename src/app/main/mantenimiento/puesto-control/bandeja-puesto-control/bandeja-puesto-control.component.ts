@@ -59,7 +59,7 @@ export class BandejaPuestoControlComponent implements OnInit {
   openModalPuestoControl(dataPuestoControl: PuestoControl, type: String, index: any) {
     const dialogRef = this._dialog.open(RegistroPuestoControlComponent, {
       width: '1000px',
-      height: '690px',
+      height: '640px',
       data: { dataPuestoControl: dataPuestoControl, type: type }
     });    
 

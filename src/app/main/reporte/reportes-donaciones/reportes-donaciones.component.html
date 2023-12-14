@@ -53,6 +53,31 @@
                                     </mat-select>
                                 </mat-form-field>                               
                             </div> 
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Fecha Inicio</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Fecha Fin</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">    
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"fxFlex="45">
+                                    <input matInput [matDatepicker]="startDatePicker"  name="fechaInicio"
+                                        formControlName="fechaInicio" > 
+                                    <mat-datepicker-toggle matSuffix [for]="startDatePicker " ></mat-datepicker-toggle>
+                                    <mat-datepicker #startDatePicker></mat-datepicker>
+                                </mat-form-field>
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"fxFlex="45">
+                                    <input matInput [matDatepicker]="endDatePicker"  name="fechaFin"  
+                                        formControlName="fechaFin"> 
+                                    <mat-datepicker-toggle matSuffix [for]="endDatePicker" ></mat-datepicker-toggle>
+                                    <mat-datepicker #endDatePicker></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                            
+                            <br>
                             <br>
 
                             <div class="col-sm-12 my-2 form-group text-center">

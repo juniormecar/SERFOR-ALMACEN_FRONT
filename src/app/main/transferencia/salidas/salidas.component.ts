@@ -75,7 +75,7 @@ export class SalidasComponent implements OnInit {
   openDialogBeneficiario(){
       const dialogRef = this._dialog.open(BeneficiarioComponent, {
         width: '1000px',
-        height: '770px',
+        height: '720px',
         data: { idAlmacen: this._data.idAlmacen, data: this._data.data  }
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -87,7 +87,7 @@ export class SalidasComponent implements OnInit {
     openDialogAlmacen(){
       const dialogRef = this._dialog.open(AlmacenComponent, {
         width: '1000px',
-        height: '670px',
+        height: '620px',
         data: { data: this._data.data, idAlmacen: this._data.idAlmacen }
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -111,7 +111,7 @@ export class SalidasComponent implements OnInit {
     openDialogDevolucion(){
       const dialogRef = this._dialog.open(DevolucionesComponent, {
         width: '1000px',
-        height: '490px',
+        height: '450px',
         data: { idAlmacen: this._data.idAlmacen, data: this._data.data  }
       });
       dialogRef.afterClosed().subscribe(result => {
@@ -123,7 +123,7 @@ export class SalidasComponent implements OnInit {
     openDialogBajas(){
       const dialogRef = this._dialog.open(BajasComponent, {
         width: '1000px',
-        height: '580px',
+        height: '530px',
         data: { idAlmacen: this._data.idAlmacen, data: this._data.data  }
       });
       dialogRef.afterClosed().subscribe(result => {

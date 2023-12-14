@@ -24,4 +24,6 @@ export class Reportes {
     tipoAccion?:string;
     nombre?:string;
     disponibilidadActa?:string;
+    fechaInicio?:Date;
+    fechaFin?:Date;
 }

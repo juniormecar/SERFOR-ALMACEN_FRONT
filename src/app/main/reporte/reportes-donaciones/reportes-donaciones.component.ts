@@ -27,6 +27,7 @@ import { Constants } from 'app/shared/models/util/constants';
 import { ReportesResponse } from 'app/shared/models/response/reportes-response';
 import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesService } from 'app/service/reportes.service';
+import { invalid } from 'moment';
 
 
 @Component({
@@ -34,6 +35,7 @@ import { ReportesService } from 'app/service/reportes.service';
   templateUrl: './reportes-donaciones.component.html',
   styleUrls: ['./reportes-donaciones.component.scss']
 })
+
 export class ReportesDonacionesComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Reportes>([]);
@@ -52,6 +54,8 @@ export class ReportesDonacionesComponent implements OnInit {
   reportesRequest:  Reportes = new Reportes();
   lstDecimal = new Decimal();
   cantidadPipe!: string;
+  fechaInicio:any = '';
+  fechaFin:any = '';
   cantidad!: number;
   redondeo!: string;
   nameAlmacen!: string;
@@ -71,6 +75,7 @@ export class ReportesDonacionesComponent implements OnInit {
     private atfService: AtfService,
     private almacenService: AlmacenService,
     private parametroService: ParametroService, 
+    
   ) {
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
@@ -95,8 +100,11 @@ export class ReportesDonacionesComponent implements OnInit {
     this.inputBandeja = this._formBuilder.group({
       almacen: [''],      
       tipoEspecie: [''], 
+      fechaInicio: [''], 
+      fechaFin: [''], 
     });
 
+    
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
     this.cantidad = Number(this.lstDecimal.cantidad);
     this.cantidadPipe = '0.0-' + this.cantidad;
@@ -128,10 +136,23 @@ export class ReportesDonacionesComponent implements OnInit {
   }
 
   async SearchReportes() {
+
+    this.fechaInicio = this.inputBandeja.get('fechaInicio').value;
+    if( this.fechaInicio === undefined || this.fechaInicio === null || this.fechaInicio === '')
+    { this.fechaInicio = null;}
+    else{this.fechaInicio = new Date (this.inputBandeja.get('fechaInicio').value);}
+
+    this.fechaFin = this.inputBandeja.get('fechaFin').value;
+    if( this.fechaFin === undefined || this.fechaFin === null || this.fechaFin === '')
+    { this.fechaFin = null;}
+    else{this.fechaFin = new Date (this.inputBandeja.get('fechaFin').value);}
+
     this.dataSource = new MatTableDataSource<Reportes>([])
     this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
     this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
-    this.reportesRequest.tipoTransferencia = 'TPTRANS001';  
+    this.reportesRequest.tipoTransferencia = 'TPTRANS001'; 
+    this.reportesRequest.fechaInicio = this.fechaInicio;
+    this.reportesRequest.fechaFin = this.fechaFin;
     this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
         this.reportesResponse = response;
@@ -153,6 +174,8 @@ export class ReportesDonacionesComponent implements OnInit {
   limpiarCampos(): void {
     this.inputBandeja.get('almacen').setValue('');
     this.inputBandeja.get('tipoEspecie').setValue('');   
+    this.inputBandeja.get('fechaInicio').setValue('');   
+    this.inputBandeja.get('fechaFin').setValue('');   
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
   }

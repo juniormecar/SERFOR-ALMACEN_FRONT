@@ -67,7 +67,7 @@ export class BandejaTipoParametroComponent implements OnInit {
   openModalTipoParametro(dataPuestoControl: TipoParametro, type: String, index: any){
     const dialogRef = this._dialog.open(RegistroTipoParametroComponent, {
       width: '1000px',
-      height: '470px',
+      height: '450px',
       data: { dataPuestoControl: dataPuestoControl, type: type }
     });
    // dialogRef.afterClosed().subscribe(result => { })

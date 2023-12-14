@@ -50,6 +50,12 @@ export class ReportesService {
         if (reportesRequest.periodo) {
             url += `&periodo=${reportesRequest.periodo}`
         }  
+        if (reportesRequest.fechaInicio) {
+            url += `&fechaInicio=${reportesRequest.fechaInicio}`
+        }
+        if (reportesRequest.fechaFin) {
+            url += `&fechaFin=${reportesRequest.fechaFin}`
+        }
  
 
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));

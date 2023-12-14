@@ -68,7 +68,7 @@ export class BandejaParametroComponent implements OnInit {
   openModalParametro(dataParametro: Parametro, type: String, index: any) {
     const dialogRef = this._dialog.open(RegistroParametroComponent, {
       width: '1000px',
-      height: '690px',
+      height: '540px',
       data: { dataParametro: dataParametro, type: type }
     });    
 
