@@ -37,7 +37,7 @@
   export class ReportesSalidasComponent implements OnInit {
   
     dataSource = new MatTableDataSource<Reportes>([]);
-    selection = new SelectionModel<Recurso>(true, []);
+    selection = new SelectionModel<Reportes>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
     displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie','tipoTransferenciaDetalle'];
@@ -46,17 +46,20 @@
     idAlmacen: any;
     reportesResponse: ReportesResponse = new ReportesResponse();
     numeroDocumento: string = '44691637';
-    listInventario: Recurso[] = [];
+    listReporte: Reportes[] = [];
     listPuestoControl: PuestoControl[] = [];
     listATF: ATF[] = [];
     reportesRequest:  Reportes = new Reportes();
-    listPeriodo: Parametro[] = [];
-    periodo: string = Constants.PERIODO;
+    listPeriodoTri: Parametro[] = [];
+    listPeriodoSe: Parametro[] = [];
+    periodoTri: string = Constants.PERIODO_TRI;
+    periodoSe: string = Constants.PERIODO_SE;
     lstDecimal = new Decimal();    
     cantidadPipe!: string;
     cantidad!: number;
     redondeo!: string;
     nameAlmacen!: string;
+    varPeriodo:string = null;
     listTipoIngreso: Parametro[] = [];
     listDisponibilidadActa: Parametro[] = [];
     tipoIngreso: string = Constants.TIPO_INGRESO;
@@ -98,6 +101,7 @@
         almacen: [''],      
         tipoEspecie: [''], 
         periodo: [''], 
+        periodoSe: [''], 
       });
   
       this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
@@ -110,7 +114,8 @@
     ngOnInit(): void {
      this.searchAlmacen();
      this.searchTipoEspecie();     
-     this.searchPeriodo();
+     this.searchPeriodoTrimestral();
+     this.searchPeriodoSemestral();
      //this.Search();
     }
   
@@ -131,17 +136,35 @@
       });
     }
 
-    searchPeriodo() {
-      this.parametroService.getParametroSearch(this.periodo).subscribe((response: Parametro[]) => {
-        this.listPeriodo = response;
+    searchPeriodoTrimestral() {
+      this.parametroService.getParametroSearch(this.periodoTri).subscribe((response: Parametro[]) => {
+        this.listPeriodoTri = response;
       });
     }
+
+    searchPeriodoSemestral() {
+      this.parametroService.getParametroSearch(this.periodoSe).subscribe((response: Parametro[]) => {
+        this.listPeriodoSe = response;
+      });
+    }
+
+
+    changePeridoTrimestral() {
+      this.varPeriodo = this.inputBandeja.get('periodo').value;
+      this.inputBandeja.get('periodoSe').setValue('');  
+    }
+
+    changePeridoSemestral() {
+      this.varPeriodo = this.inputBandeja.get('periodoSe').value;
+      this.inputBandeja.get('periodo').setValue('');  
+    }
+
 
     async SearchReportes() {
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
-      this.reportesRequest.periodo = this.inputBandeja.get('periodo').value;  
+      this.reportesRequest.periodo = this.varPeriodo;
       this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
         if(response.success){
           this.reportesResponse = response;
@@ -164,8 +187,11 @@
       this.inputBandeja.get('almacen').setValue('');
       this.inputBandeja.get('tipoEspecie').setValue('');   
       this.inputBandeja.get('periodo').setValue('');   
+      this.inputBandeja.get('periodoSe').setValue('');  
+      this.varPeriodo = null; 
       this.reportesResponse.pageNumber = 1;
       this.reportesResponse.pageSize = 10;
+      
     }
   
   
@@ -212,54 +238,40 @@
   
   
     exportToExcel() {
-      const dataToExport = this.listInventario; 
-      var nombreAlmacen='';
+      const dataToExport = this.listReporte;            
       
-      if(this.inputBandeja.get('almacen').value){
-        nombreAlmacen=this.inputBandeja.get('almacen').value;
-        const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+        const headers = ['Fecha','Origen', 'Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
         const data = [headers, ...dataToExport.map(item => [
-          nombreAlmacen ,
-          item.tipo === 'MAD' ? 'Maderable' :
-          item.tipo === 'NOMAD' ? 'No Maderable' :
-          item.tipo === 'FA' ? 'Fauna' : item.tipo,
+          item.feFechaRegistro,
+          item.almacenOrigen,
+
+          item.tipoTransferencia === 'TPTRANS001' ? item.nombre :
+          item.tipoTransferencia === 'TPTRANS006' ? item.faunaSalida :
+          item.tipoTransferencia === 'TPTRANS002' ? item.almacenDestino : item.almacenDestino,
+          
+
+
+          item.almacenOrigen,
           item.nombreCientifico,
           item.nombreComun,
-          item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-          Number(item.txCantidadProducto),
-          item.metroCubico,
+          Number(item.cantidadProducto),
+          item.tipoEspecie === 'MAD' ? 'Maderable' :
+          item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+          item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
+          item.tipoTransferenciaDetalle          
           
         ])];
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
       
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+        XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
       
-        XLSX.writeFile(wb, 'Inventario.xlsx');
-      }else{
-        const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
-        const data = [headers, ...dataToExport.map(item => [
-          item.tipo === 'MAD' ? 'Maderable' :
-          item.tipo === 'NOMAD' ? 'No Maderable' :
-          item.tipo === 'FA' ? 'Fauna' : item.tipo,
-          item.nombreCientifico,
-          item.nombreComun,
-          item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-          Number(item.txCantidadProducto),
-          item.metroCubico,
-          
-        ])];
-        const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
-      
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
-      
-        XLSX.writeFile(wb, 'Inventario.xlsx');
+        XLSX.writeFile(wb, 'Reporte.xlsx');
       }
       
         
       
-    }
+    
   
   }
   

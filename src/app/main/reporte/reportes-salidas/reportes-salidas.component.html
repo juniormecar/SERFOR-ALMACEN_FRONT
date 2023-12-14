@@ -19,16 +19,14 @@
                         <form [formGroup]="inputBandeja">
                            
                             <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">Almacén Origen</span>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Almacén Origen</span>
                                 <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">Tipo de Especie</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">Periodo</span>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Especie</span>
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
 
-                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="35">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
                                     <mat-select formControlName="almacen">
                                         <mat-option [value]="">
                                             Seleccione
@@ -41,7 +39,7 @@
                                     </mat-select>
                                 </mat-form-field>  
                                 <div fxFlex="5"></div>
-                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="35" >
+                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
                                     <mat-select formControlName="tipoEspecie" >
                                         <mat-option [value]="">
                                             Seleccione
@@ -53,14 +51,36 @@
                                         </ng-container>
                                     </mat-select>
                                 </mat-form-field>     
+                               
+                            </div> 
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Periodo Trimestral</span>
                                 <div fxFlex="5"></div>
-                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
-                                fxFlex="35">
-                                <mat-select formControlName="periodo">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Periodo Semestral</span>
+                                
+                            </div>
+                             <div fxLayout="row" fxLayoutAlign="space-between">
+
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"fxFlex="45">
+                                <mat-select formControlName="periodo" (selectionChange)="changePeridoTrimestral()">
                                     <mat-option [value]="">
                                         Seleccione
                                     </mat-option>
-                                    <ng-container *ngFor="let item of listPeriodo">
+                                    <ng-container *ngFor="let item of listPeriodoTri">
+                                        <mat-option [value]="item.valorPrimario">
+                                            {{item.valorPrimario}}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                                  
+                                <div fxFlex="5"></div>
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="45">
+                                <mat-select formControlName="periodoSe" (selectionChange)="changePeridoSemestral()">
+                                    <mat-option [value]="">
+                                        Seleccione
+                                    </mat-option>
+                                    <ng-container *ngFor="let item of listPeriodoSe">
                                         <mat-option [value]="item.valorPrimario">
                                             {{item.valorPrimario}}
                                         </mat-option>
@@ -68,6 +88,8 @@
                                 </mat-select>
                             </mat-form-field>
                             </div> 
+                            
+
                             <br>
 
                             <div class="col-sm-12 my-2 form-group text-center">
@@ -149,7 +171,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="tipoTransferenciaDetalle">
-                                        <th mat-header-cell *matHeaderCellDef> Tipo Transferencia</th>
+                                        <th mat-header-cell *matHeaderCellDef> Tipo de Transferencia</th>
                                         <td mat-cell *matCellDef="let element"> {{element.tipoTransferenciaDetalle }} </td>
                                     </ng-container>
 

@@ -22,4 +22,5 @@ export class Reportes {
     tipoEspecie?:string;
     periodo?:string;
     tipoAccion?:string;
+    nombre?:string;
 }
