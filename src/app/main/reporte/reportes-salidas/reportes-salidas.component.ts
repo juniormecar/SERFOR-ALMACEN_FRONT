@@ -40,7 +40,7 @@
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['fecha','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie','tipoTransferenciaDetalle'];
+    displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie','tipoTransferenciaDetalle'];
     inputBandeja: FormGroup;
     resultsLength = 0;
     idAlmacen: any;
