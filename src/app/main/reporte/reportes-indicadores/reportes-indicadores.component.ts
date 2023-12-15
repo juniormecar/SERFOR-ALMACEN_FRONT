@@ -40,7 +40,7 @@ export class ReportesIndicadoresComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['almacen', 'nombreCientifico', 'nombreComun', 'cantidad'];
+  displayedColumns: string[] = ['position','almacen', 'tipoAccion', 'cantidad'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
@@ -50,7 +50,10 @@ export class ReportesIndicadoresComponent implements OnInit {
   listPuestoControl: PuestoControl[] = [];
   listATF: ATF[] = [];
   reportesRequest:  Reportes = new Reportes();
-  listPeriodo: Parametro[] = [];
+  listPeriodoTri: Parametro[] = [];
+  listPeriodoSe: Parametro[] = [];
+  periodoTri: string = Constants.PERIODO_TRI;
+  periodoSe: string = Constants.PERIODO_SE;
   listTipoAccion: Parametro[] = [];
   periodo: string = Constants.PERIODO_TRI;
   tipoAccion: string = Constants.TIPOACCION;
@@ -59,6 +62,7 @@ export class ReportesIndicadoresComponent implements OnInit {
   cantidad!: number;
   redondeo!: string;
   nameAlmacen!: string;
+  varPeriodo:string = null;
   listTipoIngreso: Parametro[] = [];
   listDisponibilidadActa: Parametro[] = [];
   tipoIngreso: string = Constants.TIPO_INGRESO;
@@ -100,19 +104,17 @@ export class ReportesIndicadoresComponent implements OnInit {
       almacen: [''],      
       tipoAccion: [''], 
       periodo: [''], 
+      periodoSe: [''],  
     });
 
-    this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = Number(this.lstDecimal.cantidad);
-    this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = this.lstDecimal.redondeo;
     this.numeroDocumento = localStorage.getItem('usuario'); 
   }
 
   ngOnInit(): void {
    this.searchAlmacen();
    this.searchTipoEspecie();     
-   this.searchPeriodo();
+   this.searchPeriodoTrimestral();
+   this.searchPeriodoSemestral();
    this.searchTipoAccion();
    //this.Search();
   }
@@ -133,10 +135,15 @@ export class ReportesIndicadoresComponent implements OnInit {
       this.listTipoEspecie = response;
     });
   }
+  searchPeriodoTrimestral() {
+    this.parametroService.getParametroSearch(this.periodoTri).subscribe((response: Parametro[]) => {
+      this.listPeriodoTri = response;
+    });
+  }
 
-  searchPeriodo() {
-    this.parametroService.getParametroSearch(this.periodo).subscribe((response: Parametro[]) => {
-      this.listPeriodo = response;
+  searchPeriodoSemestral() {
+    this.parametroService.getParametroSearch(this.periodoSe).subscribe((response: Parametro[]) => {
+      this.listPeriodoSe = response;
     });
   }
 
@@ -146,11 +153,23 @@ export class ReportesIndicadoresComponent implements OnInit {
     });
   }
 
+  
+  changePeridoTrimestral() {
+    this.varPeriodo = this.inputBandeja.get('periodo').value;
+    this.inputBandeja.get('periodoSe').setValue('');  
+  }
+
+  changePeridoSemestral() {
+    this.varPeriodo = this.inputBandeja.get('periodoSe').value;
+    this.inputBandeja.get('periodo').setValue('');  
+  }
+  
   async SearchReportes() {
     this.dataSource = new MatTableDataSource<Reportes>([])
     this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
-    this.reportesRequest.tipoAccion = this.inputBandeja.get('tipoAccion').value;    
-    this.reportesRequest.periodo = this.inputBandeja.get('periodo').value;  
+    this.reportesRequest.periodo = this.varPeriodo;
+    this.reportesRequest.tipoAccion = this.inputBandeja.get('tipoAccion').value;   
+    this.reportesRequest.numeroDocumento =  this.numeroDocumento;
     this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
         this.reportesResponse = response;
@@ -173,50 +192,11 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.inputBandeja.get('almacen').setValue('');
     this.inputBandeja.get('tipoAccion').setValue('');   
     this.inputBandeja.get('periodo').setValue('');   
+    this.inputBandeja.get('periodoSe').setValue('');  
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
   }
 
-
-  cutDecimalsWithoutRounding(numFloat: number, toFixed: number) {
-
-    let numFloat_bf = '0';
-    let numFloat_af  = '0';
-
-    if(this.redondeo === 'Mayor'){
-      //console.log("numFloat",numFloat);
-      return (numFloat > 0) ? Number(numFloat).toFixed(this.cantidad): numFloat;
-    } else{
-      let isNegative = false;
-
-        if ( numFloat < 0 ) {
-          numFloat *= -1; // Equivale a Math.abs();     
-          isNegative = true;
-        }
-        // Recogemos el valor ANTES del separador
-        if(numFloat !== undefined ){
-          numFloat_bf = numFloat.toString().split('.')[0];
-        // Recogemos el valor DESPUÉS del separador
-         numFloat_af = numFloat.toString().split('.')[1];
-        }
-         
-  
-        if(numFloat_af != null || numFloat_af != undefined){
-          // Recortar los decimales según el valor de 'toFixed'
-          if (numFloat_af.length > toFixed ) {
-            numFloat_af = `.${numFloat_af.slice(0, -numFloat_af.length + toFixed)}`; 
-          } else {
-            numFloat_af = `.`+`${numFloat_af}`; 
-          }
-
-          return parseFloat(`${( isNegative ? '-': '' )}${numFloat_bf}${numFloat_af}`);
-      } else {
-        return (numFloat > 0) ? Number(numFloat).toFixed(this.cantidad): numFloat;
-      }
-
-    }
-
-  }
 
 
 

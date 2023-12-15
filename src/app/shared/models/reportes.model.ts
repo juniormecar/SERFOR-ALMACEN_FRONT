@@ -27,4 +27,7 @@ export class Reportes {
     fechaInicio?:Date;
     fechaFin?:Date;
     numeroDocumento?:string;
+    nombreAlmacen?:string;
+    cantidadTotalIngresos?:number;  
+    cantidadTotalSalidas?:number;  
 }

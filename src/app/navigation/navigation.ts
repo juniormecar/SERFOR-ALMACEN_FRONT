@@ -73,12 +73,12 @@ export const navigation: FuseNavigation[] = [
                         type : 'item',
                         url  : '/reportes-salidas'
                     },
-                    {
-                        id   : '4',
-                        title: 'Reporte de Indicadores',
-                        type : 'item',
-                        url  : '/reportes-indicadores'
-                    },
+                    // {
+                    //     id   : '4',
+                    //     title: 'Reporte de Indicadores',
+                    //     type : 'item',
+                    //     url  : '/reportes-indicadores'
+                    // },
                 ]
             },
             {

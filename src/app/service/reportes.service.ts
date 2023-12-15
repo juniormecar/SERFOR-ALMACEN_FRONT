@@ -75,6 +75,9 @@ export class ReportesService {
         if (reportesRequest.periodo) {
             url += `&periodo=${reportesRequest.periodo}`
         }  
+        if (reportesRequest.numeroDocumento) {
+            url += `&numeroDocumento=${reportesRequest.numeroDocumento}`
+        }  
  
 
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
