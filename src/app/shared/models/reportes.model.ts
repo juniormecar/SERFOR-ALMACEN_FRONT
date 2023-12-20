@@ -31,5 +31,7 @@ export class Reportes {
     cantidadTotalIngresos?:number;  
     cantidadTotalSalidas?:number;  
     detalleReporte?:string;
-    cantidadTotalTipo?:number; 
+    cantidadTotalMAD?:number; 
+    cantidadTotalNOMAD?:number; 
+    cantidadTotalFA?:number; 
 }
