@@ -37,10 +37,12 @@ styleUrls: ['./reportes-indicadores.component.scss']
 export class ReportesIndicadoresComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Reportes>([]);
+  dataSource2 = new MatTableDataSource<Reportes>([]);
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['position','almacen', 'tipoAccion', 'cantidad'];
+  displayedColumns: string[] = ['position','almacen', 'tipoAccion', 'cantidad','acciones'];
+  displayedColumns2: string[] = ['maderables','noMaderables', 'fauna'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
@@ -170,10 +172,31 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.reportesRequest.periodo = this.varPeriodo;
     this.reportesRequest.tipoAccion = this.inputBandeja.get('tipoAccion').value;   
     this.reportesRequest.numeroDocumento =  this.numeroDocumento;
+    this.reportesRequest.detalleReporte =  null;
     this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
         this.reportesResponse = response;
         this.dataSource = new MatTableDataSource<Reportes>(response.data);
+        this.resultsLength=response.totalRecords;
+      }
+    })
+  }
+
+  verEspecies (nuIdAlmacen:number,tipoAccion:string){
+    //consultar las especies
+    console.log('nuIdAlmacen',nuIdAlmacen);
+    console.log('tipoAccion',tipoAccion);
+    this.dataSource2 = new MatTableDataSource<Reportes>([])
+    this.reportesRequest.nuIdAlmacen = nuIdAlmacen;
+    this.reportesRequest.periodo = this.varPeriodo;
+    this.reportesRequest.tipoAccion = tipoAccion;   
+    this.reportesRequest.numeroDocumento =  this.numeroDocumento;
+    this.reportesRequest.detalleReporte =  'D';
+    
+    this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+      if(response.success){
+        this.reportesResponse = response;
+        this.dataSource2 = new MatTableDataSource<Reportes>(response.data);
         this.resultsLength=response.totalRecords;
       }
     })

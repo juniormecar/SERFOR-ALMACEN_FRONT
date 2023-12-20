@@ -341,3 +341,18 @@ mat-icon{
     color: #89B361;
 }
 
+#dosGrillas{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+#grilla1 {
+    width: 50%; 
+ padding-right: 10px;
+  }
+  #grilla2 {
+    width: 50%; 
+  }
+  .mat-raised-button{
+    min-width: 48px;  
+  }

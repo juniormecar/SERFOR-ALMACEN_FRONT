@@ -30,4 +30,5 @@ export class Reportes {
     nombreAlmacen?:string;
     cantidadTotalIngresos?:number;  
     cantidadTotalSalidas?:number;  
+    detalleReporte?:string;
 }

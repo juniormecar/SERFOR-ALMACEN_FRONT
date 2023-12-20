@@ -78,6 +78,9 @@ export class ReportesService {
         if (reportesRequest.numeroDocumento) {
             url += `&numeroDocumento=${reportesRequest.numeroDocumento}`
         }  
+        if (reportesRequest.detalleReporte) {
+            url += `&detalleReporte=${reportesRequest.detalleReporte}`
+        }  
  
 
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
