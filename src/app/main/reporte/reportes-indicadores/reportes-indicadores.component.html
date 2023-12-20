@@ -172,7 +172,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Maderables </th>
                                         <td mat-cell *matCellDef="let element"> 
                                             <div *ngIf="element.tipoEspecie === 'MAD'">
-                                                {{element.nombreCientifico}}({{element.cantidad}})
+                                                {{element.cantidadTotalTipo}}
                                             </div>
                                             <div *ngIf="element.tipoEspecie !== 'MAD'">
                                                -
@@ -185,7 +185,7 @@
                                         <th mat-header-cell *matHeaderCellDef> No Maderables </th>
                                         <td mat-cell *matCellDef="let element"> 
                                             <div *ngIf="element.tipoEspecie === 'NOMAD'">
-                                                {{element.nombreCientifico}}({{element.cantidad}})
+                                               {{element.cantidadTotalTipo}}
                                             </div>
                                             <div *ngIf="element.tipoEspecie !== 'NOMAD'">
                                                -
@@ -197,7 +197,7 @@
                                         <th mat-header-cell *matHeaderCellDef> Fauna </th>
                                         <td mat-cell *matCellDef="let element"> 
                                             <div *ngIf="element.tipoEspecie === 'FA'">
-                                                {{element.nombreCientifico}}({{element.cantidad}})
+                                               {{element.cantidadTotalTipo}}
                                             </div>
                                             <div *ngIf="element.tipoEspecie !== 'FA'">
                                                -

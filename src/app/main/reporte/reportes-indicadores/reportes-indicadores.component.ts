@@ -177,6 +177,7 @@ export class ReportesIndicadoresComponent implements OnInit {
       if(response.success){
         this.reportesResponse = response;
         this.dataSource = new MatTableDataSource<Reportes>(response.data);
+        this.dataSource2 = new MatTableDataSource<Reportes>();
         this.resultsLength=response.totalRecords;
       }
     })
