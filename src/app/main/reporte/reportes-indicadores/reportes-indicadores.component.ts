@@ -47,8 +47,9 @@ export class ReportesIndicadoresComponent implements OnInit {
   resultsLength = 0;
   idAlmacen: any;
   reportesResponse: ReportesResponse = new ReportesResponse();
+  reportesResponse2: ReportesResponse = new ReportesResponse();
   numeroDocumento: string = '44691637';
-  listInventario: Recurso[] = [];
+  listReporte: Reportes[] = [];
   listPuestoControl: PuestoControl[] = [];
   listATF: ATF[] = [];
   reportesRequest:  Reportes = new Reportes();
@@ -84,6 +85,8 @@ export class ReportesIndicadoresComponent implements OnInit {
   ) {
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
+    this.reportesResponse2.pageNumber = 1;
+    this.reportesResponse2.pageSize = 10;
     this._fuseConfigService.config = {
       layout: {
         navbar: {
@@ -178,7 +181,8 @@ export class ReportesIndicadoresComponent implements OnInit {
         this.reportesResponse = response;
         this.dataSource = new MatTableDataSource<Reportes>(response.data);
         this.dataSource2 = new MatTableDataSource<Reportes>();
-        this.resultsLength=response.totalRecords;
+        this.reportesResponse.totalRecords=this.dataSource.data.length;
+        
       }
     })
   }
@@ -194,11 +198,11 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.reportesRequest.numeroDocumento =  this.numeroDocumento;
     this.reportesRequest.detalleReporte =  'D';
     
-    this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+    this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse2.pageNumber,this.reportesResponse2.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
-        this.reportesResponse = response;
+        this.reportesResponse2 = response;
         this.dataSource2 = new MatTableDataSource<Reportes>(response.data);
-        this.resultsLength=response.totalRecords;
+        this.reportesResponse2.totalRecords=this.dataSource2.data.length;
       }
     })
   }
@@ -225,53 +229,26 @@ export class ReportesIndicadoresComponent implements OnInit {
 
 
   exportToExcel() {
-    const dataToExport = this.listInventario; 
-    var nombreAlmacen='';
+    const dataToExport = this.dataSource.data;     
     
-    if(this.inputBandeja.get('almacen').value){
-      nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+      const headers = ['Almacén','Acción', 'Cantidad Total'];
       const data = [headers, ...dataToExport.map(item => [
-        nombreAlmacen ,
-        item.tipo === 'MAD' ? 'Maderable' :
-        item.tipo === 'NOMAD' ? 'No Maderable' :
-        item.tipo === 'FA' ? 'Fauna' : item.tipo,
-        item.nombreCientifico,
-        item.nombreComun,
-        item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        Number(item.txCantidadProducto),
-        item.metroCubico,
+        item.almacenOrigen,
+        item.tipoAccion === 'I' ? 'Ingresos': 'Salidas'   ,    
+        item.tipoAccion === 'I' ? Number(item.cantidadTotalIngresos): Number(item.cantidadTotalSalidas)       
+        
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
     
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
+      XLSX.utils.book_append_sheet(wb, ws, 'Reporte-Indicadores');
     
-      XLSX.writeFile(wb, 'Inventario.xlsx');
-    }else{
-      const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
-      const data = [headers, ...dataToExport.map(item => [
-        item.tipo === 'MAD' ? 'Maderable' :
-        item.tipo === 'NOMAD' ? 'No Maderable' :
-        item.tipo === 'FA' ? 'Fauna' : item.tipo,
-        item.nombreCientifico,
-        item.nombreComun,
-        item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
-        Number(item.txCantidadProducto),
-        item.metroCubico,
-        
-      ])];
-      const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
-    
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Inventario');
-    
-      XLSX.writeFile(wb, 'Inventario.xlsx');
+      XLSX.writeFile(wb, 'Reporte-Indicadores.xlsx');
     }
     
       
     
-  }
+  
 
 }
