@@ -80,6 +80,7 @@ import { RegistroParametroComponent } from './main/mantenimiento/parametro/bande
 import { ReportesDonacionesComponent } from './main/reporte/reportes-donaciones/reportes-donaciones.component';
 import { ReportesSalidasComponent } from './main/reporte/reportes-salidas/reportes-salidas.component';
 import { ReportesIndicadoresComponent } from './main/reporte/reportes-indicadores/reportes-indicadores.component';
+import { ReportesDisponibilidadComponent } from './main/reporte/reportes-disponibilidad/reportes-disponibilidad.component';
 
 const appRoutes: Routes = [
     {
@@ -181,6 +182,11 @@ const appRoutes: Routes = [
 
     },
     {
+        path: 'reportes-disponibilidad',
+        component: ReportesDisponibilidadComponent
+
+    },
+    {
         path: '',
         pathMatch:'full',
         redirectTo: 'login',
@@ -239,7 +245,9 @@ const appRoutes: Routes = [
 
         ReportesSalidasComponent,
 
-        ReportesIndicadoresComponent
+        ReportesIndicadoresComponent,
+
+        ReportesDisponibilidadComponent
     ],
     imports: [
         BrowserModule,
