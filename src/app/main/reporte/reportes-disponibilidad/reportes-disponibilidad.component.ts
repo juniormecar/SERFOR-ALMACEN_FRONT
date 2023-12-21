@@ -168,12 +168,9 @@
     
     async SearchReportes() {
       this.dataSource = new MatTableDataSource<Reportes>([])
-      this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
-      this.reportesRequest.periodo = this.varPeriodo;
-      this.reportesRequest.tipoAccion = this.inputBandeja.get('tipoAccion').value;   
+      this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;        
       this.reportesRequest.numeroDocumento =  this.numeroDocumento;
-      this.reportesRequest.detalleReporte =  null;
-      this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+      this._reportesService.getReporteDisponibilidad(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
         if(response.success){
           this.reportesResponse = response;
           this.dataSource = new MatTableDataSource<Reportes>(response.data);
@@ -184,24 +181,9 @@
       })
     }
   
-    verEspecies (nuIdAlmacen:number,tipoAccion:string){
+    verDetalle (nuIdAlmacen:number){
       //consultar las especies
-      console.log('nuIdAlmacen',nuIdAlmacen);
-      console.log('tipoAccion',tipoAccion);
-      this.dataSource2 = new MatTableDataSource<Reportes>([])
-      this.reportesRequest.nuIdAlmacen = nuIdAlmacen;
-      this.reportesRequest.periodo = this.varPeriodo;
-      this.reportesRequest.tipoAccion = tipoAccion;   
-      this.reportesRequest.numeroDocumento =  this.numeroDocumento;
-      this.reportesRequest.detalleReporte =  'D';
-      
-      this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse2.pageNumber,this.reportesResponse2.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
-        if(response.success){
-          this.reportesResponse2 = response;
-          this.dataSource2 = new MatTableDataSource<Reportes>(response.data);
-          this.reportesResponse2.totalRecords=this.dataSource2.data.length;
-        }
-      })
+      console.log('nuIdAlmacen',nuIdAlmacen);      
     }
     
     

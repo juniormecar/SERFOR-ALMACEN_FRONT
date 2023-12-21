@@ -86,5 +86,18 @@ export class ReportesService {
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
     }
     
+    getReporteDisponibilidad(reportesRequest:Reportes, page: number, size: number): Observable<ReportesResponse> {
+        let url = `${this.base}/reporteDisponibilidad?pageNumber=${page}&pageSize=${size}&sortType=DESC`;
+        if (reportesRequest.nuIdAlmacen) {
+          url += `&nuIdAlmacen=${reportesRequest.nuIdAlmacen}`
+        }        
+        if (reportesRequest.numeroDocumento) {
+            url += `&numeroDocumento=${reportesRequest.numeroDocumento}`
+        }  
+       
+ 
+
+        return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
+    }
 
 }

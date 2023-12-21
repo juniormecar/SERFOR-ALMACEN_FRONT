@@ -34,4 +34,9 @@ export class Reportes {
     cantidadTotalMAD?:number; 
     cantidadTotalNOMAD?:number; 
     cantidadTotalFA?:number; 
+    atf?:string;
+    puestoControl?:string;
+    cantidadCapacidadMAD?:number; 
+    cantidadCapacidadNOMAD?:number; 
+    cantidadCapacidadFA?:number; 
 }

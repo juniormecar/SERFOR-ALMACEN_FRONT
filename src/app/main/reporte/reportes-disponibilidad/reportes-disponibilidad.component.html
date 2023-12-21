@@ -58,11 +58,11 @@
                                    
                                     <ng-container matColumnDef="atf">
                                         <th mat-header-cell *matHeaderCellDef> ATF</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.nombreAlmacen }} </td>
+                                        <td mat-cell *matCellDef="let element"> {{element.atf }} </td>
                                     </ng-container>
                                     <ng-container matColumnDef="puestoControl">
                                         <th mat-header-cell *matHeaderCellDef> Puesto de Control</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.nombreAlmacen }} </td>
+                                        <td mat-cell *matCellDef="let element"> {{element.puestoControl }} </td>
                                     </ng-container>
 
                                     <ng-container matColumnDef="almacen">
@@ -75,7 +75,7 @@
                                     <ng-container matColumnDef="acciones">
                                         <th mat-header-cell *matHeaderCellDef>  </th>
                                         <td mat-cell *matCellDef="let element">
-                                            <button  mat-raised-button (click)="verEspecies(element.nuIdAlmacen, element.tipoAccion)" style="background-color: rgba(255, 166, 0, 0.829); color: white; width: 20px;">
+                                            <button  mat-raised-button (click)="verDetalle(element.nuIdAlmacen)" style="background-color: rgba(255, 166, 0, 0.829); color: white; width: 20px;">
                                                 <mat-icon>keyboard_arrow_right</mat-icon>
                                             </button>                                            
                                         </td>
