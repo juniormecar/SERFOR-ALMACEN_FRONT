@@ -69,29 +69,49 @@
                                         <th mat-header-cell *matHeaderCellDef> Almacén</th>
                                         <td mat-cell *matCellDef="let element"> {{element.nombreAlmacen }} </td>
                                     </ng-container>
+                                    
 
                                     <ng-container matColumnDef="maderables">
                                         <th mat-header-cell *matHeaderCellDef> Maderables </th>
                                         <td mat-cell *matCellDef="let element"> 
-                                                {{element.cantidadTotalMAD}} <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadMAD}}</b>                                                                                 
+                                            <div *ngIf="element.cantidadTotalMAD > element.cantidadCapacidadMAD">
+                                                <b style="color: #d33;">{{element.cantidadTotalMAD}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadMAD}}</b>
+                                            </div>
+                                            <div *ngIf="element.cantidadTotalMAD < element.cantidadCapacidadMAD">
+                                                <b>{{element.cantidadTotalMAD}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadMAD}}</b>
+                                           </div>
+                                           
                                         </td>
-                                    </ng-container> 
+                                    </ng-container>
 
+                                       
+                                    
                                     <ng-container matColumnDef="noMaderables">
-                                        <th mat-header-cell *matHeaderCellDef> No Maderables </th>
+                                        <th mat-header-cell *matHeaderCellDef>No Maderables </th>
                                         <td mat-cell *matCellDef="let element"> 
-                                               {{element.cantidadTotalNOMAD}} <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadNOMAD}}</b>                                          
-                                                                                    
+                                            <div *ngIf="element.cantidadTotalNOMAD > element.cantidadCapacidadNOMAD">
+                                                <b style="color: #d33;">{{element.cantidadTotalNOMAD}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadNOMAD}}</b>
+                                            </div>
+                                            <div *ngIf="element.cantidadTotalNOMAD < element.cantidadCapacidadNOMAD">
+                                                <b>{{element.cantidadTotalNOMAD}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadNOMAD}}</b>
+                                           </div>
+                                           
                                         </td>
-                                    </ng-container>                                     
+                                    </ng-container>
+
 
                                     <ng-container matColumnDef="fauna">
-                                        <th mat-header-cell *matHeaderCellDef> Fauna </th>
+                                        <th mat-header-cell *matHeaderCellDef>Fauna </th>
                                         <td mat-cell *matCellDef="let element"> 
-                                               {{element.cantidadTotalFA}} <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadFA}}</b> 
-                                                                                   
+                                            <div *ngIf="element.cantidadTotalFA > element.cantidadCapacidadFA">
+                                                <b style="color: #d33;">{{element.cantidadTotalFA}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadFA}}</b>
+                                            </div>
+                                            <div *ngIf="element.cantidadTotalFA < element.cantidadCapacidadFA">
+                                                <b>{{element.cantidadTotalFA}} </b> <b>| </b> <b style="color: #679738;">{{element.cantidadCapacidadFA}}</b>
+                                           </div>
+                                           
                                         </td>
-                                    </ng-container> 
+                                    </ng-container>
 
                                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
