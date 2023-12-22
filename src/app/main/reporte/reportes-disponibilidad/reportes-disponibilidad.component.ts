@@ -41,7 +41,7 @@
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['atf', 'puestoControl', 'almacen','acciones'];
+    displayedColumns: string[] = ['atf', 'puestoControl', 'almacen','maderables','noMaderables','fauna'];
     displayedColumns2: string[] = ['maderables','noMaderables', 'fauna'];
     inputBandeja: FormGroup;
     resultsLength = 0;
