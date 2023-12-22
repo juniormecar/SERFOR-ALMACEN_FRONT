@@ -209,20 +209,23 @@
     exportToExcel() {
       const dataToExport = this.dataSource.data;     
       
-        const headers = ['Almacén','Acción', 'Cantidad Total'];
+        const headers = ['ATF','Puesto de Control', 'Almacén','Capacidad Maderables', 'Capacidad No Maderables', 'Capacidad Fauna'];
         const data = [headers, ...dataToExport.map(item => [
-          item.almacenOrigen,
-          item.tipoAccion === 'I' ? 'Ingresos': 'Salidas'   ,    
-          item.tipoAccion === 'I' ? Number(item.cantidadTotalIngresos): Number(item.cantidadTotalSalidas)       
+          item.atf,
+          item.puestoControl,    
+          item.nombreAlmacen,
+          item.cantidadTotalMAD >= 0 ? item.cantidadTotalMAD + '|' + item.cantidadCapacidadMAD : 0.0 + '|' + item.cantidadCapacidadMAD ,
+          item.cantidadTotalNOMAD + '|' + item.cantidadCapacidadNOMAD   ,
+          item.cantidadTotalFA + '|' + item.cantidadCapacidadFA   
           
           
         ])];
         const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
       
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Reporte-Indicadores');
+        XLSX.utils.book_append_sheet(wb, ws, 'Reporte-Disponibilidad');
       
-        XLSX.writeFile(wb, 'Reporte-Indicadores.xlsx');
+        XLSX.writeFile(wb, 'Reporte-Disponibilidad.xlsx');
       }
       
         
