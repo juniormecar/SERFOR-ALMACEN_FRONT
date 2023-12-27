@@ -7,7 +7,7 @@ export interface RegistroStep {
 }
 
 export const RegistroListSteps: RegistroStep[] = [
-    { stepId: 'step01', title: 'Guardar Información', content: '' },
+    { stepId: 'step01', title: 'Registro de Almacén', content: '' },
     
 ]
 
