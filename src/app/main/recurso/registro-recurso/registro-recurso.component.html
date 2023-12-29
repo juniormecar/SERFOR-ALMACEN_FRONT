@@ -20,7 +20,7 @@
                 
                 <div class="course-step" fusePerfectScrollbar *ngIf="currentStep === i">
 
-                    <mat-tab-group animationDuration="400ms">                        
+                    <mat-tab-group #tabGroup animationDuration="400ms">                        
                         <mat-tab label="1. DATOS GENERALES">
                             <div id="course-step-content" *ngIf=" step.stepId==='step01'" class="course-step-content ">
                                 <form [formGroup]="inputRegistro">
@@ -270,7 +270,9 @@
                                         <br>
                                       </mat-accordion>
                                     
-        
+                                    <button  class="mat-raised-button round-button" style="background-color: #89B361; color: white; display: flex; align-items: center; justify-content: center;"
+                                    (click)="cambiarPestana(1)">2. Catálogo de Productos <mat-icon style="margin-left: 5px;">keyboard_arrow_right</mat-icon></button>
+
                                 </form>
                             </div>
                         </mat-tab>
@@ -477,6 +479,14 @@
                                     aria-label="Select page of periodic elements">
                                 </mat-paginator>
                             </div>
+                            <br><br>
+                            <div style="display: flex; gap: 10px;">
+                                <button  class="mat-raised-button round-button3" style="background-color: white; color: #89B361; display: flex; align-items: center; justify-content: center;"
+                                    (click)="cambiarPestana(0)"><mat-icon style="margin-right: 5px;">keyboard_arrow_left</mat-icon> 1. Datos Generales</button>
+                                <button  class="mat-raised-button round-button2" style="background-color: #89B361; color: white; display: flex; align-items: center; justify-content: center;" 
+                                    (click)="cambiarPestana(2)"> 3. Registro de Productos <mat-icon style="margin-left: 5px;">keyboard_arrow_right</mat-icon></button>
+                            </div>
+                            
                         </div>
                         </mat-tab>
                         <mat-tab label="3. REGISTRO DE PRODUCTOS">
@@ -1091,8 +1101,13 @@
                         <br>
                         <br>
                         <br>
-                        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
-                         (click)="registro()">{{texto_boton}}</button>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="mat-raised-button round-button3"  (click)="cambiarPestana(1)" style="background-color: white; color: #89B361; display: flex; align-items: center; justify-content: center;">
+                                <mat-icon style="margin-right: 5px;">keyboard_arrow_left</mat-icon> 2. Catálogo de Productos
+                            </button> 
+                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738; margin-left: 35%;"
+                            (click)="registro()">{{texto_boton}}</button>
+                        </div>
                          <br>
                     </div>
                     
