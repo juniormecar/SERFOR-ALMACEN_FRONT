@@ -44,6 +44,7 @@ import { RecursoPasResponse } from 'app/shared/models/response/recurso-pas-respo
 //import {default as _rollupMoment} from 'moment';
 import * as moment from 'moment';
 //const moment = _rollupMoment || _moment;
+import { MatTabGroup } from '@angular/material/tabs';
 
 interface General {
   value: string;
@@ -1861,6 +1862,11 @@ redondeo(row:RecursoProduco){
 
   cancelar() {
     this._router.navigate(['bandeja-recurso']);
+  }
+
+  @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+  cambiarPestana(indice: number) {
+    this.tabGroup.selectedIndex = indice;
   }
 
 }
