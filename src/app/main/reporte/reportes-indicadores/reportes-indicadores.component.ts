@@ -223,6 +223,7 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.inputBandeja.get('periodoSe').setValue('');  
     this.reportesResponse.pageNumber = 1;
     this.reportesResponse.pageSize = 10;
+    this.varPeriodo = null; 
   }
 
 

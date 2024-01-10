@@ -114,6 +114,10 @@ export class ActualizarAlmacenComponent implements OnInit {
   dataSourceNoMadFilter = new MatTableDataSource<Recurso>([]);
   dataSourceMadFilter = new MatTableDataSource<Recurso>([]);
 
+  dataSourceFaunaFilterActa = new MatTableDataSource<Recurso>([]);
+  dataSourceNoMadFilterActa = new MatTableDataSource<Recurso>([]);
+  dataSourceMadFilterActa = new MatTableDataSource<Recurso>([]);
+
   totalRecordFauna !: number;
   totalRecordNoMad !: number;
   totalRecordMad !: number;
@@ -347,6 +351,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
+         let dataSourceFaunaFilterAc = response.data;
+
         this.totalRecordFauna = response.totalRecords;
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
@@ -428,6 +434,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         })
         //console.log("lista ",lista);
         this.dataSourceFaunaFilter = new MatTableDataSource<Recurso>(lista);
+        this.dataSourceFaunaFilterActa = new MatTableDataSource<Recurso>(dataSourceFaunaFilterAc);
         this.listFilterTotalFauna(this.dataSourceFaunaFilter.data);
         //this.calculateTotal(this.dataSource.data);
         //this.listFilterTotal();
@@ -439,6 +446,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber, this.recursoResponseNoMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
+
+        let dataSourceNoMadFilterAc = response.data;
 
         this.totalRecordNoMad = response.totalRecords;
         let datafiltrada = response.data.filter( 
@@ -522,6 +531,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         })
         //console.log("lista ",lista);
         this.dataSourceNoMadFilter = new MatTableDataSource<Recurso>(lista);
+        this.dataSourceNoMadFilterActa = new MatTableDataSource<Recurso>(dataSourceNoMadFilterAc); 
         this.listFilterTotalNoMad(this.dataSourceNoMadFilter.data);
         //this.calculateTotal(this.dataSource.data);
         //this.listFilterTotal();
@@ -533,6 +543,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'MAD',null,
     null,null,this.recursoResponseMad.pageNumber, this.recursoResponseMad.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
+
+        let dataSourceMadFilterAc = response.data;
 
         let datafiltrada = response.data.filter( 
           ( rd: any) => rd.txCantidadProducto != '0'
@@ -618,7 +630,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         })
         //console.log("lista ",lista);
         this.dataSourceMadFilter = new MatTableDataSource<Recurso>(lista);
-        
+        this.dataSourceMadFilterActa = new MatTableDataSource<Recurso>(dataSourceMadFilterAc);
         this.listFilterTotalMad(this.dataSourceMadFilter.data);
         //this.calculateTotal(this.dataSource.data);
         //this.listFilterTotal();
@@ -1519,6 +1531,15 @@ export class ActualizarAlmacenComponent implements OnInit {
     let  listadoFauna: Recurso[] = [];
     let  listadoNoMad: Recurso[] = [];
     let  listadoMad: Recurso[] = [];
+
+    let listadoFaunaNoAcumulado: Recurso[] = [];
+    listadoFaunaNoAcumulado = this.dataSourceFaunaFilterActa.data;
+
+    let listadoNoMadNoAcumulado: Recurso[] = [];
+    listadoNoMadNoAcumulado = this.dataSourceNoMadFilterActa.data;
+
+    let listadoMadNoAcumulado: Recurso[] = [];
+    listadoMadNoAcumulado = this.dataSourceMadFilterActa.data;
     
     this.queryFauna = this.inputProductos.get('nombreProducto').value;
     this.nroGuia = this.inputProductos.get('numeroGuia').value;
@@ -1547,7 +1568,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoFauna = listadoFauna.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoFauna = listadoFauna.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoFauna = listadoFaunaNoAcumulado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       } 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== ''){
         listadoFauna = listadoFauna.filter( (c: any) => c.disponibilidadActa.includes(this.tipoIngresoForm));
@@ -1570,7 +1591,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoNoMad = listadoNoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoNoMad = listadoNoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoNoMad = listadoNoMadNoAcumulado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       }
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
         listadoNoMad = listadoNoMad.filter( (c: any) => c.tipoIngreso===this.tipoIngresoForm);
@@ -1590,7 +1611,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         listadoMad = listadoMad.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
       }       
       if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listadoMad = listadoMad.filter( (c: any) => c.numeroActa.includes(this.nroActa));
+        listadoMad = listadoMadNoAcumulado.filter( (c: any) => c.numeroActa.includes(this.nroActa));
       }
 
       if(this.tipoIngresoForm !== null && this.tipoIngresoForm !== undefined && this.tipoIngresoForm !== '' && this.tipoIngresoForm === 'Hallazgo'){
