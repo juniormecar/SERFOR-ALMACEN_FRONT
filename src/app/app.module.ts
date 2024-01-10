@@ -81,6 +81,7 @@ import { ReportesDonacionesComponent } from './main/reporte/reportes-donaciones/
 import { ReportesSalidasComponent } from './main/reporte/reportes-salidas/reportes-salidas.component';
 import { ReportesIndicadoresComponent } from './main/reporte/reportes-indicadores/reportes-indicadores.component';
 import { ReportesDisponibilidadComponent } from './main/reporte/reportes-disponibilidad/reportes-disponibilidad.component';
+import { ModalDetalleDonacionComponent } from './main/reporte/reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
 
 const appRoutes: Routes = [
     {
@@ -247,7 +248,9 @@ const appRoutes: Routes = [
 
         ReportesIndicadoresComponent,
 
-        ReportesDisponibilidadComponent
+        ReportesDisponibilidadComponent,
+
+        ModalDetalleDonacionComponent
     ],
     imports: [
         BrowserModule,

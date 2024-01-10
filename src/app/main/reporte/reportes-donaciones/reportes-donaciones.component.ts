@@ -28,7 +28,7 @@ import { ReportesResponse } from 'app/shared/models/response/reportes-response';
 import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesService } from 'app/service/reportes.service';
 import { invalid } from 'moment';
-
+import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
 
 @Component({
   selector: 'app-reportes-donaciones',
@@ -156,6 +156,23 @@ export class ReportesDonacionesComponent implements OnInit {
         this.resultsLength=response.totalRecords;
       }
     })
+  }
+
+  verDetalleDonacion(dataDonacion: Reportes,nuIdTransferencia:number) {
+    const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
+      width: '1000px',
+      height: '360px',
+      data: { dataDonacion: dataDonacion, nuIdTransferencia: nuIdTransferencia }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {  
+      console.log('result',result);
+      if (result == 999) {
+        
+       this.SearchReportes();
+      }
+    })
+    
   }
   
   
