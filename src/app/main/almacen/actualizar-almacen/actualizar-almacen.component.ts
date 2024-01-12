@@ -73,8 +73,9 @@ export class ActualizarAlmacenComponent implements OnInit {
   //dataSource: any = false
   listATF: ATF[] = [];
   listPuestoControl: PuestoControl[] = [];
-  displayedColumns: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto', 'descontar', 'metroCubico', 'descontarMetroCubico','unidadMedida','flagAgregar'];
-  displayedColumnsNMFA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto', 'descontar','flagAgregar'];
+  displayedColumns: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida', 'descontar', 'metroCubico', 'descontarMetroCubico','flagAgregar'];
+  displayedColumnsNMFA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida','descontar','flagAgregar'];
+  displayedColumnsNMFAUNA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto', 'descontar','flagAgregar'];
   displayedColumnsEncargado = ['position', 'tipoDocumento', 'numeroDocumento', 'nombresResponsable','acciones'];
   listAlmacenResponsable: AlmacenResponsable[] = [];
   totalM3: number = 0;
@@ -359,6 +360,9 @@ export class ActualizarAlmacenComponent implements OnInit {
         );
         if(datafiltrada.length < 1) this.validCheck = false;
 
+
+        var lstHallazgos: RecursoProduco[] = [];
+
         var lstHallazgos: RecursoProduco[] = [];
         this.totalRecordMad = response.totalRecords;
         response.data.forEach((item:any)=>{
@@ -442,6 +446,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   }
 
   getRecursosNoMad(idAlmacen: any) {
+    debugger
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber, this.recursoResponseNoMad.pageSize,'DESC')
@@ -455,11 +460,11 @@ export class ActualizarAlmacenComponent implements OnInit {
         );
         if(datafiltrada.length < 1) this.validCheck = false;
 
-        
         var lstHallazgos: RecursoProduco[] = [];
         this.totalRecordMad = response.totalRecords;
         response.data.forEach((item:any)=>{
           var hallazgo:RecursoProduco = new RecursoProduco();
+          item.txCantidadProducto = Number(item.txCantidadProducto)*Number(item.capacidadUnidad);
           if(item.tipoIngreso == 'Hallazgo'){
             if(lstHallazgos.length === 0){
               hallazgo.nombreCientifico = item.nombreCientifico;

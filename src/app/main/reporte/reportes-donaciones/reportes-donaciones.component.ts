@@ -132,6 +132,26 @@ export class ReportesDonacionesComponent implements OnInit {
 
   async SearchReportes() {
 
+    if(( this.inputBandeja.get('fechaInicio').value === undefined || this.inputBandeja.get('fechaInicio').value === null || this.inputBandeja.get('fechaInicio').value === '') &&
+    (this.inputBandeja.get('fechaFin').value === undefined || this.inputBandeja.get('fechaFin').value === null || this.inputBandeja.get('fechaFin').value === '') &&
+    ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
+    ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+{
+  Swal.fire({
+    title: 'Alerta!',
+    text: "Debe llenar alguno de los filtros.",
+    icon: 'warning',
+    //showCancelButton: true,
+    confirmButtonColor: '#679738',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+        //
+  }) 
+}
+else{
+
     this.fechaInicio = this.inputBandeja.get('fechaInicio').value;
     if( this.fechaInicio === undefined || this.fechaInicio === null || this.fechaInicio === '')
     { this.fechaInicio = null;}
@@ -156,6 +176,8 @@ export class ReportesDonacionesComponent implements OnInit {
         this.resultsLength=response.totalRecords;
       }
     })
+  }
+
   }
 
   verDetalleDonacion(dataDonacion: Reportes,nuIdTransferencia:number) {

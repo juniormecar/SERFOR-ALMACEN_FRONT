@@ -348,6 +348,18 @@
                                                 <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Cantidad </th>
                                                 <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
                                             </ng-container>
+
+                                            <ng-container matColumnDef="unidadMedida">
+                                                <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;"
+                                                    class="center"> Unidad Medida </th>
+                                                <td mat-cell *matCellDef="let element" class="text-center">
+                                                    <div *ngFor="let item of listUnidadMedida">
+                                                        <div *ngIf="item.codigo == element.unidadMedida">
+                                                            {{item.valorPrimario}}
+                                                        </div>
+                                                    </div>
+                                               </td>
+                                            </ng-container>
             
                                             <ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Descontar </th>
@@ -386,17 +398,7 @@
                                                 </td>
                                             </ng-container>
                                             
-                                            <ng-container matColumnDef="unidadMedida">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;"
-                                                    class="center"> Unidad Medida </th>
-                                                <td mat-cell *matCellDef="let element" class="text-center">
-                                                    <div *ngFor="let item of listUnidadMedida">
-                                                        <div *ngIf="item.codigo == element.unidadMedida">
-                                                            {{item.valorPrimario}}
-                                                        </div>
-                                                    </div>
-                                               </td>
-                                            </ng-container>
+                                            
                                                 
                                             <ng-container matColumnDef="acciones" class="text-center">
                                             <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Acciones </th>
@@ -471,17 +473,17 @@
                                             </ng-container>
             
                                             <ng-container matColumnDef="numeroActa">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Acta</th>
+                                                <th mat-header-cell *matHeaderCellDef style="width: 10%;">N° Acta</th>
                                                 <td mat-cell *matCellDef="let element"> {{element.numeroActa}} </td>
                                             </ng-container>
                             
                                             <ng-container matColumnDef="nombreCientifico">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Nombre Científico </th>
+                                                <th mat-header-cell *matHeaderCellDef style="width: 17%;"> Nombre Científico </th>
                                                 <td mat-cell *matCellDef="let element"> {{element.nombreCientifico}} </td>
                                             </ng-container>
                             
                                             <ng-container matColumnDef="nombreComun">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 20%;"> Nombre Común </th>
+                                                <th mat-header-cell *matHeaderCellDef style="width: 18%;"> Nombre Común </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">{{element.nombreComun}}</div>
                                                     <div *ngIf="element.idEspecie === 0"><b>{{element.nombreComun}}</b></div>
@@ -491,8 +493,21 @@
             
                                             <ng-container matColumnDef="txCantidadProducto">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto * element.capacidadUnidad}} </td>
                                             </ng-container>
+
+                                            <ng-container matColumnDef="unidadMedida">
+                                                <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;"
+                                                    class="center"> Unidad Medida </th>
+                                                <td mat-cell *matCellDef="let element" class="text-center">
+                                                    <div *ngFor="let item of listUnidadMedida">
+                                                        <div *ngIf="item.codigo == element.unidadMedida">
+                                                            {{item.valorPrimario}}
+                                                        </div>
+                                                    </div>
+                                               </td>
+                                            </ng-container>
+
             
                                             <ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Descontar </th>
@@ -531,18 +546,7 @@
                                                 </td>
                                             </ng-container>
                                             
-                                            <ng-container matColumnDef="unidadMedida">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 10%; text-align: center;"
-                                                    class="center"> Unidad Medida </th>
-                                                <td mat-cell *matCellDef="let element" class="text-center">
-                                                    <div *ngFor="let item of listUnidadMedida">
-                                                        <div *ngIf="item.codigo == element.unidadMedida">
-                                                            {{item.valorPrimario}}
-                                                        </div>
-                                                    </div>
-                                               </td>
-                                            </ng-container>
-                                                
+                                            
                                             <ng-container matColumnDef="acciones" class="text-center">
                                             <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Acciones </th>
                                             <td mat-cell *matCellDef="let element" class="field-input" >
@@ -637,6 +641,7 @@
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
                                                 <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
                                             </ng-container>
+                                           
             
                                             <ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Descontar </th>
@@ -671,8 +676,8 @@
                                             </ng-container> 
             
                             
-                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsNMFA"></tr>
-                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsNMFA;"></tr>
+                                            <tr mat-header-row *matHeaderRowDef="displayedColumnsNMFAUNA"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: displayedColumnsNMFAUNA;"></tr>
                             
                                         </table>
                                         <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons

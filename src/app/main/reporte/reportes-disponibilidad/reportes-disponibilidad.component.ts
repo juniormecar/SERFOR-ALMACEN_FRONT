@@ -167,6 +167,23 @@
     }
     
     async SearchReportes() {
+
+      if( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '')
+      {
+        Swal.fire({
+          title: 'Alerta!',
+          text: "Debe seleccionar un Almacén.",
+          icon: 'warning',
+          //showCancelButton: true,
+          confirmButtonColor: '#679738',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+              //
+        }) 
+      }
+      else{
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;        
       this.reportesRequest.numeroDocumento =  this.numeroDocumento;
@@ -179,6 +196,7 @@
           
         }
       })
+    }
     }
   
     verDetalle (nuIdAlmacen:number){

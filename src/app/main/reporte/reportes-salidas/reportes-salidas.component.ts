@@ -157,6 +157,28 @@
 
 
     async SearchReportes() {
+
+      if(( this.inputBandeja.get('periodo').value === undefined || this.inputBandeja.get('periodo').value === null || this.inputBandeja.get('periodo').value === '') &&
+      (this.inputBandeja.get('periodoSe').value === undefined || this.inputBandeja.get('periodoSe').value === null || this.inputBandeja.get('periodoSe').value === '') &&
+      ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
+      ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+{
+  Swal.fire({
+    title: 'Alerta!',
+    text: "Debe llenar alguno de los filtros.",
+    icon: 'warning',
+    //showCancelButton: true,
+    confirmButtonColor: '#679738',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+        //
+  }) 
+}
+else{
+
+
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
@@ -169,6 +191,7 @@
           this.resultsLength=response.totalRecords;
         }
       })
+    }
     }
     
     
