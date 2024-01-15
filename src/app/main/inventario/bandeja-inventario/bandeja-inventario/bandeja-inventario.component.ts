@@ -37,7 +37,7 @@ export class BandejaInventarioComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['position','Tipo','disponibilidad', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','metroCubico'];
+  displayedColumns: string[] = ['position','Tipo','disponibilidad', 'nombreCientifico', 'nombreComun','unidad', 'txCantidadProducto','metroCubico'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
@@ -303,7 +303,7 @@ export class BandejaInventarioComponent implements OnInit {
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+      const headers = ['Almacen','Tipo de Producto','Nombre Científico', 'Nombre Comun','U. de Medida','Disponibilidad', 'Cantidad', 'Metro Cubico'];
       const data = [headers, ...dataToExport.map(item => [
         nombreAlmacen ,
         item.tipo === 'MAD' ? 'Maderable' :
@@ -311,6 +311,7 @@ export class BandejaInventarioComponent implements OnInit {
         item.tipo === 'FA' ? 'Fauna' : item.tipo,
         item.nombreCientifico,
         item.nombreComun,
+        item.unidadMedida,
         item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
         Number(item.txCantidadProducto),
         item.metroCubico,
@@ -323,13 +324,14 @@ export class BandejaInventarioComponent implements OnInit {
     
       XLSX.writeFile(wb, 'Inventario.xlsx');
     }else{
-      const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+      const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','U. de Medida','Disponibilidad', 'Cantidad', 'Metro Cubico'];
       const data = [headers, ...dataToExport.map(item => [
         item.tipo === 'MAD' ? 'Maderable' :
         item.tipo === 'NOMAD' ? 'No Maderable' :
         item.tipo === 'FA' ? 'Fauna' : item.tipo,
         item.nombreCientifico,
         item.nombreComun,
+        item.unidadMedida,
         item.disponibilidadActa === 'D' ? 'Disponible' : 'No Disponible',
         Number(item.txCantidadProducto),
         item.metroCubico,

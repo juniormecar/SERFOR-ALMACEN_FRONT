@@ -53,7 +53,7 @@ export class Recurso {
     placa?:string;
     fechaIngreso?:Date;
     horaIngreso?:string;
-
+    unidadMedida?:string;
     intervenido: RecursoPersona;
     conductor: RecursoPersona;
 
