@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { ReportesService } from 'app/service/reportes.service';
@@ -61,6 +62,13 @@ export class ModalDetalleDonacionComponent implements OnInit {
         this.resultsLength=response.totalRecords;
       }
     })
+  }
+
+  pageDataSource(e: PageEvent): PageEvent {
+    this.reportesResponse.pageNumber = e.pageIndex + 1;
+    this.reportesResponse.pageSize = e.pageSize;
+    this.SearchReportes();
+    return e;
   }
 
 }
