@@ -1,1 +1,56 @@
-<p>modal-detalle-donacion works!</p>
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title"> <b> Reporte de Donaciones </b></span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <div class="example-container mat-elevation-z1">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="nombreCientifico">
+                    <th mat-header-cell *matHeaderCellDef> Nombre Científico </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreCientifico }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombreComun">
+                    <th mat-header-cell *matHeaderCellDef> Nombre Común </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombreComun }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef> Cantidad</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadProducto }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipoEspecie">
+                    <th mat-header-cell *matHeaderCellDef> Tipo de Especie </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.tipoEspecie === 'MAD'">
+                            Maderable
+                        </div>
+                        <div *ngIf="element.tipoEspecie === 'NOMAD'">
+                            No Maderable
+                        </div>
+                        <div *ngIf="element.tipoEspecie === 'FA'">
+                            Fauna
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+            </table>
+            <mat-paginator style="float:left; color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]"
+                showFirstLastButtons [length]="reportesResponse.totalRecords" [pageSize]="reportesResponse.pageSize"
+                (page)="pageDataSource($event)" aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+
+    </div>
+</div>

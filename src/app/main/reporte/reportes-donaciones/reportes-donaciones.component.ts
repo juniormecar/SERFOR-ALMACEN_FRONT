@@ -42,7 +42,7 @@ export class ReportesDonacionesComponent implements OnInit {
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-  displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie'];
+  displayedColumns: string[] = ['fecha','origen','destino', 'nroActa','observacion','acciones'];
   inputBandeja: FormGroup;
   resultsLength = 0;
   idAlmacen: any;
@@ -169,10 +169,24 @@ else{
     this.reportesRequest.fechaInicio = this.fechaInicio;
     this.reportesRequest.fechaFin = this.fechaFin;
     this.reportesRequest.numeroDocumento =  this.numeroDocumento;
-    this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+    this.reportesRequest.tipo =  'G';
+    this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{
       if(response.success){
         this.reportesResponse = response;
-        this.dataSource = new MatTableDataSource<Reportes>(response.data);
+        let lstReportes =[];
+        let lstReportesFiltered =[];
+        response.data.forEach(item=>{
+          debugger
+          if(lstReportes.length==0){
+            lstReportes.push(item);
+          }else{
+            lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
+            if(lstReportesFiltered.length===0){
+              lstReportes.push(item);
+            }
+          }
+        })
+        this.dataSource = new MatTableDataSource<Reportes>(lstReportes);
         this.resultsLength=response.totalRecords;
       }
     })
@@ -180,11 +194,11 @@ else{
 
   }
 
-  verDetalleDonacion(dataDonacion: Reportes,nuIdTransferencia:number) {
+  verDetalleDonacion(nroActa:string) {
     const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
       width: '1000px',
       height: '360px',
-      data: { dataDonacion: dataDonacion, nuIdTransferencia: nuIdTransferencia }
+      data: { nroActa: nroActa }
     });
 
     dialogRef.afterClosed().subscribe(result => {  

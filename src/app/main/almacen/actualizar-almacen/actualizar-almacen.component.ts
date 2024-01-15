@@ -507,7 +507,7 @@ export class ActualizarAlmacenComponent implements OnInit {
               var acumular=true;
               lista.forEach((item:any)=>{
                 if(result.nombreCientifico===item.nombreCientifico && result.nombreComun===item.nombreComun && 
-                   result.unidadMedida===item.unidadMedida && item.tipoIngreso === result.tipoIngreso){
+                   result.unidadMedida===item.unidadMedida && item.tipoIngreso === result.tipoIngreso && item.unidadMedida===result.unidadMedida){
                     acumular=false;
                   }
               })
@@ -517,7 +517,7 @@ export class ActualizarAlmacenComponent implements OnInit {
                 lista.forEach((item:any)=>{
                   
                   if(result.nombreCientifico===item.nombreCientifico && result.nombreComun===item.nombreComun && 
-                     result.unidadMedida===item.unidadMedida && item.tipoIngreso === result.tipoIngreso){
+                     result.unidadMedida===item.unidadMedida && item.tipoIngreso === result.tipoIngreso && item.unidadMedida===result.unidadMedida){
                     lstHallazgos.forEach(result2=>{
                       
                       if(result2.nombreCientifico===item.nombreCientifico && result2.nombreComun===item.nombreComun && result2.unidadMedida===item.unidadMedida){
@@ -530,11 +530,14 @@ export class ActualizarAlmacenComponent implements OnInit {
             }
             
           }else{
+            console.log("result 1 ",result);
+           // result.txCantidadProducto = Number(result.txCantidadProducto)*Number(result.capacidadUnidad);
+            console.log("result 2 ",result);
             lista.push(result);
           }
           
         })
-        //console.log("lista ",lista);
+        console.log("listaNM ",lista);
         this.dataSourceNoMadFilter = new MatTableDataSource<Recurso>(lista);
         this.dataSourceNoMadFilterActa = new MatTableDataSource<Recurso>(dataSourceNoMadFilterAc); 
         this.listFilterTotalNoMad(this.dataSourceNoMadFilter.data);
@@ -1017,23 +1020,71 @@ export class ActualizarAlmacenComponent implements OnInit {
     else{    
     
     let dataGeneralMad = [];
-    let dataGeneralMadComp = dataFilteredMad.filter(x=>x.tipoIngreso=== 'Hallazgo');
+    let dataGeneralMadComp = dataFilteredMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
     var contador = 0;
+    let validateMad =true;
+    console.log("dataFilteredMad ",dataFilteredMad)
     if(dataFilteredMad.length > 0){
-      
         dataFilteredMad
         .forEach((resp:any)=>{
+          
           var descontar = resp.descontar;
           var descontarM3 = resp.descontarMetroCubico;
-          if(resp.tipoIngreso=== 'Hallazgo'){
+          if(resp.tipoIngreso=== 'Hallazgo' && resp.numeroActa===""){
+            
             this._recursoService.getRecursoSearchVerProductos(null, null, null, 
                                                               null,null, this.idAlmacen,null,null,resp.nombreCientifico,resp.nombreComun,null,null,null,null,resp.unidadMedida,
                                                               null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'ASC')
                         .subscribe((response: BandejaRecursoResponse) => {
-                
+                contador++;
                 response.data.filter(x=> Number(x.txCantidadProducto) > 0);
                 response.data.forEach((item:any)=>{  
-                  
+                  if(descontar>Number(item.txCantidadProducto) && descontarM3>Number(item.metroCubico)){
+                    validateMad=false;
+                    Swal.fire({
+                      title: 'Mensaje!',
+                      text: 'No puede descontar una cantidad mayor a la actual',
+                      icon: 'error',
+                      width: 350,
+                     confirmButtonColor: '#C73410',
+                      confirmButtonText: 'ok'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                      }
+                    })
+                    return;
+                  }
+                  else if(descontar>Number(item.txCantidadProducto)){
+                    validateMad=false;
+                    Swal.fire({
+                      title: 'Mensaje!',
+                      text: 'No puede descontar una cantidad mayor a la cantidad actual',
+                      icon: 'error',
+                      width: 350,
+                     confirmButtonColor: '#C73410',
+                      confirmButtonText: 'ok'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                      }
+                    })
+                    return;
+                  }
+                  else if(descontarM3>Number(item.metroCubico)){
+                    validateMad=false;
+                    Swal.fire({
+                      title: 'Mensaje!',
+                      text: 'No puede descontar metros cúbicos mayores a la capacidad actual',
+                      icon: 'error',
+                      width: 350,
+                     confirmButtonColor: '#C73410',
+                      confirmButtonText: 'ok'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                      }
+                    })
+                    return;
+                  }
+
                   if (descontar > 0 && descontar !== null && resp.txCantidadProducto != null && descontar !==undefined && resp.txCantidadProducto != undefined) {
                     if(descontar>=Number(item.txCantidadProducto)){
                       descontar = Number(descontar) - Number(item.txCantidadProducto);
@@ -1060,67 +1111,155 @@ export class ActualizarAlmacenComponent implements OnInit {
                   }
   
                 })  
-                contador++;
-                if(contador == dataGeneralMadComp.length){
-                  
-                  if(dataFilteredFauna.length > 0){
-                    dataFilteredFauna.forEach( fa => dataFiltered.push(fa))
+                console.log("*************** 1 *****************")
+                console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
+                console.log("dataFilteredMad ",dataFilteredMad.length)
+                console.log("contador ",contador)
+                console.log("validateMad ",validateMad)
+                console.log("***********************************")
+               // if(contador == dataGeneralMadComp.length){
+                  if(dataFilteredNoMad.length  === 0 && dataFilteredMad.length === contador && validateMad){
+                    console.log("ENTRO 1")
+                   // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+                   this.getSalidas(dataFiltered,contador);
                   }
-              
-                  if(dataFilteredNoMad.length > 0){
-                    dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
-                  }
-                  this.getSalidas(dataFiltered,contador);
-                }
+                 
+              //  }
             })
           }else{
+            contador++;
             if((descontar !== null && descontar !==undefined && resp.txCantidadProducto != null && resp.txCantidadProducto != undefined) || 
             (descontarM3 !== null && descontarM3 !== undefined && resp.metroCubico != null && resp.metroCubico != undefined)){
               dataGeneralMad.push(resp);
               dataFiltered.push(resp);
-              if(dataGeneralMadComp.length==0){
-                contador++;
-              }
+            }
+            console.log("*************** 2 *****************")
+                console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
+                console.log("dataFilteredMad ",dataFilteredMad.length)
+                console.log("contador ",contador)
+                console.log("validateMad ",validateMad)
+                console.log("***********************************")
+            if(dataFilteredNoMad.length  === 0 && dataFilteredMad.length === contador && validateMad) {
+              console.log("ENTRO 2")
+             // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+             this.getSalidas(dataFiltered,contador);
             }
           } 
         })
 
-        if (dataGeneralMadComp.length == 0) {
+      /* if (dataGeneralMadComp.length == 0) {
+           if(dataFilteredNoMad.length  === 0){
+            console.log("ENTRO 2")
+              // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+              this.getSalidas(dataFiltered,contador);
+           }
+      }*/
+    }
 
-          if (dataFilteredFauna.length > 0) {
-            dataFilteredFauna.forEach(fa => dataFiltered.push(fa))
-          }
 
-          if (dataFilteredNoMad.length > 0) {
-            dataFilteredNoMad.forEach(nm => dataFiltered.push(nm))
+    let dataGeneralNoMad = [];
+    let dataGeneralNoMadComp = dataFilteredNoMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
+    var contadorNoMad = 0;
+    console.log("dataFilteredNoMad ",dataFilteredNoMad)
+    let validateNoMad =true;
+    if(dataFilteredNoMad.length > 0){
+      
+      dataFilteredNoMad
+      .forEach((resp:any)=>{
+        var descontarNoMad = resp.descontar;
+        if(resp.tipoIngreso=== 'Hallazgo' && resp.numeroActa===""){
+          this._recursoService.getRecursoSearchVerProductos(null, null, null, 
+                                                            null,null, this.idAlmacen,null,null,resp.nombreCientifico,resp.nombreComun,null,null,null,null,resp.unidadMedida,
+                                                            null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'ASC')
+                      .subscribe((response: BandejaRecursoResponse) => {
+              contadorNoMad++;
+              response.data.filter(x=> Number(x.txCantidadProducto) > 0);
+              response.data.forEach((item:any)=>{ 
+                if(descontarNoMad>Number(item.txCantidadProducto)){
+                  validateNoMad=false;
+                  Swal.fire({
+                    title: 'Mensaje!',
+                    text: 'No puede decontar una cantidad mayor a la capacidad actual',
+                    icon: 'error',
+                    width: 350,
+                   confirmButtonColor: '#C73410',
+                    confirmButtonText: 'ok'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                    }
+                  })
+                }
+
+                if (descontarNoMad > 0 && descontarNoMad !== null && resp.txCantidadProducto != null && descontarNoMad !==undefined && resp.txCantidadProducto != undefined) {
+                  if(descontarNoMad>=Number(item.txCantidadProducto)){
+                    descontarNoMad = Number(descontarNoMad) - Number(item.txCantidadProducto);
+                    item.descontar = Number(item.txCantidadProducto);
+                  }else{
+                    item.descontar = Number(descontarNoMad);
+                    descontarNoMad=0;
+                  }
+                }
+
+                if((item.descontar !== null && item.descontar!==undefined)){
+                  dataGeneralMad.push(item);
+                  dataFiltered.push(item);
+                }
+                
+              })  
+
+                if(dataFilteredNoMad.length === contadorNoMad && validateNoMad){
+                  console.log("ENTRO 3")
+                  //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+                  this.getSalidas(dataFiltered,contadorNoMad);
+                }
+
+          })
+        }else{
+          contadorNoMad++;
+          if((descontarNoMad !== null && descontarNoMad !==undefined && resp.txCantidadProducto != null && resp.txCantidadProducto != undefined)){
+            dataGeneralNoMad.push(resp);
+            dataFiltered.push(resp);
           }
-          this.getSalidas(dataFiltered,contador);
+          if(dataFilteredNoMad.length === contadorNoMad && validateNoMad){
+            console.log("ENTRO 3")
+            //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+            this.getSalidas(dataFiltered,contadorNoMad);
+          }
+        } 
+      })
+
+    /* if (dataGeneralNoMadComp.length == 0) {
+        if(dataFilteredNoMad.length > 0){
+          //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+          console.log("ENTRO 4")
+          this.getSalidas(dataFiltered,contadorNoMad);
         }
-    }
+      }*/
+  }
 
-    if(dataFilteredMad.length === 0){
+      /* if(dataFilteredMad.length === 0){
+      
+          if(dataFilteredNoMad.length > 0){
+            dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+          }
 
-      if(dataFilteredFauna.length > 0){
-        dataFilteredFauna.forEach( fa => dataFiltered.push(fa))
-      }
-  
-      if(dataFilteredNoMad.length > 0){
-        dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
-      }
+          contador++;
 
-      contador++;
+          this.getSalidas(dataFiltered,contador);
 
-      this.getSalidas(dataFiltered,contador);
-
-    }
+        }*/
 
      }
     }
   }
 }
 
+
+
+
   getSalidas(dataFiltered: Recurso[], contador) {
-    
+    console.log("dataFiltered SAL ",dataFiltered )
+    console.log("contador SAL ",contador )
     if (Number(contador) > 0) {
       let data = [];
       let datos: Number[] = []

@@ -391,7 +391,7 @@
                                                         <mat-form-field [style.width.px]=80>
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontarMetroCubico" [ngModelOptions]="{standalone: true}" type="number"
-                                                            [disabled]="element.txCantidadProducto=='0'"
+                                                            [disabled]="element.txCantidadProducto==0 || element.txCantidadProducto==null || element.txCantidadProducto==undefined"
                                                             minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
                                                         </mat-form-field>
                                                     </div>
@@ -492,8 +492,8 @@
             
             
                                             <ng-container matColumnDef="txCantidadProducto">
-                                                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto * element.capacidadUnidad}} </td>
+                                                <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Total </th>
+                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
                                             </ng-container>
 
                                             <ng-container matColumnDef="unidadMedida">

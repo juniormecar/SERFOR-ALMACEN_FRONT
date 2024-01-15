@@ -39,4 +39,7 @@ export class Reportes {
     cantidadCapacidadMAD?:number; 
     cantidadCapacidadNOMAD?:number; 
     cantidadCapacidadFA?:number; 
+    tipo?:string; 
+    nroActa?:string; 
+    observaciones?:string; 
 }

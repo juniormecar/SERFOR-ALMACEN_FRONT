@@ -59,8 +59,12 @@ export class ReportesService {
         if (reportesRequest.numeroDocumento) {
             url += `&numeroDocumento=${reportesRequest.numeroDocumento}`
         }
- 
-
+        if (reportesRequest.nroActa) {
+            url += `&numeroActa=${reportesRequest.nroActa}`
+        }
+        if (reportesRequest.tipo) {
+            url += `&tipo=${reportesRequest.tipo}`
+        }
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
     }
 
