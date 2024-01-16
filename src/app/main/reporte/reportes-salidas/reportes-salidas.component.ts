@@ -27,6 +27,8 @@
   import { ReportesResponse } from 'app/shared/models/response/reportes-response';
   import { Reportes } from 'app/shared/models/reportes.model';
   import { ReportesService } from 'app/service/reportes.service';
+  import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
+
   
   
   @Component({
@@ -40,7 +42,7 @@
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['fecha','origen','destino', 'nombreCientifico', 'nombreComun', 'cantidad','tipoEspecie','tipoTransferenciaDetalle'];
+    displayedColumns: string[] = ['fecha','origen','destino', 'nroActa', 'observaciones', 'acciones'];
     inputBandeja: FormGroup;
     resultsLength = 0;
     idAlmacen: any;
@@ -183,6 +185,7 @@ else{
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
       this.reportesRequest.periodo = this.varPeriodo;
+      this.reportesRequest.tipo =  'G';
       this.reportesRequest.numeroDocumento =  this.numeroDocumento;
       this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
         if(response.success){
@@ -192,6 +195,23 @@ else{
         }
       })
     }
+    }
+
+    verDetalleSalida(nroActa:string) {
+      const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
+        width: '1000px',
+        height: '360px',
+        data: { nroActa: nroActa }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {  
+        console.log('result',result);
+        if (result == 999) {
+          
+         this.SearchReportes();
+        }
+      })
+      
     }
     
     

@@ -21,7 +21,7 @@
                             <div fxLayout="row" fxLayoutAlign="space-between">
                                 <span class="text-primary-ir" floatLabel="always" fxFlex="45">Almacén Origen</span>
                                 <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Especie</span>
+                                <!-- <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Especie</span> -->
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
@@ -39,7 +39,7 @@
                                     </mat-select>
                                 </mat-form-field>  
                                 <div fxFlex="5"></div>
-                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
+                                <!-- <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
                                     <mat-select formControlName="tipoEspecie" >
                                         <mat-option [value]="">
                                             Seleccione
@@ -50,7 +50,7 @@
                                             </mat-option>
                                         </ng-container>
                                     </mat-select>
-                                </mat-form-field>     
+                                </mat-form-field>      -->
                                
                             </div> 
                             <div fxLayout="row" fxLayoutAlign="space-between">
@@ -133,40 +133,26 @@
                                         </td>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="nombreCientifico">
-                                        <th mat-header-cell *matHeaderCellDef> Nombre Científico </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.nombreCientifico }} </td>
+                                    <ng-container matColumnDef="nroActa">
+                                        <th mat-header-cell *matHeaderCellDef> Número de Acta </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nroActa }} </td>
+                                    </ng-container>                                    
+
+
+                                    <ng-container matColumnDef="observaciones">
+                                        <th mat-header-cell *matHeaderCellDef> Observaciones </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.observaciones }} </td>
                                     </ng-container>
 
-                                    <ng-container matColumnDef="nombreComun">
-                                        <th mat-header-cell *matHeaderCellDef> Nombre Común </th>
-                                        <td mat-cell *matCellDef="let element"> {{element.nombreComun }} </td>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="cantidad">
-                                        <th mat-header-cell *matHeaderCellDef> Cantidad</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.cantidadProducto }} </td>
-                                    </ng-container>                                   
-
-                                    <ng-container matColumnDef="tipoEspecie">
-                                        <th mat-header-cell *matHeaderCellDef> Tipo de Especie </th>
-                                        <td mat-cell *matCellDef="let element"> 
-                                            <div *ngIf="element.tipoEspecie === 'MAD'">
-                                                 Maderable
-                                            </div>
-                                            <div *ngIf="element.tipoEspecie === 'NOMAD'">
-                                               No Maderable
-                                           </div>
-                                           <div *ngIf="element.tipoEspecie === 'FA'">
-                                            Fauna
-                                       </div>
+                                    <ng-container matColumnDef="acciones">
+                                        <th mat-header-cell *matHeaderCellDef> Detalle </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <button  mat-mini-fab (click)="verDetalleSalida(element.nroActa)" style="background-color: #89B361;">
+                                                <mat-icon>remove_red_eye</mat-icon>
+                                            </button>              
+                                           
                                         </td>
-                                    </ng-container>
-
-                                    <ng-container matColumnDef="tipoTransferenciaDetalle">
-                                        <th mat-header-cell *matHeaderCellDef> Tipo de Transferencia</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.tipoTransferenciaDetalle }} </td>
-                                    </ng-container>
+                                    </ng-container> 
 
                                     
 

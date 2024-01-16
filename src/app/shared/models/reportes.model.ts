@@ -41,5 +41,6 @@ export class Reportes {
     cantidadCapacidadFA?:number; 
     tipo?:string; 
     nroActa?:string; 
+    nroActaTraslado?:string; 
     observaciones?:string; 
 }
