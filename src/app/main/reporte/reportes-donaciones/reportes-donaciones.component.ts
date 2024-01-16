@@ -29,6 +29,7 @@ import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesService } from 'app/service/reportes.service';
 import { invalid } from 'moment';
 import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reportes-donaciones',
@@ -39,6 +40,7 @@ import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/moda
 export class ReportesDonacionesComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Reportes>([]);
+  dataSourceExcel = new MatTableDataSource<Reportes>([]);
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
@@ -47,6 +49,7 @@ export class ReportesDonacionesComponent implements OnInit {
   resultsLength = 0;
   idAlmacen: any;
   reportesResponse: ReportesResponse = new ReportesResponse();
+  reportesResponseExcel: ReportesResponse = new ReportesResponse();
   numeroDocumento: string = '44691637';
   listReporte: Reportes[] = [];
   listPuestoControl: PuestoControl[] = [];
@@ -176,7 +179,6 @@ else{
         let lstReportes =[];
         let lstReportesFiltered =[];
         response.data.forEach(item=>{
-          debugger
           if(lstReportes.length==0){
             lstReportes.push(item);
           }else{
@@ -197,7 +199,7 @@ else{
   verDetalleDonacion(nroActa:string) {
     const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
       width: '1000px',
-      height: '360px',
+      height: '600px',
       data: { nroActa: nroActa }
     });
 
@@ -232,12 +234,12 @@ else{
   exportToExcel() {
     console.log('Datos a exportar:', this.listReporte);
     /*const dataToExport = this.listReporte; */
-    const dataToExport = this.dataSource.data;
+    const dataToExport = this.dataSourceExcel.data;
     var nombreAlmacen='';
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
+      const headers = ['Almacen','Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida', 'Tipo de Especie'];
       const data = [headers, ...dataToExport.map(item => [
         nombreAlmacen ,
         this.formatDateToUTC(item.feFechaRegistro),
@@ -247,6 +249,7 @@ else{
         item.nombreCientifico,
         item.nombreComun,
         item.cantidadProducto,
+        item.unidadMedida,
         item.tipoEspecie === 'MAD' ? 'Maderable' :
         item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
         item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie
@@ -283,6 +286,58 @@ else{
       XLSX.writeFile(wb, 'ReporteDonaciones.xlsx');
     }
     
+  }
+
+  async SearchReportesExcel() {
+
+    if(( this.inputBandeja.get('fechaInicio').value === undefined || this.inputBandeja.get('fechaInicio').value === null || this.inputBandeja.get('fechaInicio').value === '') &&
+    (this.inputBandeja.get('fechaFin').value === undefined || this.inputBandeja.get('fechaFin').value === null || this.inputBandeja.get('fechaFin').value === '') &&
+    ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
+    ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+{
+  Swal.fire({
+    title: 'Alerta!',
+    text: "Debe llenar alguno de los filtros.",
+    icon: 'warning',
+    //showCancelButton: true,
+    confirmButtonColor: '#679738',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+        //
+  }) 
+}
+else{
+    this.reportesResponseExcel.pageNumber = 1;
+    this.reportesResponseExcel.pageSize = 100000;
+    this.fechaInicio = this.inputBandeja.get('fechaInicio').value;
+    if( this.fechaInicio === undefined || this.fechaInicio === null || this.fechaInicio === '')
+    { this.fechaInicio = null;}
+    else{this.fechaInicio = new Date (this.inputBandeja.get('fechaInicio').value);}
+
+    this.fechaFin = this.inputBandeja.get('fechaFin').value;
+    if( this.fechaFin === undefined || this.fechaFin === null || this.fechaFin === '')
+    { this.fechaFin = null;}
+    else{this.fechaFin = new Date (this.inputBandeja.get('fechaFin').value);}
+
+    this.dataSourceExcel = new MatTableDataSource<Reportes>([])
+    this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
+    this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
+    this.reportesRequest.tipoTransferencia = 'TPTRANS001'; 
+    this.reportesRequest.fechaInicio = this.fechaInicio;
+    this.reportesRequest.fechaFin = this.fechaFin;
+    this.reportesRequest.numeroDocumento =  this.numeroDocumento;
+    this.reportesRequest.tipo =  'GD';
+    this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponseExcel.pageNumber,this.reportesResponseExcel.pageSize)
+    .pipe(finalize(() => this.exportToExcel()))
+    .subscribe((response:ReportesResponse)=>{
+      if(response.success){
+        this.dataSourceExcel = new MatTableDataSource<Reportes>(response.data);
+      }
+    })
+  }
+
   }
 
   formatDateToUTC(date) {

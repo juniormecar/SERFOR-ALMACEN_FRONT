@@ -28,6 +28,7 @@
   import { Reportes } from 'app/shared/models/reportes.model';
   import { ReportesService } from 'app/service/reportes.service';
   import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
+import { finalize } from 'rxjs/operators';
 
   
   
@@ -39,6 +40,7 @@
   export class ReportesSalidasComponent implements OnInit {
   
     dataSource = new MatTableDataSource<Reportes>([]);
+    dataSourceExcel = new MatTableDataSource<Reportes>([]);
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
@@ -47,6 +49,7 @@
     resultsLength = 0;
     idAlmacen: any;
     reportesResponse: ReportesResponse = new ReportesResponse();
+    reportesResponseExcel: ReportesResponse = new ReportesResponse();
     numeroDocumento: string = '44691637';
     listReporte: Reportes[] = [];
     listPuestoControl: PuestoControl[] = [];
@@ -180,7 +183,6 @@
 }
 else{
 
-
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
@@ -197,11 +199,54 @@ else{
     }
     }
 
-    verDetalleSalida(nroActa:string) {
+
+    async SearchReportesExcel() {
+
+      if(( this.inputBandeja.get('periodo').value === undefined || this.inputBandeja.get('periodo').value === null || this.inputBandeja.get('periodo').value === '') &&
+      (this.inputBandeja.get('periodoSe').value === undefined || this.inputBandeja.get('periodoSe').value === null || this.inputBandeja.get('periodoSe').value === '') &&
+      ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
+      ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+{
+  Swal.fire({
+    title: 'Alerta!',
+    text: "Debe llenar alguno de los filtros.",
+    icon: 'warning',
+    //showCancelButton: true,
+    confirmButtonColor: '#679738',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+        //
+  }) 
+}
+else{
+      this.reportesResponseExcel.pageNumber = 1;
+      this.reportesResponseExcel.pageSize = 100000;
+      this.dataSourceExcel = new MatTableDataSource<Reportes>([])
+      this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
+      this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
+      this.reportesRequest.periodo = this.varPeriodo;
+      this.reportesRequest.tipo =  'GD';
+      this.reportesRequest.numeroDocumento =  this.numeroDocumento;
+      this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponseExcel.pageNumber,this.reportesResponseExcel.pageSize)
+      .pipe(finalize(() => this.exportToExcel()))
+      .subscribe((response:BandejaAlmacenResponse)=>{
+        if(response.success){
+          this.dataSourceExcel = new MatTableDataSource<Reportes>(response.data);
+        }
+      })
+    }
+    }
+
+    verDetalleSalida(tipoTransferencia:string,nroActa:string,nuIdTransferencia:number) {
+      if(tipoTransferencia==='TPTRANS006'){
+        nroActa=null;
+      }
       const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
         width: '1000px',
-        height: '360px',
-        data: { nroActa: nroActa }
+        height: '600px',
+        data: { nroActa: nroActa, nuIdTransferencia :nuIdTransferencia }
       });
   
       dialogRef.afterClosed().subscribe(result => {  
@@ -236,9 +281,9 @@ else{
   
   
     exportToExcel() {
-      const dataToExport = this.dataSource.data;
-      console.log('eeeeeeeeee',this.dataSource.data);
-        const headers = ['Fecha','Origen','Destino', 'Nombre Científico','Nombre Común', 'Cantidad', 'Tipo de Especie','Tipo de Transferencia'];
+      const dataToExport = this.dataSourceExcel.data;
+      console.log('eeeeeeeeee',this.dataSourceExcel.data);
+        const headers = ['Fecha','Origen','Destino', 'Nombre Científico','Nombre Común', 'Cantidad','U. de Medida', 'Tipo de Especie','Tipo de Transferencia'];
         const data = [headers, ...dataToExport.map(item => [
           this.formatDateToUTC(item.feFechaRegistro),
           item.almacenOrigen,
@@ -246,14 +291,10 @@ else{
           item.tipoTransferencia === 'TPTRANS001' ?  item.nombre :
           item.tipoTransferencia === 'TPTRANS006' ?  item.faunaSalida :
           item.tipoTransferencia === 'TPTRANS002' ?  item.almacenDestino : item.almacenDestino,
-          
           item.nombreCientifico,
-
-          
-
-
           item.nombreComun,
           Number(item.cantidadProducto),
+          item.unidadMedida,
           item.tipoEspecie === 'MAD' ? 'Maderable' :
           item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
           item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,

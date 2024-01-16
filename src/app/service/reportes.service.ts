@@ -65,6 +65,9 @@ export class ReportesService {
         if (reportesRequest.tipo) {
             url += `&tipo=${reportesRequest.tipo}`
         }
+        if (reportesRequest.nuIdTransferencia) {
+            url += `&nuIdTransferencia=${reportesRequest.nuIdTransferencia}`
+        }
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
     }
 

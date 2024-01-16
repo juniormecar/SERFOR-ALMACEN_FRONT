@@ -7,7 +7,8 @@ import { ReportesService } from 'app/service/reportes.service';
 import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesResponse } from 'app/shared/models/response/reportes-response';
 interface DialogData {
-  nroActa:string
+  nroActa:string,
+  nuIdTransferencia:number
 }
 @Component({
   selector: 'app-modal-detalle-donacion',
@@ -16,7 +17,7 @@ interface DialogData {
 })
 export class ModalDetalleDonacionComponent implements OnInit {
   dataSource = new MatTableDataSource<Reportes>([]);
-  displayedColumns: string[] = ['nombreCientifico','nombreComun','cantidad', 'tipoEspecie'];
+  displayedColumns: string[] = ['nombreCientifico','nombreComun','cantidad','unidadMedida', 'tipoEspecie'];
   reportesResponse: ReportesResponse = new ReportesResponse();
   reportesRequest:  Reportes = new Reportes();
   resultsLength = 0;
@@ -55,6 +56,7 @@ export class ModalDetalleDonacionComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Reportes>([]);
     this.reportesRequest.tipo =  'D';
     this.reportesRequest.nroActa =  this.data.nroActa;
+    this.reportesRequest.nuIdTransferencia =  this.data.nuIdTransferencia;
     this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{
       if(response.success){
         this.reportesResponse = response;
