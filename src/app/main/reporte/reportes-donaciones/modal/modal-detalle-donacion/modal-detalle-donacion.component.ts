@@ -17,7 +17,7 @@ interface DialogData {
 })
 export class ModalDetalleDonacionComponent implements OnInit {
   dataSource = new MatTableDataSource<Reportes>([]);
-  displayedColumns: string[] = ['nombreCientifico','nombreComun','cantidad','unidadMedida', 'tipoEspecie'];
+  displayedColumns: string[] = ['tipoEspecie','nombreCientifico','nombreComun','cantidad','unidadMedida'];
   reportesResponse: ReportesResponse = new ReportesResponse();
   reportesRequest:  Reportes = new Reportes();
   resultsLength = 0;
@@ -62,6 +62,7 @@ export class ModalDetalleDonacionComponent implements OnInit {
         this.reportesResponse = response;
         this.dataSource = new MatTableDataSource<Reportes>(response.data);
         this.resultsLength=response.totalRecords;
+        this.reportesResponse.totalRecords = response.data.length;
       }
     })
   }
