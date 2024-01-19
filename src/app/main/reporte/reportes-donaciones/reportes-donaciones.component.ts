@@ -135,14 +135,11 @@ export class ReportesDonacionesComponent implements OnInit {
 
   async SearchReportes() {
 
-    if(( this.inputBandeja.get('fechaInicio').value === undefined || this.inputBandeja.get('fechaInicio').value === null || this.inputBandeja.get('fechaInicio').value === '') &&
-    (this.inputBandeja.get('fechaFin').value === undefined || this.inputBandeja.get('fechaFin').value === null || this.inputBandeja.get('fechaFin').value === '') &&
-    ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
-    ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+    if(( this.inputBandeja.get('almacen').value === undefined || this.inputBandeja.get('almacen').value === null || this.inputBandeja.get('almacen').value === ''))
 {
   Swal.fire({
     title: 'Alerta!',
-    text: "Debe llenar alguno de los filtros.",
+    text: "Debe seleccionar un Almacén.",
     icon: 'warning',
     //showCancelButton: true,
     confirmButtonColor: '#679738',
@@ -190,6 +187,7 @@ else{
         })
         this.dataSource = new MatTableDataSource<Reportes>(lstReportes);
         this.resultsLength=response.totalRecords;
+        this.reportesResponse.totalRecords = lstReportes.length;
       }
     })
   }

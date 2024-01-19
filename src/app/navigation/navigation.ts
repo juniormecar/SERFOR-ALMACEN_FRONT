@@ -81,7 +81,7 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id   : '5',
-                        title: 'Reporte de Disponibilidad',
+                        title: 'Disponibilidad de Capacidad',
                         type : 'item',
                         url  : '/reportes-disponibilidad'
                     },

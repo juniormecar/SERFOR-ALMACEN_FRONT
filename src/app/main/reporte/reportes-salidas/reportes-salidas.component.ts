@@ -163,14 +163,11 @@ import { finalize } from 'rxjs/operators';
 
     async SearchReportes() {
 
-      if(( this.inputBandeja.get('periodo').value === undefined || this.inputBandeja.get('periodo').value === null || this.inputBandeja.get('periodo').value === '') &&
-      (this.inputBandeja.get('periodoSe').value === undefined || this.inputBandeja.get('periodoSe').value === null || this.inputBandeja.get('periodoSe').value === '') &&
-      ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
-      ( this.inputBandeja.get('tipoEspecie').value === undefined ||  this.inputBandeja.get('tipoEspecie').value === null ||  this.inputBandeja.get('tipoEspecie').value === '') )
+      if(( this.inputBandeja.get('almacen').value === undefined || this.inputBandeja.get('almacen').value === null || this.inputBandeja.get('almacen').value === '') )
 {
   Swal.fire({
     title: 'Alerta!',
-    text: "Debe llenar alguno de los filtros.",
+    text: "Debe seleccionar un Almacén.",
     icon: 'warning',
     //showCancelButton: true,
     confirmButtonColor: '#679738',
@@ -189,11 +186,30 @@ else{
       this.reportesRequest.periodo = this.varPeriodo;
       this.reportesRequest.tipo =  'G';
       this.reportesRequest.numeroDocumento =  this.numeroDocumento;
-      this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+      this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{
+        // if(response.success){
+        //   this.reportesResponse = response;
+        //   this.dataSource = new MatTableDataSource<Reportes>(response.data);
+        //   this.resultsLength=response.totalRecords;
+        // }
         if(response.success){
           this.reportesResponse = response;
-          this.dataSource = new MatTableDataSource<Reportes>(response.data);
+          let lstReportes =[];
+          let lstReportesFiltered =[];
+          response.data.forEach(item=>{
+            console.log('response.dataresponse.dataresponse.data',response.data);
+            if(lstReportes.length==0){
+              lstReportes.push(item);
+            }else{
+              lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
+              if(lstReportesFiltered.length===0){
+                lstReportes.push(item);
+              }
+            }
+          })
+          this.dataSource = new MatTableDataSource<Reportes>(lstReportes);
           this.resultsLength=response.totalRecords;
+          this.reportesResponse.totalRecords = lstReportes.length;
         }
       })
     }

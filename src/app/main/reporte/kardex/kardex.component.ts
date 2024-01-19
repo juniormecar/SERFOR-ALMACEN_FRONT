@@ -29,7 +29,7 @@ export class KardexComponent implements OnInit {
   kardexRequest:  Kardex = new Kardex();
   listAlmacen: Almacen[] = [];
   listKardex: Kardex[] = [];
-  displayedColumns: string[] = ['fecha','Tipo','nombreCientifico','nombreComun','documento','tipoI','cantidadI','cantidadM3I', 'totalI','totalM3I', 'tipoS','cantidadS','cantidadM3S', 'totalS','totalM3S' ];
+  displayedColumns: string[] = ['fecha','nomAlmacen','Tipo','nombreCientifico','nombreComun','documento','tipoI','cantidadI','unidadMedidaIngreso','cantidadM3I', 'totalI','totalM3I', 'tipoS','cantidadS','unidadMedidaSalida','cantidadM3S', 'totalS','totalM3S' ];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
   inputBandeja: FormGroup; 
   resultsLength = 0;
@@ -104,6 +104,23 @@ export class KardexComponent implements OnInit {
   }
 
   async Search() {
+
+    if(( this.inputBandeja.get('almacen').value === undefined || this.inputBandeja.get('almacen').value === null || this.inputBandeja.get('almacen').value === '') )
+{
+  Swal.fire({
+    title: 'Alerta!',
+    text: "Debe seleccionar un Almacén.",
+    icon: 'warning',
+    //showCancelButton: true,
+    confirmButtonColor: '#679738',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+        //
+  }) 
+}
+else{
     this.kardexResponse.pageNumber = 1;
      this.kardexResponse.pageSize = 10;
     this.dataSource = new MatTableDataSource<Kardex>([])
@@ -121,6 +138,7 @@ export class KardexComponent implements OnInit {
       }
     })
     this.SearchKardex();
+  }
   }  
 
   async SearchPage() {
@@ -139,6 +157,7 @@ export class KardexComponent implements OnInit {
         this.resultsLength=response.totalRecords;
       }
     })
+    
   }  
 
   async SearchKardex() {
@@ -183,7 +202,7 @@ export class KardexComponent implements OnInit {
     this.inputBandeja.get('disponibilidadActa').setValue('');
     this.kardexResponse.pageNumber = 1;
      this.kardexResponse.pageSize = 10;
-     this.Search();
+     //this.Search();
   }
 
   exportToExcel() {

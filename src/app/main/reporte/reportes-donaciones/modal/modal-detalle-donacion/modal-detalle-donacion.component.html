@@ -47,6 +47,16 @@
                     <td mat-cell *matCellDef="let element"> {{element.unidadMedida }} </td>
                 </ng-container>
 
+                <ng-container matColumnDef="nroActa">
+                    <th mat-header-cell *matHeaderCellDef>N° Acta </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nroActa }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="tipoIngreso">
+                    <th mat-header-cell *matHeaderCellDef> Tipo de Ingreso </th>
+                    <td mat-cell *matCellDef="let element"> {{element.tipoIngreso }} </td>
+                </ng-container>
+
                
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

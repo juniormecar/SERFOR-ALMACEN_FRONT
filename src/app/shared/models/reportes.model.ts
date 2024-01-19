@@ -44,4 +44,5 @@ export class Reportes {
     nroActaTraslado?:string; 
     observaciones?:string; 
     unidadMedida?:string; 
+    tipoIngreso?:string; 
 }

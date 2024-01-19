@@ -110,8 +110,13 @@
                                     
                                     <ng-container matColumnDef="fecha">
                                         
-                                        <th mat-header-cell *matHeaderCellDef style="width:15%"> Fecha Registro</th>
+                                        <th mat-header-cell *matHeaderCellDef style="width:8%"> Fecha Registro</th>
                                         <td mat-cell *matCellDef="let element"> {{element.fechaRegistro | date: "dd/MM/yyyy h:mm:ss a" : "UTC" }} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="nomAlmacen">
+                                        <th mat-header-cell *matHeaderCellDef style="width:7%"> Almacén </th>
+                                        <td mat-cell *matCellDef="let element"> {{element.nomAlmacen}}  </td>
                                     </ng-container>
 
                                     <ng-container matColumnDef="Tipo">
@@ -158,9 +163,17 @@
                                             <div *ngIf="element.tipoIngreso!==''">
                                                 {{element.cantidadIngreso}}
                                             </div>
-                                            
                                         </td>
                                     </ng-container>  
+
+                                    <ng-container matColumnDef="unidadMedidaIngreso">
+                                        <th mat-header-cell *matHeaderCellDef> U. de Medida </th>
+                                        <td mat-cell *matCellDef="let element"> 
+                                            <div *ngIf="element.tipoIngreso!==''">
+                                                {{element.unidadMedida}}
+                                            </div>
+                                        </td>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="cantidadM3I">
                                         <th mat-header-cell *matHeaderCellDef> Cantidad M3 </th>
@@ -204,6 +217,15 @@
                                             </div>
                                         </td>
                                     </ng-container>  
+
+                                    <ng-container matColumnDef="unidadMedidaSalida">
+                                        <th mat-header-cell *matHeaderCellDef> U. de Medida </th>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div *ngIf="element.tipoSAlida!==''">
+                                                {{element.unidadMedida}}
+                                            </div>
+                                        </td>
+                                    </ng-container> 
 
                                     <ng-container matColumnDef="cantidadM3S">
                                         <th mat-header-cell *matHeaderCellDef> Cantidad M3</th>

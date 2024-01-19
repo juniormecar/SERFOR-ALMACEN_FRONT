@@ -171,14 +171,11 @@ export class ReportesIndicadoresComponent implements OnInit {
   
   async SearchReportes() {
 
-    if(( this.inputBandeja.get('periodo').value === undefined || this.inputBandeja.get('periodo').value === null || this.inputBandeja.get('periodo').value === '') &&
-    (this.inputBandeja.get('periodoSe').value === undefined || this.inputBandeja.get('periodoSe').value === null || this.inputBandeja.get('periodoSe').value === '') &&
-    ( this.inputBandeja.get('almacen').value === undefined ||  this.inputBandeja.get('almacen').value === null ||  this.inputBandeja.get('almacen').value === '') &&
-    ( this.inputBandeja.get('tipoAccion').value === undefined ||  this.inputBandeja.get('tipoAccion').value === null ||  this.inputBandeja.get('tipoAccion').value === '') )
+    if(( this.inputBandeja.get('almacen').value === undefined || this.inputBandeja.get('almacen').value === null || this.inputBandeja.get('almacen').value === ''))
     {
       Swal.fire({
         title: 'Alerta!',
-        text: "Debe llenar alguno de los filtros.",
+        text: "Debe seleccionar un Almacén.",
         icon: 'warning',
         //showCancelButton: true,
         confirmButtonColor: '#679738',

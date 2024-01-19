@@ -98,12 +98,18 @@ export class BandejaInventarioComponent implements OnInit {
       disponibilidadActa: [''], 
       tipoEspecie: [''], 
     });
-
+    
+    
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = Number(this.lstDecimal.cantidad);
+    
+    this.cantidad = /*this.lstDecimal === null || this.lstDecimal === undefined ? 4 :*/ Number(this.lstDecimal.cantidad);
     this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = this.lstDecimal.redondeo;
+    this.redondeo = /*this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :*/ this.lstDecimal.redondeo;
     this.numeroDocumento = localStorage.getItem('usuario'); 
+
+    
+    console.log('localStoragelocalStoragelocalStoragelocalStoragelocalStorage3',localStorage);
+
   }
 
   ngOnInit(): void {
