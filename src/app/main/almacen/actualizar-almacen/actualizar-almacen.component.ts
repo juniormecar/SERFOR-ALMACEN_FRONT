@@ -68,6 +68,9 @@ export class ActualizarAlmacenComponent implements OnInit {
   currentStep: number;
   titleStep: string = '';
   step = 0;
+  cantivaciaf = 0;
+  cantivaciam = 0;
+  cantivacianm = 0;
   resultsLength = 0;
   type: string = '';
   //dataSource: any = false
@@ -222,9 +225,9 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.titleStep = this.course[0].title
 
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = Number(this.lstDecimal.cantidad);
+    this.cantidad = this.lstDecimal === null || this.lstDecimal === undefined ? 4 : Number(this.lstDecimal.cantidad);
     this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = this.lstDecimal.redondeo;
+    this.redondeo = this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :  this.lstDecimal.redondeo;
     //////console.log("this.lstDecimal",this.lstDecimal)
   }
   setStep(index: number) {
@@ -950,10 +953,18 @@ export class ActualizarAlmacenComponent implements OnInit {
 
     //Si sólo selecciona Fauna
     if((dataFilteredFauna.length !== 0 && dataFilteredNoMad.length === 0 && dataFilteredMad.length === 0)){
-      //console.log('acá se abre nuevo modal');
-
-
+      
       let dataFauna = [];
+
+      let dataFilteredsc = dataFilteredFauna;      
+      dataFilteredsc.forEach((df: any) => {
+        if ((!df.descontar)) {
+          this.cantivaciaf = 1;          
+        }
+      });
+      
+      if(this.cantivaciaf === 1){this.cantivaciaf = 0}
+      else{
 
       //let dataFiltered = this.dataSource.filteredData.filter((t: any) => t.flagAgregar == true)
       let dataFiltered = dataFilteredFauna;
@@ -990,7 +1001,7 @@ export class ActualizarAlmacenComponent implements OnInit {
 
 
     }
-
+  }
     else{
 
     //Si no selecciona nada
@@ -1025,6 +1036,19 @@ export class ActualizarAlmacenComponent implements OnInit {
     let validateMad =true;
     console.log("dataFilteredMad ",dataFilteredMad)
     if(dataFilteredMad.length > 0){
+
+
+      let dataFilteredsc = dataFilteredMad;      
+      dataFilteredsc.forEach((df: any) => {
+        if ((!df.descontar && !df.descontarMetroCubico)) {
+          this.cantivaciam = 1;          
+        }
+      });
+
+      if(this.cantivaciam === 1){this.cantivaciam = 0}
+      else{
+
+
         dataFilteredMad
         .forEach((resp:any)=>{
           
@@ -1155,7 +1179,7 @@ export class ActualizarAlmacenComponent implements OnInit {
            }
       }*/
     }
-
+  }
 
     let dataGeneralNoMad = [];
     let dataGeneralNoMadComp = dataFilteredNoMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
@@ -1163,6 +1187,16 @@ export class ActualizarAlmacenComponent implements OnInit {
     console.log("dataFilteredNoMad ",dataFilteredNoMad)
     let validateNoMad =true;
     if(dataFilteredNoMad.length > 0){
+
+      let dataFilteredsc = dataFilteredNoMad;      
+      dataFilteredsc.forEach((df: any) => {
+        if ((!df.descontar)) {
+          this.cantivacianm = 1;          
+        }
+      });
+
+      if(this.cantivacianm === 1){this.cantivacianm = 0}
+      else{
       
       dataFilteredNoMad
       .forEach((resp:any)=>{
@@ -1236,6 +1270,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         }
       }*/
   }
+}
 
       /* if(dataFilteredMad.length === 0){
       

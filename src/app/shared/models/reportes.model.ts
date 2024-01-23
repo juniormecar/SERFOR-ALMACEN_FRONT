@@ -45,4 +45,8 @@ export class Reportes {
     observaciones?:string; 
     unidadMedida?:string; 
     tipoIngreso?:string; 
+    cantidadTotalXtipoYunidadMedida?:number; 
+    unidadMedidaMAD?:number; 
+    unidadMedidaNOMAD?:number; 
+    unidadMedidaFA?:number; 
 }

@@ -38,6 +38,7 @@ export class ReportesIndicadoresComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Reportes>([]);
   dataSource2 = new MatTableDataSource<Reportes>([]);
+
   selection = new SelectionModel<Recurso>(true, []);
   listAlmacen: Almacen[] = [];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
@@ -220,9 +221,132 @@ export class ReportesIndicadoresComponent implements OnInit {
     
     this._reportesService.getReporteIndicadores(this.reportesRequest,this.reportesResponse2.pageNumber,this.reportesResponse2.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
       if(response.success){
-        this.reportesResponse2 = response;
+        this.reportesResponse2 = response;        
         this.dataSource2 = new MatTableDataSource<Reportes>(response.data);
         this.reportesResponse2.totalRecords=this.dataSource2.data.length;
+
+        //    
+        let grillaMad: Reportes[] = [];    
+        let grillaNoMad: Reportes[] = [];   
+        let grillaFa: Reportes[] = []; 
+        let grillaFinal: Reportes[] = []; 
+
+        console.log('junioooorthis.dataSource2',this.dataSource2);
+
+        grillaMad = this.dataSource2.filteredData.filter((t: any) => t.tipoEspecie === 'MAD');        
+        grillaNoMad = this.dataSource2.filteredData.filter((t: any) => t.tipoEspecie === 'NOMAD');        
+        grillaFa = this.dataSource2.filteredData.filter((t: any) => t.tipoEspecie === 'FA');
+
+        
+
+        if(grillaMad.length > grillaNoMad.length && grillaMad.length > grillaFa.length && grillaNoMad.length > grillaFa.length)
+        {
+        grillaMad.forEach((item:any)=>{
+          item.cantidadTotalMAD = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaMAD = item.unidadMedida;
+          grillaNoMad.forEach((item2:any)=>{
+            item.cantidadTotalNOMAD = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaNOMAD = item2.unidadMedida;
+            grillaFa.forEach((item3:any)=>{
+              item.cantidadTotalFA = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaFA = item3.unidadMedida;
+            })
+          })         
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaMad);
+        }
+
+        if(grillaMad.length > grillaNoMad.length && grillaMad.length > grillaFa.length && grillaNoMad.length < grillaFa.length)
+        {
+        grillaMad.forEach((item:any)=>{
+          item.cantidadTotalMAD = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaMAD = item.unidadMedida;
+          grillaFa.forEach((item2:any)=>{
+            item.cantidadTotalFA = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaFA = item2.unidadMedida;
+            grillaNoMad.forEach((item3:any)=>{
+              item.cantidadTotalNOMAD = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaNOMAD = item3.unidadMedida;
+            })
+          })          
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaMad);
+        }
+
+        if(grillaNoMad.length > grillaMad.length && grillaNoMad.length > grillaFa.length && grillaMad.length > grillaFa.length)
+        {
+          grillaNoMad.forEach((item:any)=>{
+          item.cantidadTotalNOMAD = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaNOMAD = item.unidadMedida;
+          grillaMad.forEach((item2:any)=>{
+            item.cantidadTotalMAD = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaMAD = item2.unidadMedida;
+            grillaFa.forEach((item3:any)=>{
+              item.cantidadTotalFA = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaFA = item3.unidadMedida;
+            })
+          })          
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaNoMad);
+        }
+
+        if(grillaNoMad.length > grillaMad.length && grillaNoMad.length > grillaFa.length && grillaMad.length < grillaFa.length)
+        {
+          grillaNoMad.forEach((item:any)=>{
+          item.cantidadTotalNOMAD = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaNOMAD = item.unidadMedida;
+          grillaFa.forEach((item2:any)=>{
+            item.cantidadTotalFA = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaFA = item2.unidadMedida;
+            grillaMad.forEach((item3:any)=>{
+              item.cantidadTotalMAD = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaMAD = item3.unidadMedida;
+            })
+          })          
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaNoMad);
+        }
+
+        if(grillaFa.length > grillaMad.length && grillaFa.length > grillaNoMad.length && grillaMad.length > grillaNoMad.length)
+        {
+          grillaFa.forEach((item:any)=>{
+          item.cantidadTotalFA = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaFA = item.unidadMedida;
+          grillaMad.forEach((item2:any)=>{
+            item.cantidadTotalMAD = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaMAD = item2.unidadMedida;
+            grillaNoMad.forEach((item3:any)=>{
+              item.cantidadTotalNOMAD = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaNOMAD = item3.unidadMedida;
+            })
+          })          
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaFa);
+        }
+
+        if(grillaFa.length > grillaMad.length && grillaFa.length > grillaNoMad.length && grillaMad.length < grillaNoMad.length)
+        {
+          grillaFa.forEach((item:any)=>{
+          item.cantidadTotalFA = item.cantidadTotalXtipoYunidadMedida;
+          item.unidadMedidaFA = item.unidadMedida;
+          grillaNoMad.forEach((item2:any)=>{
+            item.cantidadTotalNOMAD = item2.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaNOMAD = item2.unidadMedida;
+            grillaMad.forEach((item3:any)=>{
+              item.cantidadTotalMAD = item3.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaMAD = item3.unidadMedida;
+            })
+          })          
+        })
+        this.dataSource2 = new MatTableDataSource<Reportes>(grillaFa);
+        }
+
+
+
+
+        //
+
+
       }
     })
   }
