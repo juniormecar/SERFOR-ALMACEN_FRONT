@@ -1051,7 +1051,51 @@ export class ActualizarAlmacenComponent implements OnInit {
 
         dataFilteredMad
         .forEach((resp:any)=>{
-          
+          if(descontar>Number(resp.txCantidadProducto) && descontarM3>Number(resp.metroCubico)){
+            validateMad=false;
+            Swal.fire({
+              title: 'Mensaje!',
+              text: 'No puede descontar una cantidad mayor a la actual',
+              icon: 'error',
+              width: 350,
+             confirmButtonColor: '#C73410',
+              confirmButtonText: 'ok'
+            }).then((result) => {
+              if (result.isConfirmed) {
+              }
+            })
+            return;
+          }
+          else if(descontar>Number(resp.txCantidadProducto)){
+            validateMad=false;
+            Swal.fire({
+              title: 'Mensaje!',
+              text: 'No puede descontar una cantidad mayor a la cantidad actual',
+              icon: 'error',
+              width: 350,
+             confirmButtonColor: '#C73410',
+              confirmButtonText: 'ok'
+            }).then((result) => {
+              if (result.isConfirmed) {
+              }
+            })
+            return;
+          }
+          else if(descontarM3>Number(resp.metroCubico)){
+            validateMad=false;
+            Swal.fire({
+              title: 'Mensaje!',
+              text: 'No puede descontar metros cúbicos mayores a la capacidad actual',
+              icon: 'error',
+              width: 350,
+             confirmButtonColor: '#C73410',
+              confirmButtonText: 'ok'
+            }).then((result) => {
+              if (result.isConfirmed) {
+              }
+            })
+            return;
+          }
           var descontar = resp.descontar;
           var descontarM3 = resp.descontarMetroCubico;
           if(resp.tipoIngreso=== 'Hallazgo' && resp.numeroActa===""){
@@ -1063,51 +1107,6 @@ export class ActualizarAlmacenComponent implements OnInit {
                 contador++;
                 response.data.filter(x=> Number(x.txCantidadProducto) > 0);
                 response.data.forEach((item:any)=>{  
-                  if(descontar>Number(item.txCantidadProducto) && descontarM3>Number(item.metroCubico)){
-                    validateMad=false;
-                    Swal.fire({
-                      title: 'Mensaje!',
-                      text: 'No puede descontar una cantidad mayor a la actual',
-                      icon: 'error',
-                      width: 350,
-                     confirmButtonColor: '#C73410',
-                      confirmButtonText: 'ok'
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                      }
-                    })
-                    return;
-                  }
-                  else if(descontar>Number(item.txCantidadProducto)){
-                    validateMad=false;
-                    Swal.fire({
-                      title: 'Mensaje!',
-                      text: 'No puede descontar una cantidad mayor a la cantidad actual',
-                      icon: 'error',
-                      width: 350,
-                     confirmButtonColor: '#C73410',
-                      confirmButtonText: 'ok'
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                      }
-                    })
-                    return;
-                  }
-                  else if(descontarM3>Number(item.metroCubico)){
-                    validateMad=false;
-                    Swal.fire({
-                      title: 'Mensaje!',
-                      text: 'No puede descontar metros cúbicos mayores a la capacidad actual',
-                      icon: 'error',
-                      width: 350,
-                     confirmButtonColor: '#C73410',
-                      confirmButtonText: 'ok'
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                      }
-                    })
-                    return;
-                  }
 
                   if (descontar > 0 && descontar !== null && resp.txCantidadProducto != null && descontar !==undefined && resp.txCantidadProducto != undefined) {
                     if(descontar>=Number(item.txCantidadProducto)){
