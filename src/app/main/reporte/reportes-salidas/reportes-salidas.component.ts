@@ -44,7 +44,7 @@ import { finalize } from 'rxjs/operators';
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['fecha','origen','destino', 'nroActa', 'observaciones', 'acciones'];
+    displayedColumns: string[] = ['codigoUnico','fecha','origen','destino', 'nroActa', 'observaciones', 'acciones'];
     inputBandeja: FormGroup;
     resultsLength = 0;
     idAlmacen: any;

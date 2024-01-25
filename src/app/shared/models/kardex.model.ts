@@ -17,4 +17,5 @@ saldoTotalM3Ingreso?:number;
 cantidadM3Salida?:number;
 saldoTotalM3Salida?:number;
 tipoProducto?:string;
+codigoUnico?:string;
 }

@@ -49,4 +49,5 @@ export class Reportes {
     unidadMedidaMAD?:number; 
     unidadMedidaNOMAD?:number; 
     unidadMedidaFA?:number; 
+    codigoUnico?:string;
 }
