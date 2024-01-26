@@ -97,7 +97,21 @@ export class ActualizarAlmacenComponent implements OnInit {
 
   totalToneladas: number = 0;
   listProducto: Recurso[] = [];
-  productosResponse:any = {
+  productosResponseMad:any = {
+    data: [],
+    pageNumber: 0,
+    pageSize: 10,
+    totalRecords: 0,
+    previousPageIndex: 1
+  }
+  productosResponseNoMad:any = {
+    data: [],
+    pageNumber: 0,
+    pageSize: 10,
+    totalRecords: 0,
+    previousPageIndex: 1
+  }
+  productosResponseFa:any = {
     data: [],
     pageNumber: 0,
     pageSize: 10,
@@ -113,7 +127,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   cantidadPipe!: string;
   cantidad!: number;
   redondeo!: string;
-
+  pageSizeTotal: number = 3000;
   dataSourceFaunaFilter = new MatTableDataSource<Recurso>([]);
   dataSourceNoMadFilter = new MatTableDataSource<Recurso>([]);
   dataSourceMadFilter = new MatTableDataSource<Recurso>([]);
@@ -144,7 +158,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     private pideService: PideService,
     private almacenService: AlmacenService,
     private parametroService: ParametroService) {
-    //////console.log("window.history.state ", window.history.state)
+    ////////console.log("window.history.state ", window.history.state)
     this.dataRecurso = window.history.state.data;
     this.type = window.history.state.type;
     if (this.type === 'edit') {
@@ -156,11 +170,11 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.recursoResponse.pageNumber = 1;
     this.recursoResponse.pageSize = 10;
     this.recursoResponseFauna.pageNumber = 1;
-    this.recursoResponseFauna.pageSize = 3000;
+    this.recursoResponseFauna.pageSize = 10;
     this.recursoResponseNoMad.pageNumber = 1;
-    this.recursoResponseNoMad.pageSize = 3000;
+    this.recursoResponseNoMad.pageSize = 10;
     this.recursoResponseMad.pageNumber = 1;
-    this.recursoResponseMad.pageSize = 3000;
+    this.recursoResponseMad.pageSize = 10;
     this.almacenResponse.pageNumber = 1;
     this.almacenResponse.pageSize = 3000;
     this._fuseConfigService.config = {
@@ -205,8 +219,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     });
     this.dataAlmacen = window.history.state.data;
     this.idAlmacen = this.activaRoute.snapshot.paramMap.get('id');
-    //////console.log('this.dataAlmacen', this.dataAlmacen);
-    //////console.log('this.dataRecurso', this.dataRecurso);
+    ////////console.log('this.dataAlmacen', this.dataAlmacen);
+    ////////console.log('this.dataRecurso', this.dataRecurso);
     if (this.dataAlmacen !== undefined) {
       this.inputRegistro.get('nombreAlmacen').patchValue(this.dataRecurso.txNombreAlmacen);
       this.inputRegistro.get('tipoDocumento').patchValue(this.dataRecurso.txTipoDocumento);
@@ -228,7 +242,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.cantidad = this.lstDecimal === null || this.lstDecimal === undefined ? 4 : Number(this.lstDecimal.cantidad);
     this.cantidadPipe = '0.0-' + this.cantidad;
     this.redondeo = this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :  this.lstDecimal.redondeo;
-    //////console.log("this.lstDecimal",this.lstDecimal)
+    ////////console.log("this.lstDecimal",this.lstDecimal)
   }
   setStep(index: number) {
     this.step = index;
@@ -245,13 +259,14 @@ export class ActualizarAlmacenComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //console.log("this.dataRecurso ",this.dataRecurso)
     if (this.dataRecurso == null) {
       this.getRecursos(this.idAlmacen);
-      this.getRecursos2(this.idAlmacen);
+     // this.getRecursos2(this.idAlmacen);
     } else {
       this.idAlmacen = this.dataRecurso.nuIdAlmacen;
       this.getRecursos(this.dataRecurso.nuIdAlmacen);
-      this.getRecursos2(this.dataRecurso.nuIdAlmacen);
+      //this.getRecursos2(this.dataRecurso.nuIdAlmacen);
     }
     this.searchAlmacenResponsable();
     this.searchUnidadMedida();
@@ -322,25 +337,8 @@ export class ActualizarAlmacenComponent implements OnInit {
     if (this.dataAlmacen !== undefined) {
       this.inputRegistro.get('puestoControl').patchValue(Number(this.dataRecurso.txPuestoControl));
       this.inputRegistro.get('tipoAlmacen').patchValue(this.dataRecurso.txTipoAlmacen);
-      //this.getRecursos(Number(this.idAlmacen));
     }
   }
-
-  /*getRecursos(idAlmacen: any) {
-    this.dataSource = new MatTableDataSource<Recurso>([])
-    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,null,
-      this.recursoResponse.pageNumber, this.recursoResponse.pageSize)
-      .subscribe((response: BandejaRecursoResponse) => {
-
-        ////console.log("response-getRecursos3",response);
-        let datafiltrada = response.data.filter( 
-          ( rd: any) => rd.txCantidadProducto != '0'
-        );
-        if(datafiltrada.length < 1) this.validCheck = false;
-        this.dataSourceFilter = new MatTableDataSource<Recurso>(response.data);
-        this.listFilterTotal();
-      })
-  }*/
 
   getRecursos(idAlmacen: any) {
     this.getRecursosFauna(idAlmacen);
@@ -352,7 +350,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'FA',null,
-    null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'DESC')
+    null,null,this.recursoResponseFauna.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
          let dataSourceFaunaFilterAc = response.data;
@@ -399,7 +397,7 @@ export class ActualizarAlmacenComponent implements OnInit {
           
         })
        
-        //console.log("lstHallazgos ",lstHallazgos);
+        ////console.log("lstHallazgos ",lstHallazgos);
 
         var lista: Recurso[] = [];
         response.data.forEach((result:any)=>{
@@ -439,7 +437,7 @@ export class ActualizarAlmacenComponent implements OnInit {
           }
           
         })
-        //console.log("lista ",lista);
+        ////console.log("lista ",lista);
         this.dataSourceFaunaFilter = new MatTableDataSource<Recurso>(lista);
         this.dataSourceFaunaFilterActa = new MatTableDataSource<Recurso>(dataSourceFaunaFilterAc);
         this.listFilterTotalFauna(this.dataSourceFaunaFilter.data);
@@ -449,10 +447,10 @@ export class ActualizarAlmacenComponent implements OnInit {
   }
 
   getRecursosNoMad(idAlmacen: any) {
-    debugger
+    
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
-    null,null,this.recursoResponseNoMad.pageNumber, this.recursoResponseNoMad.pageSize,'DESC')
+    null,null,this.recursoResponseNoMad.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
         let dataSourceNoMadFilterAc = response.data;
@@ -497,7 +495,7 @@ export class ActualizarAlmacenComponent implements OnInit {
           
         })
        
-        console.log("lstHallazgos NOMAD ",lstHallazgos);
+        //console.log("lstHallazgos NOMAD ",lstHallazgos);
 
         var lista: Recurso[] = [];
         response.data.forEach((result:any)=>{
@@ -533,14 +531,14 @@ export class ActualizarAlmacenComponent implements OnInit {
             }
             
           }else{
-            console.log("result 1 ",result);
+            //console.log("result 1 ",result);
            // result.txCantidadProducto = Number(result.txCantidadProducto)*Number(result.capacidadUnidad);
-            console.log("result 2 ",result);
+            //console.log("result 2 ",result);
             lista.push(result);
           }
           
         })
-        console.log("listaNM ",lista);
+        //console.log("listaNM ",lista);
         this.dataSourceNoMadFilter = new MatTableDataSource<Recurso>(lista);
         this.dataSourceNoMadFilterActa = new MatTableDataSource<Recurso>(dataSourceNoMadFilterAc); 
         this.listFilterTotalNoMad(this.dataSourceNoMadFilter.data);
@@ -552,7 +550,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   getRecursosMad(idAlmacen: any) {
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'MAD',null,
-    null,null,this.recursoResponseMad.pageNumber, this.recursoResponseMad.pageSize,'DESC')
+    null,null,this.recursoResponseFauna.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
         let dataSourceMadFilterAc = response.data;
@@ -598,7 +596,7 @@ export class ActualizarAlmacenComponent implements OnInit {
           
         })
        
-        //console.log("lstHallazgos ",lstHallazgos);
+        ////console.log("lstHallazgos ",lstHallazgos);
 
         var lista: Recurso[] = [];
         response.data.forEach((result:any)=>{
@@ -639,24 +637,12 @@ export class ActualizarAlmacenComponent implements OnInit {
           }
           
         })
-        //console.log("lista ",lista);
+        console.log("lista ",lista);
         this.dataSourceMadFilter = new MatTableDataSource<Recurso>(lista);
         this.dataSourceMadFilterActa = new MatTableDataSource<Recurso>(dataSourceMadFilterAc);
         this.listFilterTotalMad(this.dataSourceMadFilter.data);
-        //this.calculateTotal(this.dataSource.data);
-        //this.listFilterTotal();
       })
   }
-
-  /*calculateTotal(datasource: any) {
-    let listProducto = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'FA');
-    let listProductoNoMad = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'NOMAD');
-    let listProductoMad = datasource.filter(item => item.idEspecie !== 0 && item.tipo === 'MAD');
-
-   // this.getListProductosFauna(listProducto);
-   // this.getListProductosNoMad(listProductoNoMad);
-    this.getListProductosMad(listProductoMad);
-   }*/
 
   getListProductosFauna(listProducto: any, totalRecords: any){
     this.totalToneladas = 0;
@@ -742,34 +728,16 @@ export class ActualizarAlmacenComponent implements OnInit {
   }
 
   getListProductosMad(listProductoMad: any){
-    //console.log("listProductoMad-getListProductosMad",listProductoMad)
+    console.log("listProductoMad ",listProductoMad)
     this.totalToneladas = 0;
     this.totalM3 = 0;
     
     listProductoMad.forEach(item => {
-     /* if (item.unidadMedida === 'TON') {
-        this.totalToneladas += Number(item.txCantidadProducto)
-        item.txCantidadProducto = this.cutDecimalsWithoutRounding(item.txCantidadProducto, this.cantidad) ;
-      }
-      if (item.unidadMedida === 'KG') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000
-        item.txCantidadProducto = Number(item.txCantidadProducto) / 1000
-        item.txCantidadProducto = this.cutDecimalsWithoutRounding(item.txCantidadProducto, this.cantidad) ;
-        item.unidadMedida = 'TON'
-      }
-      if (item.unidadMedida === 'GR') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000000
-        item.txCantidadProducto = Number(item.txCantidadProducto) / 1000000
-        item.txCantidadProducto = this.cutDecimalsWithoutRounding(item.txCantidadProducto, this.cantidad) ;
-        item.unidadMedida =  'TON'
-      }*/
       if (item.unidadMedida === 'UND') {
         this.totalToneladas +=Number(item.txCantidadProducto);
       }
       this.totalM3+=Number(item.metroCubico);
     })
-
-    //let totalToneladasCalculada = this.cutDecimalsWithoutRounding(this.totalToneladas, this.cantidad) ;
 
     let element: RecursoProduco = new RecursoProduco();
     element =
@@ -795,7 +763,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     let numFloat_af  = '0';
 
     if(this.redondeo === 'Mayor'){
-      //////console.log("numFloat",numFloat);
+      ////////console.log("numFloat",numFloat);
       return (numFloat > 0) ? Number(numFloat).toFixed(this.cantidad): numFloat;
     } else{
       let isNegative = false;
@@ -832,7 +800,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,null,null,
       null,null,this.recursoResponse.pageNumber, this.recursoResponse.pageSize,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
-        //////console.log("response.data", response.data);
+        ////////console.log("response.data", response.data);
         let contador:number=0;
         response.data.forEach((item:any) => {
           contador=0;
@@ -856,22 +824,30 @@ export class ActualizarAlmacenComponent implements OnInit {
             this.lstrecursos.push(item);
           }
         })
-        //////console.log("this.lstrecursos", this.lstrecursos);
+        ////////console.log("this.lstrecursos", this.lstrecursos);
       })
   }
 
   searchUnidadMedida() {
     this.parametroService.getParametroSearch(this.unidadMedida).subscribe((response: Parametro[]) => {
       this.listUnidadMedida = response;
-      //////console.log("listUnidadMedida",this.listUnidadMedida)
+      ////////console.log("listUnidadMedida",this.listUnidadMedida)
     });
   }
 
   pageDataSource(e: PageEvent, type: string): PageEvent {
-    //console.log("e",e);
-    //console.log("type",type);
-    this.productosResponse.pageNumber = e.pageIndex;
-    this.productosResponse.pageSize = e.pageSize;
+  
+    if (type === Constants.PRODUCTO_MADERABLE) {
+      this.recursoResponseMad.pageNumber = e.pageIndex + 1;
+      this.recursoResponseMad.pageSize = e.pageSize;
+    } else if (type === Constants.PRODUCTO_NOMADERABLE) {
+      this.recursoResponseNoMad.pageNumber = e.pageIndex + 1;
+      this.recursoResponseNoMad.pageSize = e.pageSize;
+    } else if (type === Constants.PRODUCTO_FAUNA) {
+      this.recursoResponseFauna.pageNumber = e.pageIndex + 1;
+      this.recursoResponseFauna.pageSize = e.pageSize;
+     
+    }
     this.btnBuscarRecursos(type);
     return e;
   }
@@ -936,7 +912,7 @@ export class ActualizarAlmacenComponent implements OnInit {
 
       }
     }, error => {
-      //////console.log("error ", error)
+      ////////console.log("error ", error)
     })
 
 
@@ -987,7 +963,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         }
       }
   
-      //////console.log("dataBeneficiario", dataBeneficiario);
+      ////////console.log("dataBeneficiario", dataBeneficiario);
       const dialogRef = this._dialog.open(FaunaSalidaComponent, {
         width: '1000px',
         height: '500px',
@@ -1034,7 +1010,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     let dataGeneralMadComp = dataFilteredMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
     var contador = 0;
     let validateMad =true;
-    console.log("dataFilteredMad ",dataFilteredMad)
+    //console.log("dataFilteredMad ",dataFilteredMad)
     if(dataFilteredMad.length > 0){
 
 
@@ -1134,15 +1110,15 @@ export class ActualizarAlmacenComponent implements OnInit {
                   }
   
                 })  
-                console.log("*************** 1 *****************")
-                console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
-                console.log("dataFilteredMad ",dataFilteredMad.length)
-                console.log("contador ",contador)
-                console.log("validateMad ",validateMad)
-                console.log("***********************************")
+                //console.log("*************** 1 *****************")
+                //console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
+                //console.log("dataFilteredMad ",dataFilteredMad.length)
+                //console.log("contador ",contador)
+                //console.log("validateMad ",validateMad)
+                //console.log("***********************************")
                // if(contador == dataGeneralMadComp.length){
                   if(dataFilteredNoMad.length  === 0 && dataFilteredMad.length === contador && validateMad){
-                    console.log("ENTRO 1")
+                    //console.log("ENTRO 1")
                    // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
                    this.getSalidas(dataFiltered,contador);
                   }
@@ -1156,14 +1132,14 @@ export class ActualizarAlmacenComponent implements OnInit {
               dataGeneralMad.push(resp);
               dataFiltered.push(resp);
             }
-            console.log("*************** 2 *****************")
-                console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
-                console.log("dataFilteredMad ",dataFilteredMad.length)
-                console.log("contador ",contador)
-                console.log("validateMad ",validateMad)
-                console.log("***********************************")
+            //console.log("*************** 2 *****************")
+                //console.log("dataFilteredNoMad.length ",dataFilteredNoMad.length)
+                //console.log("dataFilteredMad ",dataFilteredMad.length)
+                //console.log("contador ",contador)
+                //console.log("validateMad ",validateMad)
+                //console.log("***********************************")
             if(dataFilteredNoMad.length  === 0 && dataFilteredMad.length === contador && validateMad) {
-              console.log("ENTRO 2")
+              //console.log("ENTRO 2")
              // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
              this.getSalidas(dataFiltered,contador);
             }
@@ -1172,7 +1148,7 @@ export class ActualizarAlmacenComponent implements OnInit {
 
       /* if (dataGeneralMadComp.length == 0) {
            if(dataFilteredNoMad.length  === 0){
-            console.log("ENTRO 2")
+            //console.log("ENTRO 2")
               // dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
               this.getSalidas(dataFiltered,contador);
            }
@@ -1183,7 +1159,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     let dataGeneralNoMad = [];
     let dataGeneralNoMadComp = dataFilteredNoMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
     var contadorNoMad = 0;
-    console.log("dataFilteredNoMad ",dataFilteredNoMad)
+    //console.log("dataFilteredNoMad ",dataFilteredNoMad)
     let validateNoMad =true;
     if(dataFilteredNoMad.length > 0){
 
@@ -1241,7 +1217,7 @@ export class ActualizarAlmacenComponent implements OnInit {
               })  
 
                 if(dataFilteredNoMad.length === contadorNoMad && validateNoMad){
-                  console.log("ENTRO 3")
+                  //console.log("ENTRO 3")
                   //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
                   this.getSalidas(dataFiltered,contadorNoMad);
                 }
@@ -1254,7 +1230,7 @@ export class ActualizarAlmacenComponent implements OnInit {
             dataFiltered.push(resp);
           }
           if(dataFilteredNoMad.length === contadorNoMad && validateNoMad){
-            console.log("ENTRO 3")
+            //console.log("ENTRO 3")
             //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
             this.getSalidas(dataFiltered,contadorNoMad);
           }
@@ -1264,7 +1240,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     /* if (dataGeneralNoMadComp.length == 0) {
         if(dataFilteredNoMad.length > 0){
           //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
-          console.log("ENTRO 4")
+          //console.log("ENTRO 4")
           this.getSalidas(dataFiltered,contadorNoMad);
         }
       }*/
@@ -1292,8 +1268,8 @@ export class ActualizarAlmacenComponent implements OnInit {
 
 
   getSalidas(dataFiltered: Recurso[], contador) {
-    console.log("dataFiltered SAL ",dataFiltered )
-    console.log("contador SAL ",contador )
+    //console.log("dataFiltered SAL ",dataFiltered )
+    //console.log("contador SAL ",contador )
     if (Number(contador) > 0) {
       let data = [];
       let datos: Number[] = []
@@ -1351,7 +1327,7 @@ export class ActualizarAlmacenComponent implements OnInit {
       }
     }
 
-    //////console.log("dataBeneficiario", dataBeneficiario);
+    ////////console.log("dataBeneficiario", dataBeneficiario);
     const dialogRef = this._dialog.open(BeneficiarioComponent, {
       width: '1000px',
       height: '700px',
@@ -1368,7 +1344,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     let data = [];
     
     let dataFiltered = this.dataSource.filteredData.filter((t: any) => t.flagAgregar == true)
-    //console.log("dataFiltered ",dataFiltered)
+    ////console.log("dataFiltered ",dataFiltered)
     let datos: Number[] = []
     dataFiltered.forEach((df: any) => {
       if (!datos.includes(df.nuIdRecurso)) {
@@ -1387,7 +1363,7 @@ export class ActualizarAlmacenComponent implements OnInit {
         data.push(dataParam);
       }
     }
-    //console.log("data ",data)
+    ////console.log("data ",data)
     const dialogRef = this._dialog.open(AlmacenComponent, {
       width: '1100px',
       height: '700px',
@@ -1412,11 +1388,11 @@ export class ActualizarAlmacenComponent implements OnInit {
   }
 
   validarDNI() {
-    //////console.log('validarDNI');
+    ////////console.log('validarDNI');
     let params = { "numDNIConsulta": this.inputRegistro.get("numeroDocumento").value }
-    //////console.log("params ", params)
+    ////////console.log("params ", params)
     this.pideService.consultarDNI(params).subscribe((result: any) => {
-      //////console.log("result ", result)
+      ////////console.log("result ", result)
       // 
       if (result.dataService && result.dataService) {
         this.validaDNIClass = true;
@@ -1426,7 +1402,7 @@ export class ActualizarAlmacenComponent implements OnInit {
           nombres = persona.prenombres != null ? persona.prenombres : '';
           paterno = persona.apPrimer != null ? persona.apPrimer : '';
           materno = persona.apSegundo != null ? persona.apSegundo : '';
-          //////console.log("nombre ", result)
+          ////////console.log("nombre ", result)
           this.inputRegistro.get("nombreEncargado").patchValue(nombres + ' ' + paterno + ' ' + materno);
           this.photo = persona.foto;
           Swal.fire({
@@ -1501,7 +1477,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.dataSource.data.forEach( t=> t.flagAgregar = e.target.checked);
     if(e.target.checked == true){
       let dataFiltered = this.dataSource.data.filter((t: any) => t.flagAgregar == true)
-      //////console.log("dataFiltered",dataFiltered)
+      ////////console.log("dataFiltered",dataFiltered)
       dataFiltered.forEach((df: any) => {
         const descontar = {
           "descontar": Number(df.txCantidadProducto)
@@ -1509,10 +1485,10 @@ export class ActualizarAlmacenComponent implements OnInit {
         datafilteredCheck.push(Object.assign(df,descontar))
       });
       this.dataSource.data = datafilteredCheck;
-      //////console.log("datefiltered-seleccionarTodo",datafilteredCheck);
+      ////////console.log("datefiltered-seleccionarTodo",datafilteredCheck);
       } else {
         let dataFiltered = this.dataSource.data.filter((t: any) => t.flagAgregar == false)
-        //////console.log("dataFiltered-else",dataFiltered)
+        ////////console.log("dataFiltered-else",dataFiltered)
         dataFiltered.forEach((df: any) => df.descontar = null );
         this.dataSource.data = dataFiltered;
       }
@@ -1546,10 +1522,10 @@ export class ActualizarAlmacenComponent implements OnInit {
   }    
 
   eliminar(almacenResponsable:AlmacenResponsable) { 
-    //////console.log("listAlmacenResponsable",this.listAlmacenResponsable);
+    ////////console.log("listAlmacenResponsable",this.listAlmacenResponsable);
     let index = this.listAlmacenResponsable.indexOf(almacenResponsable,0);
-    //////console.log("index",index);
-    //////console.log("almacenResponsable",almacenResponsable);
+    ////////console.log("index",index);
+    ////////console.log("almacenResponsable",almacenResponsable);
     
     if(almacenResponsable.idAlmacenResponsable !== 0)
     {
@@ -1566,7 +1542,7 @@ export class ActualizarAlmacenComponent implements OnInit {
             if (result.isConfirmed) {
 
               this.almacenService.deleteAlmacenResponsable(almacenResponsable.idAlmacenResponsable).subscribe((response: DeleteAlmacenResponsableResponse) => {
-                //////console.log("response ", response)
+                ////////console.log("response ", response)
                 
                 if(response.success)
                 {
@@ -1574,7 +1550,7 @@ export class ActualizarAlmacenComponent implements OnInit {
                 }
   
               }, error => {
-                //////console.log("error ", error)
+                ////////console.log("error ", error)
               })
 
             }
@@ -1587,121 +1563,54 @@ export class ActualizarAlmacenComponent implements OnInit {
     
   }
 
-  /*listFilterTotal() {
-    this.productosResponse.data = this.dataSourceFilter.data;
-    this.productosResponse.totalRecords = this.dataSourceFilter.data.length;
-    //let actual = this.especieResponse.page * this.especieResponse.size
-    this.productosResponse.data = this.productosResponse.data.slice(
-      this.productosResponse.pageNumber,
-      this.productosResponse.pageNumber + this.productosResponse.pageSize
-    );
-    //this.dataSource = this.productosResponse.data;
-    this.calculateTotal(this.productosResponse.data);
-  }*/
-
   listFilterTotalFauna(dataSourceFaunaFilter: any) {
-    console.log("dataSourceFaunaFilter ",dataSourceFaunaFilter)
-    this.productosResponse.data = [];
-    ////console.log("this.dataSourceFaunaFilter.data",dataSourceFaunaFilter)
-    this.productosResponse.data = dataSourceFaunaFilter;
+    this.recursoResponseFauna.data = [];
+    let listaFa = [];
+    dataSourceFaunaFilter.forEach( nm =>listaFa.push(nm)); 
     this.recursoResponseFauna.totalRecords = dataSourceFaunaFilter.length;
-    this.recursoResponseFauna.pageSize = this.productosResponse.pageSize;
-    let actual = this.productosResponse.pageNumber * this.productosResponse.pageSize;
-    //if(this.productosResponse.totalRecords > 5){
-      this.productosResponse.data = this.productosResponse.data.slice(
-        actual,
-        actual + this.productosResponse.pageSize
-      );
-      console.log("this.productosResponse.data ",this.productosResponse.data)
-    this.dataSource = new MatTableDataSource<Recurso>(this.productosResponse.data);
-    //this.dataSource = this.productosResponse.data;
-   // this.getListProductosFauna(this.productosResponse.data);
+    let actual = this.recursoResponseFauna.pageNumber * this.recursoResponseFauna.pageSize;
+    listaFa = listaFa.slice(
+      (actual - this.recursoResponseMad.pageSize),
+      actual
+    );
+    console.log("listaFa ",listaFa)
+    console.log("dataSourceFaunaFilter ",dataSourceFaunaFilter)
+    console.log("recursoResponseFauna ",this.recursoResponseFauna)
+    console.log("actual ",actual)
+    this.dataSource = new MatTableDataSource<Recurso>(listaFa);
   }
 
   listFilterTotalNoMad(dataSourceNoMadFilter: any) {
-    console.log("this.dataSourceNoMadFilter.data",dataSourceNoMadFilter)
-    this.productosResponse.data = [];
-    this.productosResponse.data = dataSourceNoMadFilter;
+    this.recursoResponseNoMad.data = [];
+    let listaNoMad = [];
+    dataSourceNoMadFilter.forEach( nm =>listaNoMad.push(nm)); 
     this.recursoResponseNoMad.totalRecords = dataSourceNoMadFilter.length;
-    this.recursoResponseNoMad.pageSize = this.productosResponse.pageSize;
-    let actual = this.productosResponse.pageNumber * this.productosResponse.pageSize;
-    //if(this.productosResponse.totalRecords > 5){
-      this.productosResponse.data = this.productosResponse.data.slice(
-        actual,
-        actual + this.productosResponse.pageSize
-      );//this.productosResponse.data.length - 1;
-      console.log("this.productosResponse.data ",this.productosResponse.data)
-    this.dataSourceNoMad = new MatTableDataSource<Recurso>(this.productosResponse.data);
-    //this.dataSource = this.productosResponse.data;
-    //this.getListProductosNoMad(this.productosResponse.data);
+    let actual = this.recursoResponseNoMad.pageNumber * this.recursoResponseNoMad.pageSize;
+    listaNoMad = listaNoMad.slice(
+      (actual - this.recursoResponseMad.pageSize),
+      actual
+    );
+    this.dataSourceNoMad = new MatTableDataSource<Recurso>(listaNoMad);
   }
 
   listFilterTotalMad(dataSourceMadFilter: any) {
-    //console.log("productosResponse",this.productosResponse);
-    //console.log("this.dataSourceMadFilter.data",dataSourceMadFilter)
-    //console.log("this.dataSourceMadFilter.length",dataSourceMadFilter.length)
-    //console.log("this.productosResponse",this.productosResponse);
-
-    this.productosResponse.data = [];
-    this.productosResponse.data = dataSourceMadFilter;
-    this.recursoResponseMad.totalRecords = dataSourceMadFilter.length;
-    this.recursoResponseMad.pageSize = this.productosResponse.pageSize;
-    let actual = this.productosResponse.pageNumber * this.productosResponse.pageSize;
-    //if(this.productosResponse.totalRecords > 5){
-      this.productosResponse.data = this.productosResponse.data.slice(
-        actual,
-        actual + this.productosResponse.pageSize
+    this.recursoResponseMad.data = [];
+    let listaMad = [];
+    dataSourceMadFilter.forEach( nm =>listaMad.push(nm));  
+    this.recursoResponseMad.totalRecords = listaMad.length;
+    let actual = this.recursoResponseMad.pageNumber * this.recursoResponseMad.pageSize;
+    listaMad = listaMad.slice(
+        (actual - this.recursoResponseMad.pageSize),
+        actual
       );
-    //}
-    //this.dataSource = this.productosResponse.data;
-    ////console.log("actual",actual)
-    this.getListProductosMad(this.productosResponse.data);
+    this.getListProductosMad(listaMad);
   }
 
-  /*btnBuscarRecursos() {
-    let  listado: Recurso[] = [];
-    this.queryFauna = this.inputProductos.get('nombreProducto').value;
-    this.nroGuia = this.inputProductos.get('numeroGuia').value;
-    this.nroActa = this.inputProductos.get('numeroActa').value;
-
-    if((this.queryFauna == null || this.queryFauna == '') && (this.nroGuia == null || this.nroGuia == '') && (this.nroActa == null || this.nroActa == '') ){
-      listado = this.dataSourceFilter.data;
-      //////console.log("validación cero")
-    } else {
-
-      if(this.queryFauna !== null || this.queryFauna !== ''){
-        //////console.log("validación uno")
-        listado = this.dataSourceFilter.data.filter( (c: any) => c.nombreComun.toUpperCase().includes(this.queryFauna.toUpperCase())
-      || c.nombreCientifico.toUpperCase().includes(this.queryFauna.toUpperCase()));
-      
-      } 
-      if(this.nroGuia !== null && this.nroGuia !== undefined && this.nroGuia !== ''){
-        listado = this.dataSourceFilter.data.filter( (c: any) => c.nroGuiaTransporteForestal.includes(this.nroGuia));
-        
-      }       
-      if(this.nroActa !== null && this.nroActa !== undefined && this.nroActa !== ''){
-        listado = this.dataSourceFilter.data.filter( (c: any) => c.numeroActa.includes(this.nroActa));
-        
-      }   
-    }
-
-    //////console.log("listado",listado);
-    this.productosResponse.data = listado;
-    this.productosResponse.totalRecords = listado.length;
-    if(this.productosResponse.totalRecords > 10){
-      this.productosResponse.data = this.productosResponse.data.slice(
-        this.productosResponse.pageNumber,
-        this.productosResponse.pageNumber + this.productosResponse.pageSize
-      );
-    }
-    //////console.log("this.productosResponse.data",this.productosResponse.data);
-    this.calculateTotal(this.productosResponse.data);
-  }*/
 
   btnBuscar(){
-    this.productosResponse.pageNumber = 0;
-    this.productosResponse.pageSize = 10;
-    this.productosResponse.previousPageIndex = 0;
+    this.productosResponseMad.pageNumber = 0;
+    this.productosResponseMad.pageSize = 10;
+    this.productosResponseMad.previousPageIndex = 0;
     this.btnBuscarRecursos(this.typeRecurso);
   }
 
@@ -1726,16 +1635,16 @@ export class ActualizarAlmacenComponent implements OnInit {
     listadoMad = this.dataSourceMadFilter.data;
     listadoFauna = this.dataSourceFaunaFilter.data;
     listadoNoMad = this.dataSourceNoMadFilter.data;
-    ////console.log("this.tipoIngresoForm-btnBuscarRecursos", this.tipoIngresoForm)
+    //////console.log("this.tipoIngresoForm-btnBuscarRecursos", this.tipoIngresoForm)
 
     if((this.queryFauna == null || this.queryFauna == '') && (this.nroGuia == null || this.nroGuia == '') && (this.nroActa == null || this.nroActa == '') 
         && (this.tipoIngresoForm == null || this.tipoIngresoForm == '') ){
       listadoFauna = this.dataSourceFaunaFilter.data;
       listadoNoMad = this.dataSourceNoMadFilter.data;
       listadoMad = this.dataSourceMadFilter.data;
-      //console.log('listadoFauna',listadoFauna);
-      //console.log('listadoNoMad',listadoNoMad);
-      //console.log('listadoMad',listadoMad);
+      ////console.log('listadoFauna',listadoFauna);
+      ////console.log('listadoNoMad',listadoNoMad);
+      ////console.log('listadoMad',listadoMad);
     } else {
 
       if(this.queryFauna !== null || this.queryFauna !== ''){
@@ -1801,12 +1710,12 @@ export class ActualizarAlmacenComponent implements OnInit {
       }
     }
 
-    if(type == 'M'){
+    if(type == Constants.PRODUCTO_MADERABLE){
       this.listFilterTotalMad(listadoMad);
-    } else if( type == 'NM'){
+    } else if( type == Constants.PRODUCTO_NOMADERABLE){
       this.listFilterTotalNoMad(listadoNoMad);
-    }else if( type == 'F'){
-      this.listFilterTotalFauna(listadoNoMad);
+    }else if( type == Constants.PRODUCTO_FAUNA){
+      this.listFilterTotalFauna(listadoFauna);
     }else{
       this.listFilterTotalFauna(listadoFauna);
       this.listFilterTotalMad(listadoMad);

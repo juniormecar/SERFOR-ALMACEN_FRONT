@@ -431,7 +431,7 @@
                                         </table>
                                         <mat-paginator style="float:left; color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons 
                                         [length]="recursoResponseMad.totalRecords"
-                                        [pageSize]="recursoResponseMad.pageSize" (page)="pageDataSource($event,'M')"
+                                        [pageSize]="recursoResponseMad.pageSize" (page)="pageDataSource($event,'MAD')"
                                         aria-label="Select page of periodic elements"> 
                                     </mat-paginator>
                                     </div>
@@ -578,7 +578,7 @@
                                         </table>
                                         <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
                                         [length]="recursoResponseNoMad.totalRecords" [pageSize]="recursoResponseNoMad.pageSize"
-                                        (page)="pageDataSource($event, 'NM')" aria-label="Select page of periodic elements">
+                                        (page)="pageDataSource($event, 'NOMAD')" aria-label="Select page of periodic elements">
                                         </mat-paginator>
                                     </div>
                                 </mat-tab>
@@ -682,7 +682,7 @@
                                         </table>
                                         <mat-paginator style="float:left;  color: #89B361;" #paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons
                                         [length]="recursoResponseFauna.totalRecords" [pageSize]="recursoResponseFauna.pageSize"
-                                        (page)="pageDataSource($event,'F')" aria-label="Select page of periodic elements">
+                                        (page)="pageDataSource($event,'FA')" aria-label="Select page of periodic elements">
                                         </mat-paginator>
                                     </div>
                                 </mat-tab>

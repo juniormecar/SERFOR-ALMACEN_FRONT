@@ -237,8 +237,61 @@ export class ReportesIndicadoresComponent implements OnInit {
         grillaNoMad = this.dataSource2.filteredData.filter((t: any) => t.tipoEspecie === 'NOMAD');        
         grillaFa = this.dataSource2.filteredData.filter((t: any) => t.tipoEspecie === 'FA');
 
-        
+        console.log("grillaMad ",grillaMad)
+        console.log("grillaNoMad ",grillaNoMad)
+        console.log("grillaFa ",grillaFa)
+        let contador = 0;
+        if((grillaMad.length >= grillaNoMad.length && grillaMad.length>=grillaFa.length)){
+          console.log("ENTRO1 ")
+          grillaMad.forEach((item:any)=>{
+            item.cantidadTotalMAD = item.cantidadTotalXtipoYunidadMedida;
+            item.unidadMedidaMAD = item.unidadMedida;
+            if(contador<=grillaNoMad.length-1){
+              item.cantidadTotalNOMAD = grillaNoMad[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaNOMAD = grillaNoMad[contador].unidadMedida;
+            }
+            if(contador<=grillaFa.length-1){
+              item.cantidadTotalFA = grillaFa[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaFA = grillaFa[contador].unidadMedida;
+            }
+            contador++;     
+          })
+          this.dataSource2 = new MatTableDataSource<Reportes>(grillaMad);
+        }else if(grillaNoMad.length >= grillaMad.length && grillaNoMad.length>=grillaFa.length){
+          console.log("ENTRO2 ")
+            grillaNoMad.forEach((item:any)=>{
+              item.cantidadTotalNOMAD = item.cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaNOMAD = item.unidadMedida;
+            if(contador<=grillaMad.length-1){
+              item.cantidadTotalMAD = grillaMad[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaMAD = grillaMad[contador].unidadMedida;
+            }
+            if(contador<=grillaFa.length-1){
+              item.cantidadTotalFA = grillaFa[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaFA = grillaFa[contador].unidadMedida;
+            }
+            contador++;         
+          })
+          this.dataSource2 = new MatTableDataSource<Reportes>(grillaNoMad);
+        }else{
+          console.log("ENTRO3 ")
+          grillaFa.forEach((item:any)=>{
+            item.cantidadTotalFA = item.cantidadTotalXtipoYunidadMedida;
+            item.cantidadTotalFA = item.unidadMedida;
+            if(contador<=grillaMad.length-1){
+              item.cantidadTotalMAD = grillaMad[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaMAD = grillaMad[contador].unidadMedida;
+            }
+            if(contador<=grillaNoMad.length-1){
+              item.cantidadTotalNOMAD = grillaNoMad[contador].cantidadTotalXtipoYunidadMedida;
+              item.unidadMedidaNOMAD = grillaNoMad[contador].unidadMedida;
+            }  
+            contador++;      
+          });
+          this.dataSource2 = new MatTableDataSource<Reportes>(grillaFa);
+        }
 
+/*
         if(((grillaMad.length > grillaNoMad.length && grillaMad.length > grillaFa.length && grillaNoMad.length >= grillaFa.length)))
         {
         grillaMad.forEach((item:any)=>{
@@ -289,6 +342,8 @@ export class ReportesIndicadoresComponent implements OnInit {
         })
         this.dataSource2 = new MatTableDataSource<Reportes>(grillaNoMad);
         }
+
+
 
         if(grillaNoMad.length > grillaMad.length && grillaNoMad.length > grillaFa.length && grillaMad.length < grillaFa.length)
         {
@@ -356,7 +411,7 @@ export class ReportesIndicadoresComponent implements OnInit {
           })
           this.dataSource2 = new MatTableDataSource<Reportes>(grillaMad);
         }
-
+*/
 
 
 
