@@ -901,7 +901,7 @@
                                                         <mat-form-field [style.width.px]=100>
                                                             <mat-label></mat-label>
                                                             <input matInput type="text" placeholder=""
-                                                              (keyup)="multipli()"
+                                                              (keyup)="multipli(element)"
                                                                 [(ngModel)]="element.capacidadUnidad"
                                                                 style="text-align: right;"  onkeypress="return /[0-9.]/i.test(event.key)">
                                                         </mat-form-field>
