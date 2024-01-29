@@ -25,4 +25,5 @@ export class Especie {
     esAserrada?:string;
     id?:Number;
     cantidad?:Number;
+    capacidadUnidad?:Number;
 }

@@ -31,4 +31,5 @@ export class RecursoProduco {
     descUnidadMedida?:string;
     descSubProducto?:string;
     descTipoAlmacenamiento?:string;
+    cantidadTotal?:Number;
 }

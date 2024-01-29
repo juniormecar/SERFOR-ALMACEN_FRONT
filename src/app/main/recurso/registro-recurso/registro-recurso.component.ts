@@ -697,6 +697,9 @@ export class RegistroRecursoComponent implements OnInit {
       element.txCantidadProducto = Number(obj.cantidad) >= 0 ?obj.cantidad:0;
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
+
+      element.cantidadTotal = 0;
+
       element.type = Constants.NOMADERABLE;
       this.listProductoNoMad.push(element);
       this.listRecursoProducto.push(element);
@@ -1082,8 +1085,22 @@ export class RegistroRecursoComponent implements OnInit {
       else if (item.unidadMedida === 'TON') {
         this.totalToneladasNoMad += Number(item.txCantidadProducto)
       }
-    })
+    })    
   }
+
+  multipli(row:RecursoProduco){
+    const index = this.listProductoNoMad.indexOf(row, 1);
+    console.log('JUNIOOOOOR', this.listProductoNoMad);
+    if(row.capacidadUnidad !== undefined && row.capacidadUnidad !== null  && row.txCantidadProducto !== undefined && row.txCantidadProducto !== null)
+    {
+      console.log('entré');
+    row.cantidadTotal = Number(row.txCantidadProducto) * Number(row.capacidadUnidad);
+    this.listProductoNoMad[index] = row;   
+    this.listRecursoProducto[index] = row;   
+    
+    }
+}
+
 
   validarOtros(event: any) {
     if (event.value === 'OTRO') {
