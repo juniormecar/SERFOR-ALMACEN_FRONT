@@ -209,27 +209,29 @@ else{
     debugger
     const dataToExport = this.listKardex;
 
-    const headers = ['Fecha Registro','Tipo de Producto','ATF','Puesto Control','Nombre de Almacén','Nombre Científico', 'Nombre Común', 'Disponible', 'Tipo Ingreso', 'Cantidad Ingreso','Cantidad M3 Ingreso', 'Saldo Neto Ingreso','Saldo Neto M3 Ingreso',
-                     'Tipo Salida', 'Cantidad Salida','Cantidad M3 Salida','Saldo Neto Salida','Saldo Neto M3 Salida'];
+    const headers = ['Fecha Registro','ATF','Puesto Control','Nombre de Almacén','Tipo de Producto','Nombre Científico', 'Nombre Común', 'Disponible', 'Tipo Ingreso', 'Cantidad Ingreso','U. de Medida','Cantidad M3 Ingreso', 'Saldo Neto Ingreso','Saldo Neto M3 Ingreso',
+                     'Tipo Salida', 'Cantidad Salida','U. de Medida','Cantidad M3 Salida','Saldo Neto Salida','Saldo Neto M3 Salida'];
   
     const data = [headers, ...dataToExport.map(item => [
-      this.formatDateToUTC(item.fechaRegistro),
-      item.tipoProducto === 'MAD' ? 'Maderable' :
-      item.tipoProducto === 'NOMAD' ? 'No Maderable' :
-      item.tipoProducto === 'FA' ? 'Fauna' : item.tipoProducto,
+      this.formatDateToUTC(item.fechaRegistro),      
       item.atf,
       item.puestoControl,
       item.nomAlmacen,
+      item.tipoProducto === 'MAD' ? 'Maderable' :
+      item.tipoProducto === 'NOMAD' ? 'No Maderable' :
+      item.tipoProducto === 'FA' ? 'Fauna' : item.tipoProducto,
       item.nombreCientifico,
       item.nombreComun,
       item.disponible === 'D' ? 'Disponible' : 'No Disponible',
       item.tipoIngreso,
       item.cantidadIngreso,
+      item.unidadMedida,
       item.cantidadM3Ingreso,
       item.saldoTotalIngreso,
       item.saldoTotalM3Ingreso,
       item.tipoSAlida,
       item.cantidadSalida,
+      item.unidadMedida,
       item.cantidadM3Salida,
       item.saldoTotalSalida,
       item.saldoTotalM3Salida

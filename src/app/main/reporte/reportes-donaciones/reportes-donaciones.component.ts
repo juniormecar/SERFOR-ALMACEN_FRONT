@@ -237,21 +237,18 @@ else{
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Almacen','Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida', 'Tipo de Especie'];
+      const headers = ['Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
       const data = [headers, ...dataToExport.map(item => [
-        nombreAlmacen ,
-        this.formatDateToUTC(item.feFechaRegistro),
-        //item.feFechaRegistro,
+        this.formatDateToUTC(item.feFechaRegistro),              
         item.almacenOrigen,
         item.nombre,
+        item.tipoEspecie === 'MAD' ? 'Maderable' :
+        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
         item.nombreCientifico,
         item.nombreComun,
         item.cantidadProducto,
-        item.unidadMedida,
-        item.tipoEspecie === 'MAD' ? 'Maderable' :
-        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
-        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie
-        //item.tipoEspecie
+        item.unidadMedida
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
@@ -261,19 +258,18 @@ else{
     
       XLSX.writeFile(wb, 'ReporteDonaciones.xlsx');
     }else{
-      const headers = ['Fecha','Origen','Destino','Nombre Científico', 'Nombre Común', 'Cantidad', 'Tipo de Especie'];
-      const data = [headers, ...dataToExport.map(item => [        
-        //item.feFechaRegistro,
-        this.formatDateToUTC(item.feFechaRegistro),
+      const headers = ['Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
+      const data = [headers, ...dataToExport.map(item => [
+        this.formatDateToUTC(item.feFechaRegistro),              
         item.almacenOrigen,
         item.nombre,
+        item.tipoEspecie === 'MAD' ? 'Maderable' :
+        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
+        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie,
         item.nombreCientifico,
         item.nombreComun,
         item.cantidadProducto,
-       //item.tipoEspecie
-        item.tipoEspecie === 'MAD' ? 'Maderable' :
-        item.tipoEspecie === 'NOMAD' ? 'No Maderable' :
-        item.tipoEspecie === 'FA' ? 'Fauna' : item.tipoEspecie
+        item.unidadMedida
         
       ])];
       const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(data);        
