@@ -926,7 +926,7 @@ export class ActualizarAlmacenComponent implements OnInit {
     let dataFilteredNoMad = this.dataSourceNoMad.filteredData.filter((t: any) => t.flagAgregar === true);
     let dataFilteredMad = this.dataSourceMad.filteredData.filter((t: any) => t.flagAgregar === true);
 
-
+console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFauna);
     //Si sólo selecciona Fauna
     if((dataFilteredFauna.length !== 0 && dataFilteredNoMad.length === 0 && dataFilteredMad.length === 0)){
       
@@ -1005,7 +1005,8 @@ export class ActualizarAlmacenComponent implements OnInit {
 
     //Hace toda la lógica
     else{    
-    
+    console.log('dataFilteredNoMaddataFilteredNoMaddataFilteredNoMad',dataFilteredNoMad);
+    console.log('dataFilteredMaddataFilteredMaddataFilteredMad',dataFilteredMad);
     let dataGeneralMad = [];
     let dataGeneralMadComp = dataFilteredMad.filter(x=>x.tipoIngreso=== 'Hallazgo' && x.numeroActa==="");
     var contador = 0;

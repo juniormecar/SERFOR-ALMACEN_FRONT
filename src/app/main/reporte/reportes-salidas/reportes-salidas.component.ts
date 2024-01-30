@@ -299,8 +299,9 @@ else{
     exportToExcel() {
       const dataToExport = this.dataSourceExcel.data;
       console.log('eeeeeeeeee',this.dataSourceExcel.data);
-        const headers = ['Fecha','Origen','Destino','Tipo de Especie','Nombre Científico','Nombre Común', 'Cantidad','U. de Medida','Tipo de Transferencia'];
+        const headers = ['Código','Fecha','Origen','Destino','Tipo de Especie','Nombre Científico','Nombre Común', 'Cantidad','U. de Medida','Tipo de Transferencia'];
         const data = [headers, ...dataToExport.map(item => [
+          item.codigoUnico,
           this.formatDateToUTC(item.feFechaRegistro),
           item.almacenOrigen,          
           item.tipoTransferencia === 'TPTRANS001' ?  item.nombre :

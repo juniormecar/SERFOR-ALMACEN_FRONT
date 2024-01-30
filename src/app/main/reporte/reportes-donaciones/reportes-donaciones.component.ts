@@ -237,8 +237,9 @@ else{
     
     if(this.inputBandeja.get('almacen').value){
       nombreAlmacen=this.inputBandeja.get('almacen').value;
-      const headers = ['Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
+      const headers = ['Código','Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
       const data = [headers, ...dataToExport.map(item => [
+        item.codigoUnico,
         this.formatDateToUTC(item.feFechaRegistro),              
         item.almacenOrigen,
         item.nombre,
@@ -258,8 +259,9 @@ else{
     
       XLSX.writeFile(wb, 'ReporteDonaciones.xlsx');
     }else{
-      const headers = ['Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
+      const headers = ['Código','Fecha','Origen','Destino','Tipo de Especie','Nombre Científico', 'Nombre Común', 'Cantidad','U. de Medida'];
       const data = [headers, ...dataToExport.map(item => [
+        item.codigoUnico,
         this.formatDateToUTC(item.feFechaRegistro),              
         item.almacenOrigen,
         item.nombre,

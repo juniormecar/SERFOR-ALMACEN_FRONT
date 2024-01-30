@@ -209,10 +209,11 @@ else{
     debugger
     const dataToExport = this.listKardex;
 
-    const headers = ['Fecha Registro','ATF','Puesto Control','Nombre de Almacén','Tipo de Producto','Nombre Científico', 'Nombre Común', 'Disponible', 'Tipo Ingreso', 'Cantidad Ingreso','U. de Medida','Cantidad M3 Ingreso', 'Saldo Neto Ingreso','Saldo Neto M3 Ingreso',
+    const headers = ['Código','Fecha Registro','ATF','Puesto Control','Nombre de Almacén','Tipo de Producto','Nombre Científico', 'Nombre Común', 'Disponible', 'Tipo Ingreso', 'Cantidad Ingreso','U. de Medida','Cantidad M3 Ingreso', 'Saldo Neto Ingreso','Saldo Neto M3 Ingreso',
                      'Tipo Salida', 'Cantidad Salida','U. de Medida','Cantidad M3 Salida','Saldo Neto Salida','Saldo Neto M3 Salida'];
   
     const data = [headers, ...dataToExport.map(item => [
+      item.codigoUnico,
       this.formatDateToUTC(item.fechaRegistro),      
       item.atf,
       item.puestoControl,
