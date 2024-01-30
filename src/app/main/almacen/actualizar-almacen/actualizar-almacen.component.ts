@@ -1081,9 +1081,13 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
                                                               null,null, this.idAlmacen,null,null,resp.nombreCientifico,resp.nombreComun,null,null,null,null,resp.unidadMedida,
                                                               null,null,this.recursoResponseFauna.pageNumber, this.recursoResponseFauna.pageSize,'ASC')
                         .subscribe((response: BandejaRecursoResponse) => {
+
+                          response.data = response.data.filter(x=>x.tipoIngreso === 'Hallazgo');
+
                 contador++;
                 response.data.filter(x=> Number(x.txCantidadProducto) > 0);
                 response.data.forEach((item:any)=>{  
+                  console.log('acá parece estar trayendo mal',response);
 
                   if (descontar > 0 && descontar !== null && resp.txCantidadProducto != null && descontar !==undefined && resp.txCantidadProducto != undefined) {
                     if(descontar>=Number(item.txCantidadProducto)){
@@ -1146,7 +1150,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
             }
           } 
         })
-
+        console.log('JUNIORRRRRRRRRR',dataFiltered);
       /* if (dataGeneralMadComp.length == 0) {
            if(dataFilteredNoMad.length  === 0){
             //console.log("ENTRO 2")
