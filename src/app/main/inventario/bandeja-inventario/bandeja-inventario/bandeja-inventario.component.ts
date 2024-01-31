@@ -330,8 +330,9 @@ export class BandejaInventarioComponent implements OnInit {
     
       XLSX.writeFile(wb, 'Inventario.xlsx');
     }else{
-      const headers = ['Tipo de Producto','Nombre Científico', 'Nombre Comun','U. de Medida','Disponibilidad', 'Cantidad', 'Metro Cubico'];
+      const headers = ['Almacén','Tipo de Producto','Nombre Científico', 'Nombre Comun','U. de Medida','Disponibilidad', 'Cantidad', 'Metro Cubico'];
       const data = [headers, ...dataToExport.map(item => [
+        item.nombreAlmacen,
         item.tipo === 'MAD' ? 'Maderable' :
         item.tipo === 'NOMAD' ? 'No Maderable' :
         item.tipo === 'FA' ? 'Fauna' : item.tipo,
