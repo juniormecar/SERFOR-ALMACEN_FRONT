@@ -194,11 +194,11 @@ else{
 
   }
 
-  verDetalleDonacion(nroActa:string) {
+  verDetalleDonacion(tipoTransferencia:string,nroActa:string,nuIdTransferencia:number) {
     const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
       width: '1000px',
       height: '600px',
-      data: { nroActa: nroActa }
+      data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia}
     });
 
     dialogRef.afterClosed().subscribe(result => {  
