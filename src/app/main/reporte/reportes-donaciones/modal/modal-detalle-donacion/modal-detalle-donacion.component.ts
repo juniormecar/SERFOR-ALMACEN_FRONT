@@ -8,7 +8,8 @@ import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesResponse } from 'app/shared/models/response/reportes-response';
 interface DialogData {
   nroActa:string,
-  nuIdTransferencia:number
+  nuIdTransferencia:number,
+  titulo:string
 }
 @Component({
   selector: 'app-modal-detalle-donacion',
@@ -49,6 +50,7 @@ export class ModalDetalleDonacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.SearchReportes();
+    console.log('data',this.data);
   }
 
   async SearchReportes() {

@@ -1568,11 +1568,14 @@ export class RegistroRecursoComponent implements OnInit {
     let flagSubProducto: boolean = true;
     let flagTrozaPiezas: boolean = true;
     let flagUnidadMedida: boolean = true;
+    let flagTipoAlmacenamiento: boolean = true;
+    let flagCapacidadUnidad: boolean = true;
+    let flagTxCantidadProducto: boolean = true;
 
     let message: string = '(*) Debe ingresar los siguientes campos:';
 
     let listDetalle = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'MAD');
-
+console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetalle);
   
     for( let index = 0 ; index < listDetalle.length; index++){
       if ((listDetalle[index].tipoProducto == '' || listDetalle[index].tipoProducto == null) && flagTipoProducto) {
@@ -1598,6 +1601,42 @@ export class RegistroRecursoComponent implements OnInit {
         flagUnidadMedida = false;
         message += '\n - Unidad Medida';
       }
+    }
+    let listDetalleNM = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'NOMAD');
+    for( let index = 0 ; index < listDetalleNM.length; index++){
+      if ((listDetalleNM[index].tipoAlmacenamiento == '' || listDetalleNM[index].tipoAlmacenamiento == null) && flagTipoAlmacenamiento) {
+        validar = false;
+        flagTipoAlmacenamiento = false;
+        message += '\n - Tipo de Almacenamiento';
+      }
+  
+      if ((listDetalleNM[index].capacidadUnidad == 0 || listDetalleNM[index].capacidadUnidad == null) && flagCapacidadUnidad) {
+        validar = false;
+        flagCapacidadUnidad = false;
+        message += '\n - Capacidad/Unidad';
+      }
+
+      if ((listDetalleNM[index].txCantidadProducto == 0 || listDetalleNM[index].txCantidadProducto == null) && flagTxCantidadProducto) {
+        validar = false;
+        flagTxCantidadProducto = false;
+        message += '\n - Cantidad';
+      }
+
+      if ((listDetalleNM[index].unidadMedida == '' || listDetalleNM[index].unidadMedida == null) && flagUnidadMedida) {
+        validar = false;
+        flagUnidadMedida = false;
+        message += '\n - Unidad Medida';
+      }
+    }
+    let listDetalleFA = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'FA');
+    for( let index = 0 ; index < listDetalleFA.length; index++){
+     
+      if ((listDetalleFA[index].txCantidadProducto == 0 || listDetalleFA[index].txCantidadProducto == null) && flagTxCantidadProducto) {
+        validar = false;
+        flagTxCantidadProducto = false;
+        message += '\n - Cantidad';
+      }
+
     }
     //if (!validar) this.ErrorMensaje(mensaje);
     return (validar == false) ? message:'';

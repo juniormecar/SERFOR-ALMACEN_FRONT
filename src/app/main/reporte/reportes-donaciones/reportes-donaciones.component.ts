@@ -198,7 +198,7 @@ else{
     const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
       width: '1000px',
       height: '600px',
-      data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia}
+      data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia,titulo:'Reporte de Donaciones - Detalle'}
     });
 
     dialogRef.afterClosed().subscribe(result => {  
