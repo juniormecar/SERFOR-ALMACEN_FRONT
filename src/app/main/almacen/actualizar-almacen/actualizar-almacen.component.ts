@@ -135,11 +135,19 @@ export class ActualizarAlmacenComponent implements OnInit {
   dataSourceFaunaFilterActa = new MatTableDataSource<Recurso>([]);
   dataSourceNoMadFilterActa = new MatTableDataSource<Recurso>([]);
   dataSourceMadFilterActa = new MatTableDataSource<Recurso>([]);
-
+  listSettings: Parametro[] = [];
+  listDecimalCantidad = new Parametro();
+  listDecimalRedondeo = new Parametro();
+  listDecimal = {
+      cantidad: null,
+      redondeo: null
+  }
+  prefijoDecimal: string = 'TCONFDEC';
+  descDecimal: string = 'Configuración de decimales';
   totalRecordFauna !: number;
   totalRecordNoMad !: number;
   totalRecordMad !: number;
-
+  idTipoParametroDecimal!: Number;
   listTipoIngreso: Parametro[] = [];
   listTipo: Parametro[] = [];
   tipoIngreso: string = Constants.TIPO_INGRESO;
@@ -238,10 +246,10 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.currentStep = 0;
     this.titleStep = this.course[0].title
 
-    this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = /*this.lstDecimal === null || this.lstDecimal === undefined ? 4 :*/ Number(this.lstDecimal.cantidad);
-    this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = /*this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :*/  this.lstDecimal.redondeo;
+   // this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
+   // this.cantidad = /*this.lstDecimal === null || this.lstDecimal === undefined ? 4 :*/ Number(this.lstDecimal.cantidad);
+   // this.cantidadPipe = '0.0-' + this.cantidad;
+   // this.redondeo = /*this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :*/  this.lstDecimal.redondeo;
     ////////console.log("this.lstDecimal",this.lstDecimal)
   }
   setStep(index: number) {
@@ -283,12 +291,18 @@ export class ActualizarAlmacenComponent implements OnInit {
             this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];
             this.idTipoParametroDecimal = this.listDecimalCantidad.idTipoParametro == null ? 
             this.listDecimalRedondeo.idTipoParametro: this.listDecimalCantidad.idTipoParametro;
-            //console.log("this.listDecimalCantidad-getSetting",this.listDecimalCantidad);
-            //console.log("this.listDecimalRedondeo-getSetting",this.listDecimalRedondeo);
-            
+            this.cantidad = Number(this.listDecimalCantidad);
+            this.cantidadPipe = '0.0-' + this.cantidad;
+            this.redondeo =  this.listDecimalRedondeo.valorPrimario;
             this.saveStorage(this.listDecimalCantidad.valorPrimario, this.listDecimalRedondeo.valorPrimario);
         }
     });
+}
+
+saveStorage(cantidad: any, redondeo: any){
+  this.listDecimal.cantidad = cantidad == null ? 4: cantidad;
+  this.listDecimal.redondeo = redondeo == null ? 4: redondeo;
+  sessionStorage.setItem("listDecimal", JSON.stringify(this.listDecimal));
 }
 
   gotoStep(step): void {
