@@ -6,7 +6,7 @@ export const environment = {
     urlServiciosExternos: 'https://sniffs.serfor.gob.pe/apis/extserv-rest/1.0/',   // servicios externos
     urlSeguridad: "https://qa.serfor.gob.pe/sgiseguridad/",   // seguridad
     urlNewCoreCentral:"https://qa.serfor.gob.pe/corecentral/", // core central
-    urlBaseImagen:"/almacen"//NO
+    urlBaseImagen:"/almacencontrol"//NO
 };
 
 /*
