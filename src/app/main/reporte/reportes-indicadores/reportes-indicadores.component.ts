@@ -277,7 +277,7 @@ export class ReportesIndicadoresComponent implements OnInit {
           console.log("ENTRO3 ")
           grillaFa.forEach((item:any)=>{
             item.cantidadTotalFA = item.cantidadTotalXtipoYunidadMedida;
-            item.cantidadTotalFA = item.unidadMedida;
+            item.unidadMedidaFA = item.unidadMedida;
             if(contador<=grillaMad.length-1){
               item.cantidadTotalMAD = grillaMad[contador].cantidadTotalXtipoYunidadMedida;
               item.unidadMedidaMAD = grillaMad[contador].unidadMedida;
