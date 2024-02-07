@@ -46,7 +46,15 @@ export class BandejaInventarioComponent implements OnInit {
   listInventario: Recurso[] = [];
   listPuestoControl: PuestoControl[] = [];
   listATF: ATF[] = [];
-
+  listSettings: Parametro[] = [];
+  listDecimalCantidad = new Parametro();
+  listDecimalRedondeo = new Parametro();
+  listDecimal = {
+      cantidad: null,
+      redondeo: null
+  }
+  prefijoDecimal: string = 'TCONFDEC';
+  descDecimal: string = 'Configuración de decimales';
   lstDecimal = new Decimal();
   cantidadPipe!: string;
   cantidad!: number;
@@ -58,6 +66,7 @@ export class BandejaInventarioComponent implements OnInit {
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
   tipoEspecie: string = Constants.TIPO_PRODUCTO_CATA;
   listTipoEspecie: Parametro[] = [];
+  idTipoParametroDecimal!: Number;
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -99,7 +108,7 @@ export class BandejaInventarioComponent implements OnInit {
       tipoEspecie: [''], 
     });
     
-    
+    /*
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
     
     this.cantidad = this.lstDecimal === null || this.lstDecimal === undefined ? 4 : Number(this.lstDecimal.cantidad);
@@ -109,7 +118,7 @@ export class BandejaInventarioComponent implements OnInit {
 
     
     console.log('localStoragelocalStoragelocalStoragelocalStoragelocalStorage3',localStorage);
-
+*/
   }
 
   ngOnInit(): void {
@@ -118,7 +127,30 @@ export class BandejaInventarioComponent implements OnInit {
    this.searchTipoIngreso();
    this.searchDisponibilidadActa();
    this.searchTipoEspecie();
+   this.getSettingDecimal();
   }
+
+  getSettingDecimal(){
+    this.parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
+        this.listSettings = response;
+        if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
+            this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
+            this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];
+            this.idTipoParametroDecimal = this.listDecimalCantidad.idTipoParametro == null ? 
+            this.listDecimalRedondeo.idTipoParametro: this.listDecimalCantidad.idTipoParametro;
+            this.cantidad = Number(this.listDecimalCantidad);
+            this.cantidadPipe = '0.0-' + this.cantidad;
+            this.redondeo =  this.listDecimalRedondeo.valorPrimario;
+            this.saveStorage(this.listDecimalCantidad.valorPrimario, this.listDecimalRedondeo.valorPrimario);
+        }
+    });
+}
+
+saveStorage(cantidad: any, redondeo: any){
+  this.listDecimal.cantidad = cantidad == null ? 4: cantidad;
+  this.listDecimal.redondeo = redondeo == null ? 4: redondeo;
+  sessionStorage.setItem("listDecimal", JSON.stringify(this.listDecimal));
+}
 
   searchTipoIngreso() {
     this.parametroService.getParametroSearch(this.tipoIngreso).subscribe((response: Parametro[]) => {
