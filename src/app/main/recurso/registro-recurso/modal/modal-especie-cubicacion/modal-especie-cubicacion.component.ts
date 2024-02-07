@@ -121,14 +121,14 @@ saveStorage(cantidad: any, redondeo: any){
     this.listCubicacion = this.listCubicacion.filter(item => item.nuIdRecursoProducto !== 0);
     let element: Cubicacion = new Cubicacion();
     element.idRecurProCubicacion = 0;
-    element.cantidad = 0;
-    element.espesor = 0;
-    element.ancho = 0;
-    element.largo = 0;
+    //element.cantidad = 0;
+    //element.espesor = 0;
+    //element.ancho = 0;
+   // element.largo = 0;
     element.volumenPT = 0;
     element.volumenM3 = 0;
-    element.diametroPromedio = 0;
-    element.longitud = 0;
+   // element.diametroPromedio = 0;
+   // element.longitud = 0;
     element.nuIdRecursoProducto = this.nuIdRecursoProducto;
     //console.log('this.nuIdRecursoProducto',this.nuIdRecursoProducto);
     //console.log('this.disabledAce',this.disabledAce);
@@ -144,20 +144,18 @@ saveStorage(cantidad: any, redondeo: any){
   }
 
   calculoVPT(row: Cubicacion) {
-    const index = this.listCubicacion.indexOf(row, 0);
-    row.volumenPT = Number(row.cantidad) * ((Number(row.espesor) * Number(row.ancho) * Number(row.largo)) / 12);
-    row.volumenPT = Number(row.volumenPT.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
-    this.listCubicacion[index] = row;  
-    this.calculateTotalVolumenPT();  
-  }
-
-  calculoVm3(row: Cubicacion) {
-    const index = this.listCubicacion.indexOf(row, 0);
-    row.volumenM3 = Number(row.cantidad) * ((Number(row.diametroPromedio) * Number(row.diametroPromedio) * 3.14 * Number(row.longitud))/4);
-    row.volumenM3 = Number(row.volumenM3.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
-    //console.log("row.volumenM3 ",row.volumenM3)
-    this.listCubicacion[index] = row;
-    this.calculateTotalVolumenM3();  
+   
+    if((row.cantidad !== undefined && row.cantidad !== null) && 
+       (row.espesor !== undefined && row.espesor !== null) &&
+       (row.ancho !== undefined && row.ancho !== null) && 
+       (row.largo !== undefined && row.largo !== null) ){
+        const index = this.listCubicacion.indexOf(row, 0);
+        row.volumenPT = Number(row.cantidad) * ((Number(row.espesor) * Number(row.ancho) * Number(row.largo)) / 12);
+        row.volumenPT = Number(row.volumenPT.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
+        this.listCubicacion[index] = row;  
+        this.calculateTotalVolumenPT();  
+    }
+   
   }
 
   calculateTotalVolumenPT() {
@@ -170,8 +168,6 @@ saveStorage(cantidad: any, redondeo: any){
  
     this.totalVolumenPT = Number(this.totalVolumenPT.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
     this.totalVolumenPTconvertido = Number(this.totalVolumenPTconvertido.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
-console.log('el total de volumen',this.totalVolumenPT);
-
 
     let element: Cubicacion = new Cubicacion();    
     element.nuIdRecursoProducto = 0; 
@@ -184,6 +180,19 @@ console.log('el total de volumen',this.totalVolumenPT);
     this.dataSource = new MatTableDataSource<Cubicacion>(this.listCubicacion);    
   }
 
+  calculoVm3(row: Cubicacion) {
+    if((row.cantidad !== undefined && row.cantidad !== null) && 
+    (row.diametroPromedio !== undefined && row.diametroPromedio !== null) &&
+    (row.longitud !== undefined && row.longitud !== null)  ){
+      const index = this.listCubicacion.indexOf(row, 0);
+      row.volumenM3 = Number(row.cantidad) * ((Number(row.diametroPromedio) * Number(row.diametroPromedio) * 3.14 * Number(row.longitud))/4);
+      row.volumenM3 = Number(row.volumenM3.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
+      //console.log("row.volumenM3 ",row.volumenM3)
+      this.listCubicacion[index] = row;
+      this.calculateTotalVolumenM3();  
+    }
+  }
+
   calculateTotalVolumenM3() {
     this.totalVolumenM3 = 0;
     this.listCubicacionRolliza = this.listCubicacionRolliza.filter(item => item.nuIdRecursoProducto !== 0);
@@ -192,7 +201,7 @@ console.log('el total de volumen',this.totalVolumenPT);
     })
     console.log('el total de volumen m3',this.totalVolumenM3);
     this.totalVolumenM3 = Number(this.totalVolumenM3.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
-console.log('el total de volumen m3',this.totalVolumenM3);
+    console.log('el total de volumen m3',this.totalVolumenM3);
 
     let element: Cubicacion = new Cubicacion();    
     element.nuIdRecursoProducto = 0;    

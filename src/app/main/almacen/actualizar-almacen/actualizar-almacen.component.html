@@ -367,7 +367,7 @@
                                                 <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                        <mat-form-field [style.width.px]=80>
+                                                        <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontar" [ngModelOptions]="{standalone: true}" type="number"
                                                             [disabled]="element.txCantidadProducto=='0'"
@@ -388,7 +388,7 @@
                                                 <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                        <mat-form-field [style.width.px]=80>
+                                                        <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontarMetroCubico" [ngModelOptions]="{standalone: true}" type="number"
                                                             [disabled]="element.txCantidadProducto==0 || element.txCantidadProducto==null || element.txCantidadProducto==undefined"
@@ -417,8 +417,8 @@
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                    <div *ngIf=" element.txCantidadProducto!='0'">
-                                                        <input mat-cell class="field-checkbox" type="checkbox" [(ngModel)]="element.flagAgregar" [ngModelOptions]="{standalone: true}">
+                                                    <div *ngIf=" element.txCantidadProducto!='0' && element.disponibilidadActa==='D'">
+                                                        <input *ngIf="element.disponibilidadActa==='D'" mat-cell class="field-checkbox" type="checkbox" [(ngModel)]="element.flagAgregar" [ngModelOptions]="{standalone: true}">
                                                     </div>
                                                     </div>
                                                 </td>
@@ -515,7 +515,7 @@
                                                 <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                        <mat-form-field [style.width.px]=80>
+                                                        <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontar" [ngModelOptions]="{standalone: true}" type="number"
                                                             [disabled]="element.txCantidadProducto=='0'"
@@ -536,7 +536,7 @@
                                                 <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                        <mat-form-field [style.width.px]=80>
+                                                        <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontarMetroCubico" [ngModelOptions]="{standalone: true}" type="number"
                                                             [disabled]="element.txCantidadProducto=='0'"
@@ -564,7 +564,7 @@
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                    <div *ngIf=" element.txCantidadProducto!='0'">
+                                                    <div *ngIf="element.disponibilidadActa==='D'">
                                                         <input mat-cell class="field-checkbox" type="checkbox" [(ngModel)]="element.flagAgregar" [ngModelOptions]="{standalone: true}">
                                                     </div>
                                                     </div>
@@ -649,7 +649,7 @@
                                                 <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                        <mat-form-field [style.width.px]=80>
+                                                        <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
                                                             <mat-label></mat-label>
                                                             <input matInput placeholder="" [(ngModel)]="element.descontar" [ngModelOptions]="{standalone: true}" type="number"
                                                             [disabled]="element.txCantidadProducto=='0'"
@@ -668,7 +668,7 @@
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
-                                                    <div *ngIf=" element.txCantidadProducto!='0'">
+                                                    <div *ngIf=" element.txCantidadProducto!='0' && element.disponibilidadActa==='D'">
                                                         <input mat-cell class="field-checkbox" type="checkbox" [(ngModel)]="element.flagAgregar" [ngModelOptions]="{standalone: true}">
                                                     </div>
                                                     </div>

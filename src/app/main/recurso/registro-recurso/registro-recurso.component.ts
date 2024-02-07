@@ -567,7 +567,7 @@ export class RegistroRecursoComponent implements OnInit {
     element.nombreCientifico = "";
     element.nombreComun = "";
     element.tipoProducto = "";
-    element.txCantidadProducto = 0;
+    //element.txCantidadProducto = 0;
     element.unidadMedida = "UND";
     element.idUsuarioRegistro = 1;
     element.tipoSubProducto = "";
@@ -591,9 +591,9 @@ export class RegistroRecursoComponent implements OnInit {
       element.nombreCientifico = "";
       element.nombreComun = "";
       element.tipoAlmacenamiento = "";
-      element.capacidadUnidad = "0";
+     // element.capacidadUnidad = "0";
       element.tipoProducto = "";
-      element.txCantidadProducto = 0;
+      //element.txCantidadProducto = 0;
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
       element.type = Constants.NOMADERABLE;
@@ -611,7 +611,7 @@ export class RegistroRecursoComponent implements OnInit {
       element.nombreCientifico = "";
       element.nombreComun = "";
       element.tipoProducto = "";
-      element.txCantidadProducto = 0;
+     // element.txCantidadProducto = 0;
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
       element.type = Constants.FAUNA;
@@ -651,7 +651,9 @@ export class RegistroRecursoComponent implements OnInit {
       element.nombreCientifico = obj.nombreCientifico;
       element.nombreComun = obj.nombreComun;
       element.tipoProducto = "";
-      element.txCantidadProducto = Number(obj.cantidad) >= 0 ?obj.cantidad:0;
+      if(Number(obj.cantidad) >= 0){
+        element.txCantidadProducto = Number(obj.cantidad);
+      }
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
       element.tipoSubProducto = "";
@@ -692,9 +694,11 @@ export class RegistroRecursoComponent implements OnInit {
       element.nombreCientifico = obj.nombreCientifico;
       element.nombreComun = obj.nombreComun;
       element.tipoAlmacenamiento = "";
-      element.capacidadUnidad = "0";
+      //element.capacidadUnidad = "0";
       element.tipoProducto = "";
-      element.txCantidadProducto = Number(obj.cantidad) >= 0 ?obj.cantidad:0;
+      if(Number(obj.cantidad) >= 0){
+        element.txCantidadProducto = Number(obj.cantidad);
+      }
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
       element.type = Constants.NOMADERABLE;
@@ -726,7 +730,9 @@ export class RegistroRecursoComponent implements OnInit {
       element.nombreCientifico = obj.nombreCientifico;
       element.nombreComun = obj.nombreComun;
       element.tipoProducto = "";
-      element.txCantidadProducto = Number(obj.cantidad) >= 0 ?obj.cantidad:0;
+      if(Number(obj.cantidad) >= 0){
+        element.txCantidadProducto = Number(obj.cantidad);
+      }
       element.unidadMedida = "UND";
       element.idUsuarioRegistro = 1;
       element.type = Constants.FAUNA;
@@ -990,25 +996,17 @@ export class RegistroRecursoComponent implements OnInit {
 
   calculateTotal() {
     this.totalToneladas = 0;
+    this.totalM3 = 0;
     this.listProducto = this.listProducto.filter(item => item.idEspecie !== 0);
     this.listProducto.forEach(item => {
-
-      /*if (item.unidadMedida === 'KG') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000
+      if(item.txCantidadProducto !== undefined && item.txCantidadProducto !== null ){
+        if (item.unidadMedida === 'UND') {
+          this.totalToneladas +=Number(item.txCantidadProducto);
+        }
+        if(item.metroCubico!==null && item.metroCubico!==undefined){
+          this.totalM3+=Number(item.metroCubico);
+        }
       }
-      if (item.unidadMedida === 'GR') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000000
-      }
-      else if (item.unidadMedida === 'TON') {
-        this.totalToneladas += Number(item.txCantidadProducto)
-      }*/
-      if (item.unidadMedida === 'UND') {
-        this.totalToneladas +=Number(item.txCantidadProducto);
-      }
-      if(item.metroCubico!==null && item.metroCubico!==undefined){
-        this.totalM3+=Number(item.metroCubico);
-      }
-      
     })
 
     let element: RecursoProduco = new RecursoProduco();
@@ -1056,16 +1054,27 @@ export class RegistroRecursoComponent implements OnInit {
 
   calculateTotalTon() {
     this.totalToneladas = 0;
+    this.totalM3 = 0;
     this.listProducto = this.listProducto.filter(item => item.idEspecie !== 0);
     this.listProducto.forEach(item => {
-      if (item.unidadMedida === 'KG') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000
+     if(item.txCantidadProducto !== undefined && item.txCantidadProducto !== null ){
+        if (item.unidadMedida === 'UND') {
+          this.totalToneladas +=Number(item.txCantidadProducto);
+        }
+        if(item.metroCubico!==null && item.metroCubico!==undefined){
+          this.totalM3+=Number(item.metroCubico);
+        }
       }
-      if (item.unidadMedida === 'GR') {
-        this.totalToneladas += Number(item.txCantidadProducto) / 1000000
-      }
-      else if (item.unidadMedida === 'TON') {
-        this.totalToneladas += Number(item.txCantidadProducto)
+    })
+  }
+
+  calculateTotalM3Modal() {
+    this.listProducto = this.listProducto.filter(item => item.idEspecie !== 0);
+    this.listProducto.forEach(item => {
+     if(item.txCantidadProducto !== undefined && item.txCantidadProducto !== null ){
+        if(item.metroCubico!==null && item.metroCubico!==undefined){
+          this.totalM3+=Number(item.metroCubico);
+        }
       }
     })
   }
@@ -1254,7 +1263,8 @@ export class RegistroRecursoComponent implements OnInit {
       });
       
       dialogRef.afterClosed().subscribe(result => {
-        this.getCubicacion(this.listProducto)
+        this.getCubicacion(this.listProducto);
+        
         this.totalVolumenPTconvertido = result;
         //this.getRecursosEspecies(Number(this.idRecurso))
         this._matSnackBar.open('Especie guardada correctamente', 'OK', {
@@ -1561,9 +1571,11 @@ export class RegistroRecursoComponent implements OnInit {
   }
 
   validRecursoProducto(listDetalleInit){
-
   
     let validar: boolean = true;
+    let flagNombre: boolean = true;
+    let flagNombreNM: boolean = true;
+    let flagNombreFA: boolean = true;
     let flagTipoProducto: boolean = true;
     let flagSubProducto: boolean = true;
     let flagTrozaPiezas: boolean = true;
@@ -1575,9 +1587,16 @@ export class RegistroRecursoComponent implements OnInit {
     let message: string = '(*) Debe ingresar los siguientes campos:';
 
     let listDetalle = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'MAD');
-console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetalle);
+    console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetalle);
   
     for( let index = 0 ; index < listDetalle.length; index++){
+      if ((listDetalle[index].nombreComun == '' || listDetalle[index].nombreComun == null) 
+         && (listDetalle[index].nombreCientifico == '' || listDetalle[index].nombreCientifico == null) && flagNombre) {
+        validar = false;
+        flagNombre = false;
+        message += '\n - Nombre Común o Científico';
+      }
+
       if ((listDetalle[index].tipoProducto == '' || listDetalle[index].tipoProducto == null) && flagTipoProducto) {
         validar = false;
         flagTipoProducto = false;
@@ -1604,6 +1623,14 @@ console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetall
     }
     let listDetalleNM = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'NOMAD');
     for( let index = 0 ; index < listDetalleNM.length; index++){
+      
+      if ((listDetalleNM[index].nombreComun == '' || listDetalleNM[index].nombreComun == null) 
+         && (listDetalleNM[index].nombreCientifico == '' || listDetalleNM[index].nombreCientifico == null) && flagNombreNM) {
+        validar = false;
+        flagNombreNM = false;
+        message += '\n - Nombre Común o Científico';
+      }
+
       if ((listDetalleNM[index].tipoAlmacenamiento == '' || listDetalleNM[index].tipoAlmacenamiento == null) && flagTipoAlmacenamiento) {
         validar = false;
         flagTipoAlmacenamiento = false;
@@ -1631,10 +1658,17 @@ console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetall
     let listDetalleFA = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'FA');
     for( let index = 0 ; index < listDetalleFA.length; index++){
      
+      if ((listDetalleFA[index].nombreComun == '' || listDetalleFA[index].nombreComun == null) 
+      && (listDetalleFA[index].nombreCientifico == '' || listDetalleFA[index].nombreCientifico == null) && flagNombreFA) {
+        validar = false;
+        flagNombreFA = false;
+        message += '\n - Nombre Común o Científico';
+      }
+
       if ((listDetalleFA[index].txCantidadProducto == 0 || listDetalleFA[index].txCantidadProducto == null) && flagTxCantidadProducto) {
         validar = false;
         flagTxCantidadProducto = false;
-        message += '\n - Cantidad';
+        message += '\n - Cantidad en cero o vacio';
       }
 
     }
@@ -1842,6 +1876,7 @@ redondeo(row:RecursoProduco){
     this.totalVolumenM3 = 0;
     this.totalVolumenPT = 0;   
     let idRecursoProducto;
+    this.totalM3 = 0;
     listProductos = listProductos.filter(item=>item.idEspecie!=0)
     listProductos.forEach((df:any) => {
       this.metroCubico = df.volumenM3;
@@ -1873,9 +1908,11 @@ redondeo(row:RecursoProduco){
                   //console.log("totalVolumenPT ",this.totalVolumenPT)
                   if(this.totalVolumenM3 > 0){
                     df.metroCubico = Number(this.totalVolumenM3.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
+                    //this.totalM3 = df.metroCubico;
                   }else{
                     df.metroCubico = this.totalVolumenPT/423.8;
                     df.metroCubico = Number(df.metroCubico.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
+                    //this.totalM3 = df.metroCubico;
                   }
                 }
 
@@ -1888,6 +1925,11 @@ redondeo(row:RecursoProduco){
               } else{
                 flagCubicacion.flagCubicacion = false;
               }
+
+              if(df.metroCubico!==null && df.metroCubico!==undefined){
+                this.totalM3+=Number(df.metroCubico);
+              }
+
               //////console.log("flagCubicacion.flagCubicacion ",flagCubicacion.flagCubicacion);
               datafiltered.push(Object.assign(df,flagCubicacion));
             } else {

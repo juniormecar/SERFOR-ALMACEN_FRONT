@@ -648,55 +648,6 @@
                                                 </td>
                                             </ng-container>
 
-                                            <!-- <ng-container matColumnDef="tipoAlmacenamiento">
-                                                <th mat-header-cell *matHeaderCellDef style="width:11%"> Tipo de
-                                                    Presentación </th>
-                                                <td mat-cell *matCellDef="let element">
-                                                    <div *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ACE'" >
-                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
-                                                            <mat-label>Presentación</mat-label>
-                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
-                                                                <mat-option [value]="">
-                                                                    Seleccione
-                                                                </mat-option>
-                                                                <ng-container *ngFor="let item of listTipoPresMadPie">
-                                                                    <mat-option [value]="item.codigo">
-                                                                        {{item.valorPrimario}}
-                                                                    </mat-option>
-                                                                </ng-container>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div *ngIf="element.idEspecie !== 0 && element.tipoProducto=='ROLL'" >
-                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
-                                                            <mat-label>Presentación</mat-label>
-                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
-                                                                <mat-option [value]="">
-                                                                    Seleccione
-                                                                </mat-option>
-                                                                <ng-container *ngFor="let item of listTipoPresMadTro">
-                                                                    <mat-option [value]="item.codigo">
-                                                                        {{item.valorPrimario}}
-                                                                    </mat-option>
-                                                                </ng-container>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div *ngIf="element.idEspecie !== 0 && (element.tipoProducto==undefined || element.tipoProducto==null || element.tipoProducto=='' )" >
-                                                        <mat-form-field style="margin-bottom: 0px" [style.width.px]=120>
-                                                            <mat-label>Presentación</mat-label>
-                                                            <mat-select [(ngModel)]="element.tipoAlmacenamiento">
-                                                                <mat-option [value]="">
-                                                                    Seleccione
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div *ngIf="element.idEspecie == 0">
-                                                    </div>
-                                                </td>
-                                            </ng-container> -->
-
                                             <!--Symbol Column -->
                                             <ng-container matColumnDef="cantidad">
                                                 <th mat-header-cell *matHeaderCellDef style="width:10%"> Trozas/Piezas </th>
@@ -710,7 +661,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                     <div *ngIf="element.idEspecie == 0">
-                                                        {{element.txCantidadProducto}}
+                                                        {{totalToneladas}}
                                                     </div>
                                                 </td>
                                             </ng-container>
@@ -763,7 +714,7 @@
                                                     <mat-icon>table_chart</mat-icon>
                                                     </button>
                                                     <div *ngIf="element.idEspecie == 0">
-                                                        {{element.metroCubico}}
+                                                        
                                                     </div>
                                                 </td>
                                             </ng-container>
@@ -777,12 +728,12 @@
                                                             <input matInput type="number" 
                                                                 [(ngModel)]="element.metroCubico"
                                                                 style="text-align: right;"
-                                                                (keyup)="redondeo(element)"
+                                                                (keyup)="calculateTotalTon();redondeo(element)"
                                                                 onkeypress="return /[0-9.]/i.test(event.key)">
                                                         </mat-form-field>
                                                     </div>
                                                     <div *ngIf="element.idEspecie == 0">
-                                                        {{element.tipoProducto}}
+                                                        {{totalM3}}
                                                     </div>
                                                 </td>
                                             </ng-container>
@@ -919,7 +870,7 @@
                                                         <mat-form-field [style.width.px]=100>
                                                             <mat-label></mat-label>
                                                             <input matInput type="text" placeholder=""
-                                                                (keyup)="calculateTotalTonNoMad();multipli(element)"
+                                                                (keyup)="multipli(element)"
                                                                 [(ngModel)]="element.txCantidadProducto"
                                                                 style="text-align: right;"
                                                                 onkeypress="return /[0-9.]/i.test(event.key)"
@@ -940,8 +891,7 @@
                                                     <mat-form-field style="margin-bottom: 0px"
                                                         *ngIf="element.idEspecie !== 0">
                                                         <mat-label>Unidad</mat-label>
-                                                        <mat-select [(ngModel)]="element.unidadMedida"
-                                                            (selectionChange)="calculateTotalTonNoMad()">
+                                                        <mat-select [(ngModel)]="element.unidadMedida">
                                                             <mat-option [value]="">
                                                                 Seleccione
                                                             </mat-option>
