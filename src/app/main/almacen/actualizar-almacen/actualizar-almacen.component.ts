@@ -239,9 +239,9 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.titleStep = this.course[0].title
 
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
-    this.cantidad = this.lstDecimal === null || this.lstDecimal === undefined ? 4 : Number(this.lstDecimal.cantidad);
+    this.cantidad = /*this.lstDecimal === null || this.lstDecimal === undefined ? 4 :*/ Number(this.lstDecimal.cantidad);
     this.cantidadPipe = '0.0-' + this.cantidad;
-    this.redondeo = this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :  this.lstDecimal.redondeo;
+    this.redondeo = /*this.lstDecimal === null || this.lstDecimal === undefined ? 'Mayor' :*/  this.lstDecimal.redondeo;
     ////////console.log("this.lstDecimal",this.lstDecimal)
   }
   setStep(index: number) {
@@ -272,7 +272,24 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.searchUnidadMedida();
     this.searchTipoIngreso();
     this.searchTipo();
+    this.getSettingDecimal();
   }
+
+  getSettingDecimal(){
+    this.parametroService.getParametroSearch(this.prefijoDecimal).subscribe((response: Parametro[]) => {
+        this.listSettings = response;
+        if(this.listSettings != null && this.listSettings != undefined && this.listSettings.length > 0){
+            this.listDecimalCantidad = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC1')[0];
+            this.listDecimalRedondeo = this.listSettings.filter( (e: Parametro) => e.codigo == 'TCONFDEC2')[0];
+            this.idTipoParametroDecimal = this.listDecimalCantidad.idTipoParametro == null ? 
+            this.listDecimalRedondeo.idTipoParametro: this.listDecimalCantidad.idTipoParametro;
+            //console.log("this.listDecimalCantidad-getSetting",this.listDecimalCantidad);
+            //console.log("this.listDecimalRedondeo-getSetting",this.listDecimalRedondeo);
+            
+            this.saveStorage(this.listDecimalCantidad.valorPrimario, this.listDecimalRedondeo.valorPrimario);
+        }
+    });
+}
 
   gotoStep(step): void {
     this.animationDirection = this.currentStep < step ? 'left' : 'right';
