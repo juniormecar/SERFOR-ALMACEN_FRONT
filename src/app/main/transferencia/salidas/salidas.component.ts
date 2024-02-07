@@ -81,6 +81,7 @@ export class SalidasComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null && result == 1) {          
           this.getRecursos(this._data.idAlmacen);
+          this.close();
         }
       })
     }
@@ -94,6 +95,7 @@ export class SalidasComponent implements OnInit {
         if (result != null && result == 1) {          
           //window.location.reload();
           this.getRecursos(this._data.idAlmacen);
+          this.close();
         }
       })
     }
@@ -117,6 +119,7 @@ export class SalidasComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null && result == 1) {          
           this.getRecursos(this._data.idAlmacen);
+          this.close();
         }
       })
     }
@@ -129,6 +132,7 @@ export class SalidasComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null && result == 1) {          
           this.getRecursos(this._data.idAlmacen);
+          this.close();
         }
       })
     }

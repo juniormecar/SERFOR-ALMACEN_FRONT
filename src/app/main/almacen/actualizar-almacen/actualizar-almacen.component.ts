@@ -1296,7 +1296,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
       }
       const dialogRef = this._dialog.open(SalidasComponent, {
         width: '795px',
-        height: '550px',
+        height: '480px',
         data: { data: data, idAlmacen: this.idAlmacen }
       });
       dialogRef.afterClosed().subscribe(result => {
