@@ -1036,7 +1036,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result != null && result == 1) {
-          this.getRecursos(this.idAlmacen);
+          this.getRecursos(this.almacenId);
         }
       })
 
