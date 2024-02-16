@@ -17,47 +17,17 @@
                     <div id="course-step-content" class="course-step-content ">
                         <form [formGroup]="inputBandeja">
 
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de documento</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Acta</span>
-                            </div>
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">                                    
-                                    <input matInput type="text" formControlName="numeroDocumento">
-                                </mat-form-field>
-                                <div fxFlex="5"></div>
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="numeroActa">
-                                </mat-form-field>
-                            </div>
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Guía</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Ingreso</span>
-                            </div>
-                            <div fxLayout="row" fxLayoutAlign="space-between"> 
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="numeroGuia">
-                                </mat-form-field>  
 
-                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
-                                    <mat-select formControlName="tipoIngreso" >
-                                        <mat-option [value]="">
-                                            Seleccione
-                                        </mat-option>
-                                        <ng-container *ngFor="let item of listTipoIngreso">
-                                            <mat-option [value]="item.codigo" >
-                                                {{item.valorPrimario}}
-                                            </mat-option>
-                                        </ng-container>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
+
+
+
                             <div fxLayout="row" fxLayoutAlign="space-between">
                                 <span class="text-primary-ir" floatLabel="always" fxFlex="45">Almacén</span>
-                                <!-- <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Disponibilidad de Acta</span> -->
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Documento</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo de Ingreso</span>
+                                
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
@@ -74,17 +44,72 @@
                                             </mat-option>
                                         </ng-container>
                                     </mat-select>
-                                </mat-form-field>                                
+                                </mat-form-field> 
+                                
+
+                                <div fxFlex="5"></div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="numeroDocumento">
+                                </mat-form-field>
+
+
+                                <div fxFlex="5"></div> 
+                                
+                                <mat-form-field appearance="outline"  style="margin-bottom: 0px" floatLabel="always" fxFlex="45" >
+                                    <mat-select formControlName="tipoIngreso" >
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoIngreso">
+                                            <mat-option [value]="item.codigo" >
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+
                             </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Número de Guía</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="70">Número de Acta</span>
+                                <div fxFlex="5"></div>
+                                
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">                                    
+                                    <input matInput type="text" formControlName="numeroGuia">
+                                </mat-form-field>
+
+                                <div fxFlex="5"></div>
+
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="30">
+                                    <input matInput type="text" formControlName="numeroActa">
+                                </mat-form-field>  
+
+                                <div fxFlex="70"></div>
+
+                            </div>
+
 
                             <br>
                             <br>
                             <div class="col-sm-12 my-2 form-group text-center">
-                                <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button>
-                                <button mat-button class="btn btn-sm btn-secondary mr-2"
-                                    (click)="Search()">Buscar</button>
-                                <button mat-button class="btn btn-sm btn-registrar mr-2"
-                                    (click)="NewRecurso()">Registrar Nuevo</button>
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="limpiarCampos()">                        
+                                Limpiar</button>                             
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="Search()">                        
+                                Buscar</button>   
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color:  #679738; color: white; border: 2px solid #679738; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="NewRecurso()">                        
+                                Registrar Nuevo</button>
+                               
 
                             </div>
                             <br>
@@ -140,7 +165,7 @@
                                     </ng-container>
 
                                     <ng-container matColumnDef="numeroDocumento">
-                                        <th mat-header-cell *matHeaderCellDef> Número de documento</th>
+                                        <th mat-header-cell *matHeaderCellDef> Número de Documento</th>
                                         <td mat-cell *matCellDef="let element"> {{element.intervenido.numeroDocumento}} </td>
                                     </ng-container>
 

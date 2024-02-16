@@ -29,7 +29,7 @@
         <mat-toolbar class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
             <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
                 <span class="title dialog-title"> <b> {{titleStep}} </b></span>  
-                <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F "
+                <button mat-raised-button class="mat-accent btn-volver mr-16" style="background-color: white; color:  #466E1F; width: 100px;"  *ngIf="type==='edit'"
                                     (click)="cancelar()">Volver</button>
             </mat-toolbar-row>
         </mat-toolbar>
@@ -226,34 +226,52 @@
                         <form [formGroup]="inputProductos">  
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
-                            
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Nombre de Especie</span>
-                                <div fxFlex="2"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Guía</span>
-
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Almacén</span>
+                                <div fxFlex="5"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="90">Nombre de Especie</span>
+                                
+                                
                             </div>
-    
+
                             <div fxLayout="row" fxLayoutAlign="space-between">
-        
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="nombreProducto">
-                                </mat-form-field>
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                                    fxFlex="30">
+                                    <mat-select formControlName="almacen" (selectionChange)="cargarRecursos()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listAlmacen">
+                                            <mat-option [value]="item.nuIdAlmacen">
+                                                {{item.txNombreAlmacen}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field> 
+
                                 <div fxFlex="5"></div>
 
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="numeroGuia">
-                                </mat-form-field>  
-        
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="90">
+                                    <input matInput type="text" formControlName="nombreProducto">
+                                </mat-form-field>
+
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Guía</span>
+                                <div fxFlex="5"></div>
                                 <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Acta</span>
                                 <div fxFlex="5"></div>
                                 <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo</span>
+                                
                             </div>
 
                             <div fxLayout="row" fxLayoutAlign="space-between">
-        
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                                    <input matInput type="text" formControlName="numeroGuia">
+                                </mat-form-field>  
+
+                                <div fxFlex="5"></div>
+
                                 <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
                                     <input matInput type="text" formControlName="numeroActa">
                                 </mat-form-field>
@@ -272,15 +290,26 @@
                                         </mat-option>
                                     </ng-container>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field> 
+
                             </div>
+
 
                         <br>
                         <br>
 
                         <div class="col-sm-12 my-2 form-group text-center">
+
+                            <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="limpiarCampos()">                        
+                                Limpiar</button>                             
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="btnBuscar()">                        
+                                Buscar</button>  
+<!-- 
+
                             <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button>
-                            <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="btnBuscar()">Buscar</button>
+                            <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="btnBuscar()">Buscar</button> -->
                         </div>
                         <br>
                         <br>
@@ -705,7 +734,7 @@
 
         </div>
         
-        <div mat-dialog-actions class="text-center" style="padding: 3%;" *ngIf="type==='view'">
+        <div mat-dialog-actions class="text-center" style="padding: 3%;" *ngIf="type!=='edit'">
             <!-- <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
                 (click)="openDialogBeneficiario()">Transferencia a Beneficiario</button>
 

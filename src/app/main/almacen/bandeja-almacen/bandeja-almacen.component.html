@@ -22,7 +22,7 @@
     <div class="center">
 
         <!-- HEADER -->
-        <div class="header p-24" style="background-color: #679738; color: white;" fxLayout="row" fxLayoutAlign="start center">
+        <div class="header p-24" style="background-color: #679738; color: white; " fxLayout="row" fxLayoutAlign="start center">
 
             <div>
                 <h2> <b> Bandeja de Almacén </b> </h2>
@@ -38,6 +38,16 @@
 
                 <!-- [@slideIn]="animationDirection" -->
                 <div class="course-step" fusePerfectScrollbar>
+
+                    <div>
+                        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+                        (click)="NewAlmacen()">
+                        <!-- <mat-icon aria-label="Agregar">add_box</mat-icon> -->
+                           Registrar Nuevo</button>  
+                </div>
+
+
+            <br>
 
                     <div id="course-step-content" class="course-step-content ">
                         <form [formGroup]="inputBandeja">
@@ -93,13 +103,21 @@
                             <br>
                             <br>
 
-
                             <div class="col-sm-12 my-2 form-group text-center">
-                                <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button>
+                                <!-- <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button> -->
+
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                        (click)="limpiarCampos()">                        
+                           Limpiar</button>                             
+                           <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                        (click)="search()">                        
+                           Buscar</button>  
+
+<!-- 
                                 <button mat-button class="btn btn-sm btn-secondary mr-2"
                                     (click)="search()">Buscar</button>
                                 <button mat-button class="btn btn-sm btn-registrar mr-2"
-                                    (click)="NewAlmacen()">Registrar Nuevo</button>
+                                    (click)="NewAlmacen()">Registrar Nuevo</button> -->
 
                             </div>
                             <br>
@@ -148,10 +166,10 @@
                                     <ng-container matColumnDef="acciones">
                                         <th mat-header-cell *matHeaderCellDef> Acciones </th>
                                         <td mat-cell *matCellDef="let element">
-                                            <button  mat-mini-fab (click)="verAlmacen(element, element.nuIdAlmacen)" style="background-color: #89B361;">
+                                            <!-- <button  mat-mini-fab (click)="verAlmacen(element, element.nuIdAlmacen)" style="background-color: #89B361;">
                                                 <mat-icon>remove_red_eye</mat-icon>
                                             </button>
-                                            &nbsp; &nbsp;
+                                            &nbsp; &nbsp; -->
                                             <button  mat-mini-fab (click)="editarAlmacen(element, element.nuIdAlmacen)" style="background-color: #679738;">
                                                 <mat-icon>edit</mat-icon>
                                             </button>

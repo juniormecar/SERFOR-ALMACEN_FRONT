@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
     let objs: Sistema = new Sistema();
     objs.id = 9;
     localStorage.setItem('usuario',usuario);
+    
     //obj.nombre = "jtrujillo";
     //obj.password = md5('Serfor$2023');
     obj.nombre = usuario;
@@ -78,6 +79,10 @@ export class LoginComponent implements OnInit {
     this.authService.getAuth(obj)      
       .subscribe((response: any) => {
         localStorage.setItem('usuario',response.usuario.persona.numeroDocumento)
+        localStorage.setItem('nombres',response.usuario.persona.nombres)
+        localStorage.setItem('apellidos',response.usuario.persona.paterno + ' ' + response.usuario.persona.materno)
+        localStorage.setItem('documento',response.usuario.persona.numeroDocumento)
+        console.log('teeeeeeeeeeeeeest',response);
         //console.log('response', response); 
         this.router.navigate(['/sample']);      
       })

@@ -25,15 +25,15 @@ export const navigation: FuseNavigation[] = [
             },
             {
                 id       : '2',
-                title    : 'Almacenes',
+                title    : 'Egresos',
                 type     : 'collapsable',
-                icon     : 'store',
+                icon     : 'dashboard',
                 children : [
                     {
                         id   : '1',
-                        title: 'Bandeja de Almacén',
+                        title: 'Bandeja de Egresos',
                         type : 'item',
-                        url  : '/bandeja-almacen'
+                        url  : '/actualizar-almacen'
                     }
                 ]
             },
@@ -121,12 +121,18 @@ export const navigation: FuseNavigation[] = [
                     },
                     {
                         id   : '3',
+                        title: 'Bandeja de Almacén',
+                        type : 'item',
+                        url  : '/bandeja-almacen'
+                    },
+                    {
+                        id   : '4',
                         title: 'Bandeja de Tipo Parámetro',
                         type : 'item',
                         url  : '/bandeja-tipoParametro'
                     },
                     {
-                        id   : '4',
+                        id   : '5',
                         title: 'Bandeja de Parámetro',
                         type : 'item',
                         url  : '/bandeja-parametro'

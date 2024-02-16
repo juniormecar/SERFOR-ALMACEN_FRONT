@@ -75,6 +75,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   type: string = '';
   //dataSource: any = false
   listATF: ATF[] = [];
+  listAlmacen: Almacen[] = [];
   listPuestoControl: PuestoControl[] = [];
   displayedColumns: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida', 'descontar', 'metroCubico', 'descontarMetroCubico','flagAgregar'];
   displayedColumnsNMFA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida','descontar','flagAgregar'];
@@ -82,6 +83,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   displayedColumnsEncargado = ['position', 'tipoDocumento', 'numeroDocumento', 'nombresResponsable','acciones'];
   listAlmacenResponsable: AlmacenResponsable[] = [];
   totalM3: number = 0;
+  almacenId: number = 0;
   almacenRequest: Almacen = new Almacen();
   dataAlmacen = new Almacen();
   idAlmacen: any;
@@ -94,7 +96,7 @@ export class ActualizarAlmacenComponent implements OnInit {
   validCheck: boolean = true;
   listUnidadMedida: Parametro[] = [];
   unidadMedida: string = Constants.UNIDAD_MEDIDA;
-
+  numeroDocumento: string = '44691637';
   totalToneladas: number = 0;
   listProducto: Recurso[] = [];
   productosResponseMad:any = {
@@ -217,13 +219,16 @@ export class ActualizarAlmacenComponent implements OnInit {
       capacidadNoMaderable: ['', Validators.required],
       capacidadFauna: ['', Validators.required],
       direccionAlmacen: ['', Validators.required]
+      
     });
     this.inputProductos = this._formBuilder.group({
       numeroGuia: [''],
       numeroActa: [''],
       nombresApellidos: [''],
       nombreProducto: [''],
-      tipoIngresoForm: ['']
+      tipoIngresoForm: [''],
+      almacen: ['']
+      
     });
     this.dataAlmacen = window.history.state.data;
     this.idAlmacen = this.activaRoute.snapshot.paramMap.get('id');
@@ -245,6 +250,9 @@ export class ActualizarAlmacenComponent implements OnInit {
     this.searchTipoDocumento();
     this.currentStep = 0;
     this.titleStep = this.course[0].title
+
+    this.numeroDocumento = localStorage.getItem('usuario');
+
 
    // this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
    // this.cantidad = /*this.lstDecimal === null || this.lstDecimal === undefined ? 4 :*/ Number(this.lstDecimal.cantidad);
@@ -268,19 +276,45 @@ export class ActualizarAlmacenComponent implements OnInit {
 
   ngOnInit(): void {
     //console.log("this.dataRecurso ",this.dataRecurso)
-    if (this.dataRecurso == null) {
-      this.getRecursos(this.idAlmacen);
-     // this.getRecursos2(this.idAlmacen);
-    } else {
-      this.idAlmacen = this.dataRecurso.nuIdAlmacen;
-      this.getRecursos(this.dataRecurso.nuIdAlmacen);
-      //this.getRecursos2(this.dataRecurso.nuIdAlmacen);
-    }
+          // if (this.dataRecurso == null) {
+          //   this.getRecursos(this.idAlmacen);
+          // // this.getRecursos2(this.idAlmacen);
+          // } else {
+          //   this.idAlmacen = this.dataRecurso.nuIdAlmacen;
+          //   this.getRecursos(this.dataRecurso.nuIdAlmacen);
+          //   //this.getRecursos2(this.dataRecurso.nuIdAlmacen);
+          // }
     this.searchAlmacenResponsable();
     this.searchUnidadMedida();
     this.searchTipoIngreso();
     this.searchTipo();
     this.getSettingDecimal();
+    this.searchAlmacen();
+  }
+
+  async searchAlmacen() {
+    this.dataSource = new MatTableDataSource<Recurso>([])
+    let almacenRequest:Almacen = new Almacen;
+    almacenRequest.txNombreAlmacen='';
+    almacenRequest.txNumeroDocumento = this.numeroDocumento;
+    this.almacenService.getAlmacenSearch(almacenRequest,this.almacenResponse.pageNumber,this.almacenResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
+    this.almacenResponse =response;
+    this.listAlmacen=response.data;
+    })
+  }
+
+  cargarRecursos() {  
+
+    this.almacenId = this.inputProductos.get('almacen').value;  
+    if(this.almacenId === undefined || this.almacenId === null){
+      this.dataSource = new MatTableDataSource<Recurso>([])
+      this.dataSourceNoMad = new MatTableDataSource<Recurso>([])
+      this.dataSourceMad = new MatTableDataSource<Recurso>([])
+    }
+    else{
+      this.getRecursos(this.almacenId); 
+    }
+       
   }
 
   getSettingDecimal(){
@@ -1332,7 +1366,18 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
       });
       dialogRef.afterClosed().subscribe(result => {
         //if (result != null && result == 1 && ) {
-        this.getRecursos(this.idAlmacen);
+        
+        //this.getRecursos(this.idAlmacen);
+        this.almacenId = this.inputProductos.get('almacen').value;  
+    if(this.almacenId === undefined || this.almacenId === null){
+      this.dataSource = new MatTableDataSource<Recurso>([])
+      this.dataSourceNoMad = new MatTableDataSource<Recurso>([])
+      this.dataSourceMad = new MatTableDataSource<Recurso>([])
+    }
+    else{
+      this.getRecursos(this.almacenId); 
+    }
+    
         //}
       })
     }
@@ -1421,6 +1466,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
     this.inputProductos.get('numeroActa').setValue('');
     this.inputProductos.get('tipoIngresoForm').setValue('');
     this.inputProductos.get('nombreProducto').setValue('');
+    
   }
 
   validarDNI() {
@@ -1495,6 +1541,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
     )
   }
 
+  
   async searchAlmacenResponsable() {
     this.dataSourceEncargado = new MatTableDataSource<AlmacenResponsable>([])
     this.almacenRequest.nuIdAlmacen = this.idAlmacen;   
@@ -1644,10 +1691,28 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
 
 
   btnBuscar(){
-    this.productosResponseMad.pageNumber = 0;
-    this.productosResponseMad.pageSize = 10;
-    this.productosResponseMad.previousPageIndex = 0;
-    this.btnBuscarRecursos(this.typeRecurso);
+
+    if(( this.inputProductos.get('almacen').value === undefined || this.inputProductos.get('almacen').value === null || this.inputProductos.get('almacen').value === ''))
+    {
+      Swal.fire({
+        title: 'Alerta!',
+        text: "Debe seleccionar un Almacén.",
+        icon: 'warning',
+        //showCancelButton: true,
+        confirmButtonColor: '#679738',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+            //
+      }) 
+    }
+    else{
+        this.productosResponseMad.pageNumber = 0;
+        this.productosResponseMad.pageSize = 10;
+        this.productosResponseMad.previousPageIndex = 0;
+        this.btnBuscarRecursos(this.typeRecurso);
+      }
   }
 
   btnBuscarRecursos(type: string) {

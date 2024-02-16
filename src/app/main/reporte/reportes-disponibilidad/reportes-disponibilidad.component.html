@@ -40,12 +40,23 @@
                             <br>
                             <br>
                             <div class="col-sm-12 my-2 form-group text-center">
-                                <button mat-button class="btn btn-sm btn-secondary mr-2"
+
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="limpiarCampos()">                        
+                                   Limpiar</button>                             
+                                <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                (click)="SearchReportes()">                        
+                                   Buscar</button>   
+                                   <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
+                                   (click)="exportToExcel()">                        
+                                   Exportar a Excel</button> 
+
+                                <!-- <button mat-button class="btn btn-sm btn-secondary mr-2"
                                     (click)="limpiarCampos()">Limpiar</button>
                                 <button mat-button class="btn btn-sm btn-secondary mr-2"
                                     (click)="SearchReportes()">Buscar</button>     
                                 <button mat-button class="btn btn-sm btn-secondary mr-2" 
-                                    (click)="exportToExcel()">Exportar a Excel</button>                          
+                                    (click)="exportToExcel()">Exportar a Excel</button>                           -->
                             </div>
                             <br>
                             <br>

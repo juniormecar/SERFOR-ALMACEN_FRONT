@@ -22,6 +22,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 
     usuario:string='';
     correoUsuario:string='';
+    nombres:string='';
+    apellidos:string='';
+    documento:string='';
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -109,6 +112,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
 
             this.usuario =  localStorage.getItem('usuario');
             this.correoUsuario = localStorage.getItem('correoUsuario');
+            this.nombres = localStorage.getItem('nombres');
+            this.apellidos = localStorage.getItem('apellidos');
+            this.documento = localStorage.getItem('documento');
             console.log('localStoragelocalStoragelocalStoragelocalStoragelocalStorage',localStorage);
 
         // Subscribe to the config changes
