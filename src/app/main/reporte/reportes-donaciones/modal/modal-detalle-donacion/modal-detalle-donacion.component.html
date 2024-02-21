@@ -49,7 +49,7 @@
 
                 <ng-container matColumnDef="cantidad">
                     <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Cantidad</th>
-                    <td mat-cell *matCellDef="let element"> {{element.cantidadProducto }} </td>
+                    <td mat-cell *matCellDef="let element"> <b>{{element.cantidadProducto }}</b> </td>
                 </ng-container>
 
                 <ng-container matColumnDef="unidadMedida">
@@ -76,7 +76,7 @@
 
                 <ng-container matColumnDef="metroCubico">
                     <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Metro Cúbico</th>
-                    <td mat-cell *matCellDef="let element"> {{element.metroCubico }} </td>
+                    <td mat-cell *matCellDef="let element"> <b>{{element.metroCubico }}</b>  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="descontarMetroCubico">
@@ -112,6 +112,16 @@
                         </div>
                     </td>
                 </ng-container> 
+
+                <ng-container matColumnDef="cantidadRetornada">
+                    <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Cantidad Retornada</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadProductoRet }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cantidadM3Retornada">
+                    <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Metro Cúbico Retornado</th>
+                    <td mat-cell *matCellDef="let element"> {{element.metroCubicoRet }} </td>
+                </ng-container>
 
                
 

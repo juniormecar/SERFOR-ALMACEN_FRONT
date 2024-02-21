@@ -260,7 +260,7 @@ else{
         nroActa=null;
       }
       const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
-        width: '1150px',
+        width: '1250px',
         height: '600px',
         data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia,titulo:'Reporte de Salidas - Detalle'}
       });

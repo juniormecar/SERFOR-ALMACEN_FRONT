@@ -236,7 +236,7 @@ export class SettingsComponent  implements OnInit
 
           //let data = [];
           const dialogRef = this._dialog.open(BuscarActaComponent, {
-            width: '1150px',
+            width: '1250px',
             height: '650px',
             data: { numeroActa: this.form.get('numeroActa').value}
           });

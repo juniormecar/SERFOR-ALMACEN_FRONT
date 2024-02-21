@@ -54,4 +54,6 @@ export class Reportes {
     descontarMetroCubico?:number;   
     idEspecie?:number;
     nuIdAlmacenOrigin?:number;
+    cantidadProductoRet?:number;
+    metroCubicoRet?:number;
 }
