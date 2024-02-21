@@ -13,7 +13,7 @@
             <table mat-table [dataSource]="dataSource">
 
                 <ng-container matColumnDef="tipoEspecie">
-                    <th mat-header-cell *matHeaderCellDef> Tipo de Especie </th>
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo de Especie </th>
                     <td mat-cell *matCellDef="let element">
                         <div *ngIf="element.tipoEspecie === 'MAD'">
                             Maderable
@@ -28,34 +28,90 @@
                 </ng-container>
                 
                 <ng-container matColumnDef="nombreCientifico">
-                    <th mat-header-cell *matHeaderCellDef> Nombre Científico </th>
+                    <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Nombre Científico </th>
                     <td mat-cell *matCellDef="let element"> {{element.nombreCientifico }} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="nombreComun">
-                    <th mat-header-cell *matHeaderCellDef> Nombre Común </th>
+                    <th mat-header-cell *matHeaderCellDef style="width: 12%;"> Nombre Común </th>
                     <td mat-cell *matCellDef="let element"> {{element.nombreComun }} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="cantidad">
-                    <th mat-header-cell *matHeaderCellDef> Cantidad</th>
-                    <td mat-cell *matCellDef="let element"> {{element.cantidadProducto }} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="unidadMedida">
-                    <th mat-header-cell *matHeaderCellDef> U. de Medida</th>
-                    <td mat-cell *matCellDef="let element"> {{element.unidadMedida }} </td>
-                </ng-container>
-
                 <ng-container matColumnDef="nroActa">
-                    <th mat-header-cell *matHeaderCellDef>N° Acta </th>
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;">N° Acta Traslado </th>
                     <td mat-cell *matCellDef="let element"> {{element.nroActa }} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="tipoIngreso">
-                    <th mat-header-cell *matHeaderCellDef> Tipo de Ingreso </th>
+                    <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Tipo de Ingreso </th>
                     <td mat-cell *matCellDef="let element"> {{element.tipoIngreso }} </td>
                 </ng-container>
+
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Cantidad</th>
+                    <td mat-cell *matCellDef="let element"> {{element.cantidadProducto }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="unidadMedida">
+                    <th mat-header-cell *matHeaderCellDef style="width: 5%;"> U. de Medida</th>
+                    <td mat-cell *matCellDef="let element"> {{element.unidadMedida }} </td>
+                </ng-container>
+               
+
+                <ng-container matColumnDef="descontar">
+                    <th mat-header-cell *matHeaderCellDef style="width:3%"> Descontar </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.idEspecie !== 0">
+                            <div *ngIf="element.cantidadProducto > 0">
+                            <mat-form-field [style.width.px]=80>
+                                <mat-label></mat-label>
+                                <input matInput placeholder="" [(ngModel)]="element.descontar" [ngModelOptions]="{standalone: true}" type="number"
+                                [disabled]="element.txCantidadProducto=='0'"
+                                minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
+                            </mat-form-field>
+                        </div>
+                        </div>                       
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="metroCubico">
+                    <th mat-header-cell *matHeaderCellDef style="width: 6%;"> Metro Cúbico</th>
+                    <td mat-cell *matCellDef="let element"> {{element.metroCubico }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="descontarMetroCubico">
+                    <th mat-header-cell *matHeaderCellDef style="width:3%"> Descontar Metro Cúbico </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.idEspecie !== 0">
+                            <div *ngIf="element.metroCubico > 0">
+                            <mat-form-field [style.width.px]=80>
+                                <mat-label></mat-label>
+                                <input matInput placeholder="" [(ngModel)]="element.descontarMetroCubico" [ngModelOptions]="{standalone: true}" type="number"
+                                [disabled]="element.txCantidadProducto=='0'"
+                                minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
+                            </mat-form-field>
+                        </div>
+                        </div>                       
+                    </td>
+                </ng-container>
+
+
+
+                <ng-container matColumnDef="flagAgregar"class="text-center" >
+                                                
+                    <th mat-header-cell *matHeaderCellDef style="width: 5%; padding-left: 1%;" > 
+                        <div *ngIf="validCheck">
+                            <input class="field-checkbox" type="checkbox" (change)="seleccionarTodo($event)">
+                        </div>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div *ngIf="element.idEspecie !== 0">
+                        <div *ngIf="element.cantidadProducto > 0">
+                            <input mat-cell class="field-checkbox" type="checkbox" [(ngModel)]="element.flagAgregar" [ngModelOptions]="{standalone: true}">
+                        </div>
+                        </div>
+                    </td>
+                </ng-container> 
 
                
 
@@ -68,7 +124,17 @@
                 showFirstLastButtons [length]="reportesResponse.totalRecords" [pageSize]="reportesResponse.pageSize"
                 (page)="pageDataSource($event)" aria-label="Select page of periodic elements">
             </mat-paginator>
-        </div>
+            <br>
+            <br>
+            <br>
+    <div mat-dialog-actions class="text-center" style="padding: 3%;">
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
+        (click)="retornar()"  >Retornar</button>   
+        <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33;"
+                                    (click)="close()">Cancelar</button>
+    </div>
 
+        </div>
+        
     </div>
 </div>

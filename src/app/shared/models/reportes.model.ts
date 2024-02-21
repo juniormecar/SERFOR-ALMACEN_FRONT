@@ -50,4 +50,8 @@ export class Reportes {
     unidadMedidaNOMAD?:number; 
     unidadMedidaFA?:number; 
     codigoUnico?:string;
+    descontar?:number;    
+    descontarMetroCubico?:number;   
+    idEspecie?:number;
+    nuIdAlmacenOrigin?:number;
 }

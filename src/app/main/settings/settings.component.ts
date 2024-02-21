@@ -236,17 +236,23 @@ export class SettingsComponent  implements OnInit
 
           //let data = [];
           const dialogRef = this._dialog.open(BuscarActaComponent, {
-            width: '1200px',
-            height: '700px',
+            width: '1150px',
+            height: '650px',
             data: { numeroActa: this.form.get('numeroActa').value}
           });
 
         } else {
-            Swal.fire(
-                'Alerta!',
-                'Debe digitar un número de acta.',
-                'warning'
-              )
+            
+              Swal.fire({
+                title: 'Alerta!',
+                text: "Debe digitar un número de acta.",
+                icon: 'warning',
+                //showCancelButton: true,
+                confirmButtonColor: '#679738',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancelar'
+              })
         }
     }
     

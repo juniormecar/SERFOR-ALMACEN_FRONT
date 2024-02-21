@@ -6,6 +6,9 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { ReportesService } from 'app/service/reportes.service';
 import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesResponse } from 'app/shared/models/response/reportes-response';
+import Swal from 'sweetalert2';
+import { TransferenciaService } from 'app/service/transferencia.service';
+
 interface DialogData {
   nroActa:string,
   nuIdTransferencia:number,
@@ -18,14 +21,17 @@ interface DialogData {
 })
 export class ModalDetalleDonacionComponent implements OnInit {
   dataSource = new MatTableDataSource<Reportes>([]);
-  displayedColumns: string[] = ['tipoEspecie','nombreCientifico','nombreComun','cantidad','unidadMedida','nroActa','tipoIngreso'];
+  displayedColumns: string[] = ['tipoEspecie','nombreCientifico','nombreComun','nroActa','tipoIngreso','cantidad','unidadMedida','descontar','metroCubico','descontarMetroCubico','flagAgregar'];
   reportesResponse: ReportesResponse = new ReportesResponse();
   reportesRequest:  Reportes = new Reportes();
   resultsLength = 0;
+  cantidadVacia = 0;
+  descontarMayor = 0;
   constructor(
     public dialogRef: MatDialogRef<ModalDetalleDonacionComponent>,
     private _fuseConfigService: FuseConfigService,
     private _reportesService: ReportesService,
+    private serviceTransferencia: TransferenciaService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { 
     this.reportesResponse.pageNumber = 1;
@@ -74,6 +80,122 @@ console.log('jjj');
     this.reportesResponse.pageSize = e.pageSize;
     this.SearchReportes();
     return e;
+  }
+  
+  close() {
+    this.dialogRef.close(-1);
+  }
+
+  retornar(){
+
+    
+
+    let dataFilteredGrilla = this.dataSource.filteredData.filter((t: any) => t.flagAgregar === true);   
+    console.log('dataFilteredGrilla.length',dataFilteredGrilla.length);
+    if((dataFilteredGrilla.length === 0)){}
+    else{
+
+    let dataFilteredSinCero = dataFilteredGrilla;      
+    dataFilteredSinCero.forEach((df: any) => {
+        if ((!df.descontar)) {
+          this.cantidadVacia = 1;          
+        }
+        else if ((df.descontar > df.cantidadProducto)) {
+          this.descontarMayor = 1;              
+        }
+       
+      });
+
+      if(this.cantidadVacia === 1){
+        this.cantidadVacia = 0;        
+        Swal.fire({
+          title: 'Alerta!',
+          text: "Descontar no debe ser cero o vacío.",
+          icon: 'warning',
+          //showCancelButton: true,
+          confirmButtonColor: '#679738',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancelar'
+        })
+      }
+      else if(this.descontarMayor === 1){
+        this.descontarMayor = 0;        
+        Swal.fire({
+          title: 'Alerta!',
+          text: "Descontar no debe ser mayor que Cantidad.",
+          icon: 'warning',
+          //showCancelButton: true,
+          confirmButtonColor: '#679738',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancelar'
+        })}  
+      else{
+
+        let dataFiltered: Reportes[] = [];
+        let dataFilteredGrilla = this.dataSource.filteredData.filter((t: any) => t.flagAgregar === true);
+
+        
+        console.log('dataFilteredGrilla',dataFilteredGrilla);
+
+        dataFiltered = dataFilteredGrilla;
+
+        let paramsList = [];
+        //console.log("this.dataSource ", this.dataSource)
+        dataFiltered.forEach( ds =>{
+          //console.log("ds ",ds)
+          let params = {            
+            nuIdTransferencia: ds.nuIdTransferencia,
+            nuIdRecurso: ds.nuIdRecurso,
+            idEspecie: ds.idEspecie,
+            cantidadProducto: ds.cantidadProducto,
+            descontar: ds.descontar, 
+            metroCubico: ds.metroCubico,
+            descontarMetroCubico: ds.descontarMetroCubico, 
+            nuIdAlmacenOrigin: ds.nuIdAlmacenOrigin,
+            nuIdAlmacenDestino: ds.nuIdAlmacen,
+            nroActaTraslado: ds.nroActa,          
+            tipoTransferencia: ds.tipoTransferencia,
+            tipoEspecie: ds.tipoEspecie
+          }
+          paramsList.push(params);
+          console.log('paramsList',paramsList);
+        });
+
+        if(paramsList.length > 0){
+          this.serviceTransferencia.postRetorno(paramsList).subscribe((response: any) => {
+            if (response.data && response.data[0].nuIdRecurso) {
+              Swal.fire({
+                title: 'Mensaje de Confirmación',
+                text: "Retorno realizado correctamente.",
+                icon: 'success',
+                //showCancelButton: true,
+                confirmButtonColor: '#679738',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Cancelar'
+              })
+            this.dialogRef.close(1);
+            } else {
+              Swal.fire(
+                'Mensaje!',
+                'Error inesperado al generar el retorno.  ',
+                'error'
+              )
+            }
+          }, error => {
+            //console.log("error ",error)
+          })
+        } else{
+          Swal.fire(
+            'Mensaje!',
+            'No se seleccionó recursos. ',
+            'error'
+          )
+        }
+      }
+    }
   }
 
 }

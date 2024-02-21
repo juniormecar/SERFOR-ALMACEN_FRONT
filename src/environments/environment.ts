@@ -3,12 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: true,
+    production: false,
     hmr       : false,
-    urlProcesos: "https://qa.serfor.gob.pe/AlmacenBackend",  // almacen
-    urlServiciosExternos: 'https://sniffs.serfor.gob.pe/apis/extserv-rest/1.0/',   // servicios externos
-    urlSeguridad: "https://qa.serfor.gob.pe/sgiseguridad/",   // seguridad
-    urlNewCoreCentral:"https://ws.serfor.gob.pe/corecentral/", // core central
+    urlProcesos: "http://localhost:8080",  // almacen
+    urlServiciosExternos: 'http://10.6.1.162/mcsniffsextserv-rest/',  // servicios externos
+    urlSeguridad: "https://qa.serfor.gob.pe/seguridad/",   // seguridad
+    urlNewCoreCentral:"https://qa.serfor.gob.pe/corecentral/", // core central
     urlBaseImagen:"/almacen"//NO
 };
 
