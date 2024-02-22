@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -41,10 +41,13 @@ import { RecursoPersona } from 'app/shared/models/recurso-persona.model';
 import * as _moment from 'moment';
 import { ModalPasComponent } from './modal/modal-pas/modal-pas.component';
 import { RecursoPasResponse } from 'app/shared/models/response/recurso-pas-response';
+
 //import {default as _rollupMoment} from 'moment';
 import * as moment from 'moment';
 //const moment = _rollupMoment || _moment;
 import { MatTabGroup } from '@angular/material/tabs';
+import { ArchivoService } from 'app/service/archivo.service';
+import { DownloadFile } from 'app/shared/models/util/util';
 
 interface General {
   value: string;
@@ -59,6 +62,13 @@ interface General {
 
 export class RegistroRecursoComponent implements OnInit {
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild('fileInput') el!: ElementRef<HTMLInputElement>;
+  file: File | null | string = null;
+  onChange: any = () => { }
+  showIcon: boolean = true
+  accept: string = ".jpg, .png";
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
+  fileInfGenreal: any = {} ;
 
   origenes: General[] = [
     { value: 'CONC', viewValue: 'Concesión' },
@@ -148,19 +158,19 @@ export class RegistroRecursoComponent implements OnInit {
   /********************************************* RECURSO PRODUCTO NO MADERABLE ******************************************************/
   listProductoNoMad: RecursoProduco[] = [];
   recursoResponseNoMad: BandejaRecursoResponse = new BandejaRecursoResponse();
-  displayedColumnsNoMad = ['position', 'nameCientifico', 'nameComun', 'tipoAlmacenamiento', 'capacidadUnidad', 'cantidad', 'unidadMedida','total' ];
+  displayedColumnsNoMad = ['position', 'nameCientifico', 'nameComun', 'tipoAlmacenamiento', 'capacidadUnidad', 'cantidad', 'unidadMedida','total', 'archivo' ];
   dataSourceNoMad = new MatTableDataSource<RecursoProduco>(this.listProductoNoMad);
   totalToneladasNoMad: number = 0;
   /********************************************* RECURSO PRODUCTO FAUNA ******************************************************/
   listProductoFA: RecursoProduco[] = [];
   recursoResponseFA: BandejaRecursoResponse = new BandejaRecursoResponse();
-  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','detalle'];
+  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','detalle', 'archivo' ];
   dataSourceFA = new MatTableDataSource<RecursoProduco>(this.listProductoFA);
   totalToneladasFA: number = 0;
   /***************************************************************************************************/
   listRecursoProducto: RecursoProduco[] = [];
   listProducto: RecursoProduco[] = [];
-  displayedColumns = ['position', 'nameCientifico', 'nameComun', 'tipoProducto', 'tipoSubProducto', 'cantidad', 'unidadMedida','action', 'cubicacion'];
+  displayedColumns = ['position', 'nameCientifico', 'nameComun', 'tipoProducto', 'tipoSubProducto', 'cantidad', 'unidadMedida','action', 'cubicacion','archivo'];
   dataSource = new MatTableDataSource<RecursoProduco>(this.listProducto);
   @ViewChild(MatPaginator) paginator: MatPaginator;
   course: RegistroStep[] = RegistroListSteps;
@@ -209,6 +219,7 @@ export class RegistroRecursoComponent implements OnInit {
     private cubicacionService: CubicacionService,
     private _matSnackBar: MatSnackBar,
     private _parametroService: ParametroService,
+    private _servicioArchivo: ArchivoService,
     private coreCentralService: CoreCentralService) {
     this._fuseConfigService.config = {
       layout: {
@@ -1019,6 +1030,7 @@ export class RegistroRecursoComponent implements OnInit {
     element.unidadMedida = "Piezas";
     element.idUsuarioRegistro = 1;
     element.metroCubico = this.totalM3;
+    element.nuIdArchivo = 'noFile';
     this.listProducto.push(element);
     this.recursoResponse.totalRecords = this.listProducto.length - 1;
     this.dataSource = new MatTableDataSource<RecursoProduco>(this.listProducto);
@@ -1959,6 +1971,91 @@ redondeo(row:RecursoProduco){
   cambiarPestana(indice: number) {
     this.tabGroup.selectedIndex = indice;
   }
+
+  ///Nuevos
+  addArchivoTabla(item: any, file: any,index:any) {
+    const files = file?.target?.files as FileList
+    if (files && files.length > 0) {
+      const fileExt = files[0].type.toLocaleLowerCase();
+      if (this.tipoArchivoTablaCod.includes(fileExt)) {
+        console.log("INGRESA AQUI")
+        const file = files[0];
+        console.log("files-addArchivoTabla", file);
+        //this.fileInfGenrealOsinfor.file = files[0];
+        this.guardarArchivo(item, file);
+      } else {
+        Swal.fire(
+          'Mensaje!',
+          '(*) Formato no valido (jpg o png)',
+          'error'
+        )
+      }
+    }
+  }
+
+  changeFile(item: any,e: any,index:any) {
+    console.log("item-changeFile",item);
+    console.log("e-changeFile",e)
+
+    this.addArchivoTabla(item,e,index);
+  }
+
+  onFileChange(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.target) {
+      if (e.target.files.length) {
+        let type = e.target.dataset.type;
+
+        this.fileInfGenreal.url = URL.createObjectURL(e.target.files[0]);
+        this.fileInfGenreal.nombreFile = e.target.files[0].name;
+        this.fileInfGenreal.file = e.target.files[0];
+        this.fileInfGenreal.descripcion = type;
+        this.fileInfGenreal.inServer = false;
+      }
+    }
+  }
+
+  guardarArchivo(item: any, file: any) {
+
+    let codigoTipo = item.type;
+    let codigoUrlArchivo = item.type + Constants.BACKSLASH + Constants.BACKSLASH + String(item.nuIdRecurso) 
+    + Constants.BACKSLASH + Constants.BACKSLASH + String(item.nuIdRecursoProducto) + Constants.BACKSLASH + Constants.BACKSLASH ;
+    //this.dialog.open(LoadingComponent, { disableClose: true });
+    this._servicioArchivo
+      .cargarArchivoGeneralCod(
+        1,
+        codigoTipo,
+        item.nuIdRecursoProducto,
+        codigoUrlArchivo,
+        file,
+      )
+      .pipe(finalize(() => this.dialog.closeAll()))
+      .subscribe((result: any) => {
+        item.archivo = result.data;
+        //this.idArchivo = result.data;
+        this.fileInfGenreal.id = result.data;
+      });
+  }
+
+  descargarArchivoTabla(idFile: number) {
+    console.log("idArchivo", idFile);
+    const params = { "idArchivo": idFile };
+    this._servicioArchivo.descargarArchivoGeneral(params).subscribe((result: any) => {
+      this.dialog.closeAll();
+      if (result.data !== null && result.data !== undefined) {
+        DownloadFile(result.data.archivo, result.data.nombeArchivo, result.data.contenTypeArchivo);
+      }
+    }, () => {
+      this.dialog.closeAll();
+      Swal.fire(
+        'Mensaje!',
+        'No se pudo descargar el archivo.',
+        'error'
+      )
+    });
+  }
+
 
 }
 

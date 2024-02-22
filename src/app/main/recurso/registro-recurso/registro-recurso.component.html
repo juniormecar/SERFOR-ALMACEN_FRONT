@@ -524,7 +524,6 @@
                                                 </td>
                                             </ng-container>
 
-
                                             <!--Symbol Column -->
                                             <ng-container matColumnDef="nameCientifico">
                                                 <th mat-header-cell *matHeaderCellDef style="width:23%"> Nombre
@@ -738,6 +737,34 @@
                                                 </td>
                                             </ng-container>
 
+                                            <br>
+                                            <ng-container matColumnDef="archivo">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Archivo </th>
+                                                <td mat-cell *matCellDef="let element; let i = index">
+                                                    <!--<button mat-mini-fab *ngIf="element.idArchivo !== 'noFile' && (element.idArchivo === '' || element.idArchivo === undefined)"
+                                                    style="background-color: #89B361;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon>vertical_align_top</mat-icon>
+                                                    </button>-->
+
+                                                    <button type="button" *ngIf="element.nuIdArchivo !== 'noFile' && (element.nuIdArchivo === 0 || element.nuIdArchivo === undefined || element.nuIdArchivo === null)" 
+                                                        class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
+                                                        <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                                        <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
+                                                            readonly />
+                                                    </button>
+
+                                                    <button mat-mini-fab *ngIf="element.nuIdArchivo !== 'noFile' && element.nuIdArchivo !== 0 && element.nuIdArchivo !== undefined && element.nuIdArchivo !== null"
+                                                        (click)="descargarArchivoTabla(element.nuIdArchivo)" style="background-color: red;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
+                                                    </button>
+
+                                                </td>
+                                            </ng-container>
+
                                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                                             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                                         </table>
@@ -920,6 +947,27 @@
                                                 </td>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="archivo">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Archivo </th>
+                                                <td mat-cell *matCellDef="let element; let i = index">
+
+                                                    <button type="button" *ngIf="element.nuIdArchivo !== 'noFile' && (element.nuIdArchivo === 0 || element.nuIdArchivo === undefined || element.nuIdArchivo === null)" 
+                                                        class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
+                                                        <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                                        <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
+                                                            readonly />
+                                                    </button>
+
+                                                    <button mat-mini-fab *ngIf="element.nuIdArchivo !== 'noFile' && element.nuIdArchivo !== 0 && element.nuIdArchivo !== undefined && element.nuIdArchivo !== null"
+                                                        (click)="descargarArchivoTabla(element.nuIdArchivo)" style="background-color: red;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
+                                                    </button>
+
+                                                </td>
+                                            </ng-container>
+
 
                                             <mat-header-row *matHeaderRowDef="displayedColumnsNoMad"></mat-header-row>
                                             <mat-row *matRowDef="let row; columns: displayedColumnsNoMad;"></mat-row>
@@ -1028,6 +1076,27 @@
                                                     >
                                                     <mat-icon>note_add</mat-icon>
                                                     </button>
+                                                </td>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="archivo">
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Archivo </th>
+                                                <td mat-cell *matCellDef="let element; let i = index">
+
+                                                    <button type="button" *ngIf="element.nuIdArchivo !== 'noFile' && (element.nuIdArchivo === 0 || element.nuIdArchivo === undefined || element.nuIdArchivo === null)" 
+                                                        class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
+                                                        <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                                        <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
+                                                            readonly />
+                                                    </button>
+
+                                                    <button mat-mini-fab *ngIf="element.nuIdArchivo !== 'noFile' && element.nuIdArchivo !== 0 && element.nuIdArchivo !== undefined && element.nuIdArchivo !== null"
+                                                        (click)="descargarArchivoTabla(element.nuIdArchivo)" style="background-color: red;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
+                                                    </button>
+
                                                 </td>
                                             </ng-container>
 
