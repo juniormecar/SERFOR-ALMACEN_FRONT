@@ -157,7 +157,9 @@ console.log('jjj');
             nuIdAlmacenDestino: ds.nuIdAlmacen,
             nroActaTraslado: ds.nroActa,          
             tipoTransferencia: ds.tipoTransferencia,
-            tipoEspecie: ds.tipoEspecie
+            tipoEspecie: ds.tipoEspecie,
+            nombreComun: ds.nombreComun,
+            nombreCientifico: ds.nombreCientifico
           }
           paramsList.push(params);
           console.log('paramsList',paramsList);
