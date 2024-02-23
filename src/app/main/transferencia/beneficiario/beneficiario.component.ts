@@ -171,7 +171,7 @@ export class BeneficiarioComponent implements OnInit {
   generarActa(paramsList:any) {
 
     this.actaService
-      .consolidadoActaSalida(this._data.data)
+      .consolidadoActaSalida(paramsList)
       .subscribe((res: any) => {
         if (res.success == true) {
           this.consolidadoActa = res;
