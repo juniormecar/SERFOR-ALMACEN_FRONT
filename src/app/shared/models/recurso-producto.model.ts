@@ -32,5 +32,6 @@ export class RecursoProduco {
     descSubProducto?:string;
     descTipoAlmacenamiento?:string;
     cantidadTotal?:Number;
-    nuIdArchivo?: string;
+    nuIdArchivoRecursoProducto?: string;
+    nuIdArchivoRecurso?: string;
 }

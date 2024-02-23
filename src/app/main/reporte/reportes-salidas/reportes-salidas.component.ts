@@ -29,6 +29,10 @@
   import { ReportesService } from 'app/service/reportes.service';
   import { ModalDetalleDonacionComponent } from '../reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
 import { finalize } from 'rxjs/operators';
+import { ArchivoService } from 'app/service/archivo.service';
+import { AppViewDocumentsPdfComponent } from 'app/shared/modals/app-view-documents-pdf/app-view-documents-pdf.component';
+import { DownloadFile } from 'app/shared/models/util/util';
+import { TransferenciaService } from 'app/service/transferencia.service';
 
   
   
@@ -44,7 +48,7 @@ import { finalize } from 'rxjs/operators';
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['codigoUnico','fecha','origen','destino', 'nroActa', 'observaciones', 'acciones'];
+    displayedColumns: string[] = ['codigoUnico','fecha','origen','destino', 'nroActa', 'observaciones', 'acciones','archivo'];
     inputBandeja: FormGroup;
     resultsLength = 0;
     idAlmacen: any;
@@ -80,7 +84,9 @@ import { finalize } from 'rxjs/operators';
       private puestoControlService: PuestoControlService,
       private atfService: AtfService,
       private almacenService: AlmacenService,
-      private parametroService: ParametroService, 
+      private parametroService: ParametroService,
+      private _servicioArchivo: ArchivoService,
+      private _servicioTransferencia: TransferenciaService
     ) {
       this.reportesResponse.pageNumber = 1;
       this.reportesResponse.pageSize = 10;
@@ -111,7 +117,11 @@ import { finalize } from 'rxjs/operators';
   
       this.numeroDocumento = localStorage.getItem('usuario'); 
     }
+    tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
   
+    isShowModal2_2:boolean=false;
+    showArchivoSalida: boolean=false;
+    
     ngOnInit(): void {
      this.searchAlmacen();
      this.searchTipoEspecie();     
@@ -344,6 +354,115 @@ else{
       const formattedHours = hours % 12 || 12; 
       const formattedDate = `${day}/${month}/${year} ${formattedHours}:${minutes}:${seconds} ${ampm}`;
       return formattedDate;
+    }
+
+    //nuevo
+
+    descargarArchivoTabla(idFile: number) {
+      console.log("idArchivo", idFile);
+      const params = { "idArchivo": idFile };
+      this._servicioArchivo.descargarArchivoGeneral(params).subscribe((result: any) => {
+        this._dialog.closeAll();
+        if (result.data !== null && result.data !== undefined) {
+          DownloadFile(result.data.archivo, result.data.nombeArchivo, result.data.contenTypeArchivo);
+        }
+      }, () => {
+        this._dialog.closeAll();
+        Swal.fire(
+          'Mensaje!',
+          'No se pudo descargar el archivo.',
+          'error'
+        )
+      });
+    }
+  
+    eliminarArchivoGeneral(nuIdTransferencia: number,idFile: number ) {
+      console.log("idArchivo", idFile);
+      const params = { "idArchivo": idFile, "idUsuarioElimina": 1 };
+      this._servicioArchivo.eliminarArchivoGeneral(params).subscribe((result: any) => {
+        this.actualizarTransferenciaArhivo(nuIdTransferencia,result.data, Constants.ACCION_ELIMINAR);
+      }, () => {
+        Swal.fire(
+          'Mensaje!',
+          'No se pudo eliminar el archivo',
+          'error'
+        )
+      });
+    }
+  
+    addArchivoRecurso(item: any, file: any, index: any) {
+        console.log("file-addArchivoRecurso",file);
+        const files = file?.target?.files as FileList
+        if (files && files.length > 0) {
+          const fileExt = files[0].type.toLocaleLowerCase();
+          if (this.tipoArchivoTablaCod.includes(fileExt)) {
+            const file = files[0];
+            console.log("files-addArchivoRecurso", file);
+            //this.fileInfGenrealOsinfor.file = files[0];
+            this.guardarArchivo(item, file);
+          } else {
+            Swal.fire(
+              'Mensaje!',
+              '(*) Formato no valido (pdf)',
+              'error'
+            )
+          }
+        }
+    }
+  
+    guardarArchivo( item:any, file: any) {
+  
+      let codigoTipo = 'SALIDA';
+      let codigoUrlArchivo = codigoTipo + Constants.BACKSLASH + Constants.BACKSLASH + String(item.nuIdTransferencia) 
+      + Constants.BACKSLASH + Constants.BACKSLASH;
+      //this.dialog.open(LoadingComponent, { disableClose: true });
+      this._servicioArchivo
+        .cargarArchivoGeneral(
+          1,
+          codigoTipo,
+          codigoUrlArchivo,
+          file,
+        )
+        .pipe(finalize(() => this._dialog.closeAll()))
+        .subscribe((result: any) => {
+          this.actualizarTransferenciaArhivo(item.nuIdTransferencia, result.data, Constants.ACCION_REGISTRAR);
+          this.showArchivoSalida = true;
+        });
+    }
+  
+    changeFile(item: any,e: any,index:any) {
+      console.log("item-changeFile",item);
+      console.log("e-changeFile",e)
+  
+      this.addArchivoRecurso(item,e,index);
+    }
+  
+    verPDF(idFile: number){
+      this.viewDocuments(idFile);
+    }
+  
+    viewDocuments(idFile) {
+      const dialogOpen = this._dialog.open(AppViewDocumentsPdfComponent, {
+        disableClose: true,
+        data: {
+          modulo: Constants.MODULO,
+          IdArchivo: idFile
+        }
+      });
+    }
+
+    actualizarTransferenciaArhivo(nuIdTransferencia: any, idFile: number, type: string) {
+      console.log("nuIdArchivo", idFile);
+      const params = { "nuIdTransferencia": nuIdTransferencia, "nuIdArchivo": idFile, "nuIdUsuarioModificacion": 1 , "typeAccion": type };
+      this._servicioTransferencia.actualizarTransferenciaArhivo(params).subscribe((result: any) => {
+        this.SearchReportes();
+      }, () => {
+        Swal.fire( 
+          'Mensaje!',
+          'No se pudo eliminar el archivo',
+          'error'
+        )
+      });
     }
 
   }

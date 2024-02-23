@@ -17,8 +17,11 @@ import { DeleteRecursoResponse } from 'app/shared/models/response/delete-recurso
 import { Almacen } from 'app/shared/models/almacen.model';
 import { AlmacenService } from 'app/service/almacen.service';
 import { BandejaAlmacenResponse } from 'app/shared/models/response/bandeja-almacen-response';
-
-
+import { finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ArchivoService } from 'app/service/archivo.service';
+import { DownloadFile } from 'app/shared/models/util/util';
+import { AppViewDocumentsPdfComponent } from 'app/shared/modals/app-view-documents-pdf/app-view-documents-pdf.component';
 
 @Component({
   selector: 'app-bandeja-recurso',
@@ -32,7 +35,7 @@ export class BandejaRecursoComponent implements OnInit {
   recursoResponse: BandejaRecursoResponse = new BandejaRecursoResponse();
   recursoRequest:  Recurso = new Recurso();
   numeroDocumento: string = '44691637';
-  displayedColumns: string[] = [/*'position',*/'nuIdRecurso', 'tipoIngreso' , 'txNroGuiaTransporteForestal', 'txNombreAutoridadRegional', 'tipoDocumento', 'numeroDocumento','txNombreAlmacen', 'action'];
+  displayedColumns: string[] = [/*'position',*/'nuIdRecurso', 'tipoIngreso' , 'txNroGuiaTransporteForestal', 'txNombreAutoridadRegional', 'tipoDocumento', 'numeroDocumento','txNombreAlmacen', 'action','archivo'];
   listTipoIngreso: Parametro[] = [];
   listDisponibilidadActa: Parametro[] = [];
   inputBandeja: FormGroup;  
@@ -43,13 +46,19 @@ export class BandejaRecursoComponent implements OnInit {
   dataRecurso = new Recurso();
   tipoIngreso: string = Constants.TIPO_INGRESO;
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
+
+  isShowModal2_2:boolean=false;
+
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private recursoService: RecursoService,
     private parametroService: ParametroService,
     public _router: Router   ,
-    private almacenService: AlmacenService, 
+    private almacenService: AlmacenService,
+    public dialog: MatDialog,
+    private _servicioArchivo: ArchivoService,
     ) {
      this.recursoResponse.pageNumber = 1;
      this.recursoResponse.pageSize = 5;
@@ -83,6 +92,10 @@ export class BandejaRecursoComponent implements OnInit {
     this.numeroDocumento = localStorage.getItem('usuario');
 
   }
+
+  pdfSrc :string = "";  
+  archivoString :string = "";
+  showArchivoRecurso: boolean = false;
 
   ngOnInit(): void {
     this.searchTipoIngreso(); 
@@ -183,5 +196,102 @@ export class BandejaRecursoComponent implements OnInit {
     this.inputBandeja.get('tipoIngreso').setValue('');
     this.inputBandeja.get('almacen').setValue('');      
   }
+
+  descargarArchivoTabla(idFile: number) {
+    console.log("idArchivo", idFile);
+    const params = { "idArchivo": idFile };
+    this._servicioArchivo.descargarArchivoGeneral(params).subscribe((result: any) => {
+      this.dialog.closeAll();
+      if (result.data !== null && result.data !== undefined) {
+        DownloadFile(result.data.archivo, result.data.nombeArchivo, result.data.contenTypeArchivo);
+      }
+    }, () => {
+      this.dialog.closeAll();
+      Swal.fire(
+        'Mensaje!',
+        'No se pudo descargar el archivo.',
+        'error'
+      )
+    });
+  }
+
+  eliminarArchivoGeneral(idFile: number) {
+    console.log("idArchivo", idFile);
+    const params = { "idArchivo": idFile, "idUsuarioElimina": 1 };
+    this._servicioArchivo.eliminarArchivoGeneral(params).subscribe((result: any) => {
+      this.Search();
+    }, () => {
+      Swal.fire(
+        'Mensaje!',
+        'No se pudo eliminar el archivo',
+        'error'
+      )
+    });
+  }
+
+  addArchivoRecurso(item: any, file: any, index: any) {
+      console.log("file-addArchivoRecurso",file);
+      const files = file?.target?.files as FileList
+      if (files && files.length > 0) {
+        const fileExt = files[0].type.toLocaleLowerCase();
+        if (this.tipoArchivoTablaCod.includes(fileExt)) {
+          const file = files[0];
+          console.log("files-addArchivoRecurso", file);
+          //this.fileInfGenrealOsinfor.file = files[0];
+          this.guardarArchivoRecurso(item, file);
+        } else {
+          Swal.fire(
+            'Mensaje!',
+            '(*) Formato no valido (pdf)',
+            'error'
+          )
+        }
+      }
+  }
+
+  guardarArchivoRecurso( item:any, file: any) {
+
+    let codigoTipo = 'INGRESO';
+    console.log("item.nuIdRecurso: ", item.nuIdRecurso)
+    let codigoUrlArchivo = codigoTipo + Constants.BACKSLASH + Constants.BACKSLASH + String(item.nuIdRecurso) 
+    + Constants.BACKSLASH + Constants.BACKSLASH;
+    //this.dialog.open(LoadingComponent, { disableClose: true });
+    this._servicioArchivo
+      .cargarArchivoGeneralCodRecurso(
+        1,
+        codigoTipo,
+        Number(item.nuIdRecurso),
+        null,
+        codigoUrlArchivo,
+        file,
+      )
+      .pipe(finalize(() => this.dialog.closeAll()))
+      .subscribe((result: any) => {
+        this.Search();
+        this.showArchivoRecurso = true;
+      });
+  }
+
+  changeFile(item: any,e: any,index:any) {
+    console.log("item-changeFile",item);
+    console.log("e-changeFile",e)
+
+    this.addArchivoRecurso(item,e,index);
+  }
+
+  verPDF(idFile: number){
+    this.viewDocuments(idFile);
+  }
+
+  viewDocuments(idFile) {
+    const dialogOpen = this.dialog.open(AppViewDocumentsPdfComponent, {
+      disableClose: true,
+      data: {
+        modulo: Constants.MODULO,
+        IDarchivo: idFile
+      }
+    });
+  }
+
 
 }

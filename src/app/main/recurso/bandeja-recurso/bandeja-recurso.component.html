@@ -174,7 +174,6 @@
                                         <td mat-cell *matCellDef="let element"> {{element.txNombreAlmacen}} </td>
                                     </ng-container>
 
-
                                     <ng-container matColumnDef="action">
                                         <th mat-header-cell *matHeaderCellDef> Acciones </th>
                                         <td mat-cell *matCellDef="let element">
@@ -188,6 +187,41 @@
                                                </button>
 
                                             
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="archivo">
+                                        <th mat-header-cell *matHeaderCellDef> Archivo </th>
+                                        <td mat-cell *matCellDef="let element; let i = index">
+
+                                            <button type="button" *ngIf="element.nuIdArchivoRecurso !== 'noFile' && (element.nuIdArchivoRecurso === 0 || element.nuIdArchivoRecurso === undefined || element.nuIdArchivoRecurso === null)" 
+                                                class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
+                                                <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                                <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
+                                                    readonly />
+                                            </button>
+
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                                (click)="descargarArchivoTabla(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: blue;"
+                                            readonly
+                                            >
+                                            <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
+                                            </button>
+                                            &nbsp; &nbsp;
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                                (click)="eliminarArchivoGeneral(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: red;"
+                                            readonly
+                                            >
+                                            <mat-icon title="Eliminar Archivo">delete</mat-icon>
+                                            </button>
+                                            &nbsp; &nbsp;
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                                (click)="verPDF(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: #89B361;"
+                                            readonly
+                                            >
+                                            <mat-icon title="Ver Archivo">visibility</mat-icon>
+                                            </button>
+
                                         </td>
                                     </ng-container>
 
@@ -214,3 +248,4 @@
 
     </div>
 </div>
+

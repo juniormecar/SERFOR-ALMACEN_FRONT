@@ -57,6 +57,8 @@ export class Recurso {
     intervenido: RecursoPersona;
     conductor: RecursoPersona;
 
-    nuIdArchivo?: string;
+    nuIdArchivoRecursoProducto?: string;
+    nuIdArchivoRecurso?: string;
+
 }
     

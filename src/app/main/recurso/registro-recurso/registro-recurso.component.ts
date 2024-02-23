@@ -67,6 +67,7 @@ export class RegistroRecursoComponent implements OnInit {
   onChange: any = () => { }
   showIcon: boolean = true
   accept: string = ".jpg, .png";
+  acceptRecurso: string = ".pdf";
   tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
   fileInfGenreal: any = {} ;
 
@@ -206,6 +207,7 @@ export class RegistroRecursoComponent implements OnInit {
       redondeo: null
   }
   
+  showArchivoRecurso: boolean = false;
   
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -826,7 +828,17 @@ export class RegistroRecursoComponent implements OnInit {
         this.dataSourceFA = new MatTableDataSource<RecursoProduco>(this.listProductoFA);
         this.calculateTotal();
         this.calculateTotalNoMad();
+        this.validarFileRecuso(response.data)
       });
+  }
+
+  validarFileRecuso(data: Recurso[]){
+    if(data !=null && data != undefined){
+      if(data[0].nuIdArchivoRecurso != null || data[0].nuIdArchivoRecurso != undefined
+        || data[0].nuIdArchivoRecurso != '0'){
+          this.showArchivoRecurso =  true;
+        }
+    }
   }
 
   delete(obj: Especie): void {
@@ -1030,7 +1042,8 @@ export class RegistroRecursoComponent implements OnInit {
     element.unidadMedida = "Piezas";
     element.idUsuarioRegistro = 1;
     element.metroCubico = this.totalM3;
-    element.nuIdArchivo = 'noFile';
+    element.nuIdArchivoRecursoProducto = 'noFile';
+    element.nuIdArchivoRecurso = 'noFile';
     this.listProducto.push(element);
     this.recursoResponse.totalRecords = this.listProducto.length - 1;
     this.dataSource = new MatTableDataSource<RecursoProduco>(this.listProducto);
@@ -2023,17 +2036,18 @@ redondeo(row:RecursoProduco){
     + Constants.BACKSLASH + Constants.BACKSLASH + String(item.nuIdRecursoProducto) + Constants.BACKSLASH + Constants.BACKSLASH ;
     //this.dialog.open(LoadingComponent, { disableClose: true });
     this._servicioArchivo
-      .cargarArchivoGeneralCod(
+      .cargarArchivoGeneralCodRecurso(
         1,
         codigoTipo,
+        null,
         item.nuIdRecursoProducto,
         codigoUrlArchivo,
         file,
       )
       .pipe(finalize(() => this.dialog.closeAll()))
       .subscribe((result: any) => {
+        this.getRecursosEspecies(Number(this.idRecurso));
         item.archivo = result.data;
-        //this.idArchivo = result.data;
         this.fileInfGenreal.id = result.data;
       });
   }
@@ -2056,7 +2070,64 @@ redondeo(row:RecursoProduco){
     });
   }
 
+  eliminarArchivoGeneral(idFile: number) {
+    console.log("idArchivo", idFile);
+    const params = { "idArchivo": idFile, "idUsuarioElimina": 1 };
+    this._servicioArchivo.eliminarArchivoGeneral(params).subscribe((result: any) => {
+      this.getRecursosEspecies(Number(this.idRecurso));
+    }, () => {
+      Swal.fire(
+        'Mensaje!',
+        'No se pudo eliminar el archivo',
+        'error'
+      )
+    });
+  }
 
+  addArchivoRecurso(file: any) {
+      console.log("file-addArchivoRecurso",file);
+      const files = file?.target?.files as FileList
+      if (files && files.length > 0) {
+        const fileExt = files[0].type.toLocaleLowerCase();
+        if (this.tipoArchivoTablaCod.includes(fileExt)) {
+          const file = files[0];
+          console.log("files-addArchivoRecurso", file);
+          //this.fileInfGenrealOsinfor.file = files[0];
+          this.guardarArchivoRecurso(file);
+        } else {
+          Swal.fire(
+            'Mensaje!',
+            '(*) Formato no valido (pdf)',
+            'error'
+          )
+        }
+      }
+    //this.addArchivoTabla(item,e,index);
+  }
+
+  guardarArchivoRecurso( file: any) {
+
+    let codigoTipo = 'INGRESO';
+    console.log("this.idRecurso: ", this.idRecurso)
+    let codigoUrlArchivo = codigoTipo + Constants.BACKSLASH + Constants.BACKSLASH + String(this.idRecurso) 
+    + Constants.BACKSLASH + Constants.BACKSLASH;
+    //this.dialog.open(LoadingComponent, { disableClose: true });
+    this._servicioArchivo
+      .cargarArchivoGeneralCodRecurso(
+        1,
+        codigoTipo,
+        Number(this.idRecurso),
+        null,
+        codigoUrlArchivo,
+        file,
+      )
+      .pipe(finalize(() => this.dialog.closeAll()))
+      .subscribe((result: any) => {
+        this.getRecursosEspecies(Number(this.idRecurso));
+        this.showArchivoRecurso = true;
+        this.fileInfGenreal.id = result.data;
+      });
+  }
 }
 
 
