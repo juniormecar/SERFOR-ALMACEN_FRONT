@@ -168,7 +168,7 @@ export class AlmacenComponent implements OnInit {
     console.log("paramsList", paramsList)
    if(paramsList.length > 0){
       this.serviceTransferencia.postTransferencia(paramsList)
-      .pipe(finalize(() => this.generarActa()))
+      .pipe(finalize(() => this.generarActa(paramsList)))
       .subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso > 0) {
           Swal.fire(
@@ -198,10 +198,10 @@ export class AlmacenComponent implements OnInit {
 
   
 
-  generarActa() {
+  generarActa(paramsList:any) {
 
     this.actaService
-      .consolidadoActaSalida(this._data.data)
+      .consolidadoActaSalida(paramsList)
       .subscribe((res: any) => {
         if (res.success == true) {
           this.consolidadoActa = res;

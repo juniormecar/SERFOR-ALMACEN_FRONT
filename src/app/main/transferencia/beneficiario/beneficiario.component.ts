@@ -137,7 +137,7 @@ export class BeneficiarioComponent implements OnInit {
     //console.log("paramsList", paramsList)
     if(paramsList.length > 0){
       this.serviceTransferencia.postTransferencia(paramsList)
-      .pipe(finalize(() => this.generarActa()))
+      .pipe(finalize(() => this.generarActa(paramsList)))
       .subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso) {
           Swal.fire(
@@ -168,7 +168,7 @@ export class BeneficiarioComponent implements OnInit {
   }
 
 
-  generarActa() {
+  generarActa(paramsList:any) {
 
     this.actaService
       .consolidadoActaSalida(this._data.data)
