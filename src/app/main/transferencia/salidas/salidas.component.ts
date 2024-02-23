@@ -15,6 +15,7 @@ import { Recurso } from 'app/shared/models/recurso.model';
 import { RecursoService } from 'app/service/recurso.service';
 import { BandejaRecursoResponse } from 'app/shared/models/response/bandeja-recurso-response';
 import { BajasComponent } from '../bajas/bajas.component';
+import { ActaService } from 'app/service/acta.service';
 
 
 interface DialogData{  
@@ -31,7 +32,7 @@ export class SalidasComponent implements OnInit {
   dataSource = new MatTableDataSource<Kardex>([]);
   selection = new SelectionModel<Kardex>(true, []);
   recursoResponse: BandejaRecursoResponse = new BandejaRecursoResponse();
-
+  consolidadoActa: any = null;
   //idAlmacen: any;
   
   
@@ -45,7 +46,7 @@ export class SalidasComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public _data: DialogData,
     public _dialogRef: MatDialogRef<SalidasComponent>,
     private _recursoService: RecursoService,
-    
+    private actaService: ActaService,
 
     ) {
  this._fuseConfigService.config = {
@@ -85,6 +86,7 @@ export class SalidasComponent implements OnInit {
         }
       })
     }
+
     openDialogAlmacen(){
       const dialogRef = this._dialog.open(AlmacenComponent, {
         width: '1000px',

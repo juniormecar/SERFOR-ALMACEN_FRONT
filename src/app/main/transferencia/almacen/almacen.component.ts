@@ -17,7 +17,8 @@ import { AtfService } from 'app/service/atf.service';
 import { ATF } from 'app/shared/models/atf.model';
 import { PuestoControl } from 'app/shared/models/puesto-control.model';
 import { PuestoControlService } from 'app/service/puesto-control.service';
-
+import { ActaService } from 'app/service/acta.service';
+import { finalize } from 'rxjs/operators';
 
 interface DialogData{
   id: number;
@@ -44,6 +45,7 @@ export class AlmacenComponent implements OnInit {
   lstAlmacen: any[]=[];// new MatTableDataSource<Almacen>([]);
   listATF: ATF[] = [];
   listPuestoControl: PuestoControl[] = [];
+  consolidadoActa: any = null;
   constructor(public _dialogRef: MatDialogRef<AlmacenComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -53,7 +55,8 @@ export class AlmacenComponent implements OnInit {
     private atfService: AtfService,
     @Inject(MAT_DIALOG_DATA) public _data: DialogData,
     private puestoControlService: PuestoControlService,
-    private almacenService: AlmacenService) {
+    private almacenService: AlmacenService,
+    private actaService: ActaService) {
       this.recursoResponse.pageNumber = 1;
       this.recursoResponse.pageSize = 5;
       this.inputTransferirAlmacen = this._formBuilder.group({
@@ -164,7 +167,9 @@ export class AlmacenComponent implements OnInit {
 
     console.log("paramsList", paramsList)
    if(paramsList.length > 0){
-      this.serviceTransferencia.postTransferencia(paramsList).subscribe((response: any) => {
+      this.serviceTransferencia.postTransferencia(paramsList)
+      .pipe(finalize(() => this.generarActa()))
+      .subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso > 0) {
           Swal.fire(
             'Mensaje de Confirmación',
@@ -190,6 +195,77 @@ export class AlmacenComponent implements OnInit {
       )
     }
   }
+
+  
+
+  generarActa() {
+
+    this.actaService
+      .consolidadoActaSalida(this._data.data)
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          this.consolidadoActa = res;
+          this.descargarArchivo(this.consolidadoActa);
+        } else {
+
+        }
+      }, err => {
+      });
+  }
+
+  descargarArchivo(archivoResponse: any) {
+    if (this.isNullOrEmpty(archivoResponse)) {
+      console.error("Archivo nulo");
+      return;
+    }
+    const { archivo, nombeArchivo, contenTypeArchivo } = archivoResponse;
+    if (
+      this.isNullOrEmpty(archivo) ||
+      this.isNullOrEmpty(nombeArchivo) ||
+      this.isNullOrEmpty(contenTypeArchivo)
+    ) {
+      console.error("Archivo o nombre archivo o content type nulo ");
+      return;
+    }
+    this.DownloadFile(archivo, nombeArchivo, contenTypeArchivo);
+  }
+
+  
+isNullOrEmpty(value: any | number | string): boolean {
+  return value == null || value == undefined || value == "";
+}
+
+DownloadFile(base64: string, name: string, mediaType: string) {
+  let blob = this.Base64toBlob(base64, mediaType);
+  const link = document.createElement("a");
+  const objectUrl = URL.createObjectURL(blob);
+  link.href = objectUrl;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(objectUrl);
+}
+
+Base64toBlob(base64Data: string, contentType: string): Blob {
+  contentType = contentType || "";
+  var sliceSize = 1024;
+  var byteCharacters = atob(base64Data.replace(/['"]+/g, ""));
+  var bytesLength = byteCharacters.length;
+  var slicesCount = Math.ceil(bytesLength / sliceSize);
+  var byteArrays = new Array(slicesCount);
+
+  for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    var begin = sliceIndex * sliceSize;
+    var end = Math.min(begin + sliceSize, bytesLength);
+
+    var bytes = new Array(end - begin);
+    for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
+
 
   searchPuntoControl() {
     this.parametroService.getParametroSearch(this.tipoDocumento).subscribe((response: Parametro[]) => {

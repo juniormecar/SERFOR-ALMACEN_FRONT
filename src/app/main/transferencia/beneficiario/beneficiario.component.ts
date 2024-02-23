@@ -11,7 +11,8 @@ import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
-
+import { finalize } from 'rxjs/operators';
+import { ActaService } from 'app/service/acta.service';
 interface DialogData{ 
   id: number;
   data: any[];
@@ -35,6 +36,7 @@ export class BeneficiarioComponent implements OnInit {
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   validaRUCClass: boolean = false;
   listTipoDocumento: Parametro[] = [];
+  consolidadoActa: any = null;
   constructor(    public _dialogRef: MatDialogRef<BeneficiarioComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -42,7 +44,8 @@ export class BeneficiarioComponent implements OnInit {
     private serviceTransferencia: TransferenciaService,
     private parametroService: ParametroService,
     private pideService: PideService,
-    @Inject(MAT_DIALOG_DATA) public _data: DialogData
+    @Inject(MAT_DIALOG_DATA) public _data: DialogData,
+    private actaService: ActaService,
     ) {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
@@ -133,7 +136,9 @@ export class BeneficiarioComponent implements OnInit {
 
     //console.log("paramsList", paramsList)
     if(paramsList.length > 0){
-      this.serviceTransferencia.postTransferencia(paramsList).subscribe((response: any) => {
+      this.serviceTransferencia.postTransferencia(paramsList)
+      .pipe(finalize(() => this.generarActa()))
+      .subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso) {
           Swal.fire(
             'Mensaje de Confirmación',
@@ -161,6 +166,77 @@ export class BeneficiarioComponent implements OnInit {
   
 
   }
+
+
+  generarActa() {
+
+    this.actaService
+      .consolidadoActaSalida(this._data.data)
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          this.consolidadoActa = res;
+          this.descargarArchivo(this.consolidadoActa);
+        } else {
+
+        }
+      }, err => {
+      });
+  }
+
+  descargarArchivo(archivoResponse: any) {
+    if (this.isNullOrEmpty(archivoResponse)) {
+      console.error("Archivo nulo");
+      return;
+    }
+    const { archivo, nombeArchivo, contenTypeArchivo } = archivoResponse;
+    if (
+      this.isNullOrEmpty(archivo) ||
+      this.isNullOrEmpty(nombeArchivo) ||
+      this.isNullOrEmpty(contenTypeArchivo)
+    ) {
+      console.error("Archivo o nombre archivo o content type nulo ");
+      return;
+    }
+    this.DownloadFile(archivo, nombeArchivo, contenTypeArchivo);
+  }
+
+  
+isNullOrEmpty(value: any | number | string): boolean {
+  return value == null || value == undefined || value == "";
+}
+
+DownloadFile(base64: string, name: string, mediaType: string) {
+  let blob = this.Base64toBlob(base64, mediaType);
+  const link = document.createElement("a");
+  const objectUrl = URL.createObjectURL(blob);
+  link.href = objectUrl;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(objectUrl);
+}
+
+Base64toBlob(base64Data: string, contentType: string): Blob {
+  contentType = contentType || "";
+  var sliceSize = 1024;
+  var byteCharacters = atob(base64Data.replace(/['"]+/g, ""));
+  var bytesLength = byteCharacters.length;
+  var slicesCount = Math.ceil(bytesLength / sliceSize);
+  var byteArrays = new Array(slicesCount);
+
+  for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    var begin = sliceIndex * sliceSize;
+    var end = Math.min(begin + sliceSize, bytesLength);
+
+    var bytes = new Array(end - begin);
+    for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
+
+
   validarRUC() {
     //console.log('validarDNI');
     let params = { "numRUC": this.inputTransferirBeneficiario.get("numeroDocumento").value }

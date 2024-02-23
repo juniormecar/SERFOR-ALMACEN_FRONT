@@ -33,6 +33,11 @@ consolidadoActa(idRecurso: number) {
   return this.http.get(`${this.base}/pdf/acta`, { params });
 }
 
+consolidadoActaSalida(request: any) {
+  let url = `${this.base}/pdf/actaSalida`;
+  return this.http.post(url, request).pipe(catchError(this.errorHandler));
+}
+
 errorHandler(error: HttpErrorResponse) {
   return observableThrowError(error || 'SERVER ERROR');
 }
