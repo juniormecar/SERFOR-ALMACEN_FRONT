@@ -30,5 +30,10 @@ export enum Constants{
     PERIODO_TRI = 'PERIODO',
     PERIODO_SE = 'PERIODOSE',
     TIPOACCION = 'TIPOACCION',
-    BACKSLASH = "/"
+
+    BACKSLASH = "/",
+    MODULO = "INGRESOS",
+    ACCION_ELIMINAR = "ELIMINAR",
+    ACCION_REGISTRAR = "REGISTRAR"
+
 }

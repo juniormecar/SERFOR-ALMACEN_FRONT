@@ -67,4 +67,8 @@ export class TransferenciaService {
         
         return this.http.get<ReportesResponse>((url)).pipe(catchError(this.errorHandler));
     }
+
+    actualizarTransferenciaArhivo(params: any) {
+        return this.http.post(`${this.base}/actualizarTransferenciaArchivo`, params);
+      }
 }

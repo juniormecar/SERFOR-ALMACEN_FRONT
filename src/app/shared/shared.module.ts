@@ -10,11 +10,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app-view-documents-pdf.component';
+//import { ActionMessageComponent } from './modals/action-message/action-message.component';
 
 
 @NgModule({
     declarations: [
-        DetalleRecursosComponent
+        DetalleRecursosComponent,
+        AppViewDocumentsPdfComponent
+        //ActionMessageComponent
     ],
     imports: [ CommonModule,
         MatTableModule,

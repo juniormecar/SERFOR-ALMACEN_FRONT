@@ -14,14 +14,23 @@ export class ArchivoService {
       this.base = environment.urlProcesos + "/api/serfor/archivo";
     }
 
-    cargarArchivoGeneralCod(idUsuario: number, tipoDocumento: string, idRecursoProducto: number, codigo: string, archivo: File): Observable<ResponseModel<number>> {
+    cargarArchivoGeneralCodRecurso(idUsuario: number, tipoDocumento: string, idRecurso:number, idRecursoProducto: number, codigo: string, archivo: File): Observable<ResponseModel<number>> {
+    let idRecursoString = "";
+    let idRecursoProductoString = "";
+    const uri = `${this.base}/cargarArchivoGeneralCodRecurso`;
+    if(idRecurso != null && idRecurso != 0){
+      idRecursoString = String(idRecurso);
+    } 
 
-    const uri = `${this.base}/cargarArchivoGeneralCod`;
+    if(idRecursoProducto != null && idRecursoProducto != 0){
+      idRecursoProductoString = String(idRecursoProducto);
+    } 
 
     const params = new HttpParams()
         .set('IdUsuarioCreacion', String(idUsuario))
         .set('TipoDocumento', tipoDocumento)
-        .set('idRecursoProducto', String(idRecursoProducto))
+        .set('idRecursoProducto', idRecursoProductoString)
+        .set('idRecurso', idRecursoString)
         .set('codigo', codigo);
 
     const body = new FormData();
@@ -35,4 +44,22 @@ export class ArchivoService {
       return this.http.post(`${this.base}/DescargarArchivoGeneral`, params);
     }
 
+    eliminarArchivoGeneral(params: any) {
+      return this.http.post(`${this.base}/eliminarArchivo`, params);
+    }
+
+    cargarArchivoGeneral(idUsuario: number, tipoDocumento: string,  codigo: string, archivo: File): Observable<ResponseModel<number>> {
+      const uri = `${this.base}/cargarArchivoGeneral`;
+  
+      const params = new HttpParams()
+          .set('IdUsuarioCreacion', String(idUsuario))
+          .set('TipoDocumento', tipoDocumento)
+          .set('codigo', codigo);
+  
+      const body = new FormData();
+      body.append("file", archivo);
+  
+      return this.http.post<ResponseModel<number>>(uri, body, { params, reportProgress: true });
+  
+      }
 }
