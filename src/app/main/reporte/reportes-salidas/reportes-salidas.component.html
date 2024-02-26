@@ -163,7 +163,7 @@
                                     <ng-container matColumnDef="acciones">
                                         <th mat-header-cell *matHeaderCellDef> Detalle </th>
                                         <td mat-cell *matCellDef="let element">
-                                            <button  mat-mini-fab (click)="verDetalleSalida(element.tipoTransferencia,element.nroActa,element.nuIdTransferencia)" style="background-color: #89B361;">
+                                            <button  mat-mini-fab (click)="verDetalleSalida(element.tipoTransferencia,element.nroActa,element.nuIdTransferencia)" style="background-color: #679738;">
                                                 <mat-icon>remove_red_eye</mat-icon>
                                             </button>              
                                            
@@ -182,14 +182,14 @@
                                             </button>
 
                                             <button mat-mini-fab *ngIf="element.nuIdArchivoTransferencia !== 'noFile' && element.nuIdArchivoTransferencia !== 0 && element.nuIdArchivoTransferencia !== undefined && element.nuIdArchivoTransferencia !== null"
-                                                (click)="descargarArchivoTabla(element.nuIdArchivoTransferencia)" style="min-width: 40px; width: 40px; background-color: blue;"
+                                                (click)="descargarArchivoTabla(element.nuIdArchivoTransferencia)" style="min-width: 40px; width: 40px; background-color: #89B361;"
                                             readonly
                                             >
                                             <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
                                             </button>
                                             &nbsp; &nbsp;
                                             <button mat-mini-fab *ngIf="element.nuIdArchivoTransferencia !== 'noFile' && element.nuIdArchivoTransferencia !== 0 && element.nuIdArchivoTransferencia !== undefined && element.nuIdArchivoTransferencia !== null"
-                                                (click)="eliminarArchivoGeneral(element.nuIdTransferencia, element.nuIdArchivoTransferencia)" style="min-width: 40px; width: 40px; background-color: red;"
+                                                (click)="eliminarArchivoGeneral(element.nuIdTransferencia, element.nuIdArchivoTransferencia)" style="min-width: 40px; width: 40px; background-color: #d33;"
                                             readonly
                                             >
                                             <mat-icon title="Eliminar Archivo">delete</mat-icon>
