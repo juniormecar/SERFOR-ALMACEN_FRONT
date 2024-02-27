@@ -15,20 +15,20 @@ interface DialogData {
   titulo:string
 }
 @Component({
-  selector: 'app-modal-detalle-donacion',
-  templateUrl: './modal-detalle-donacion.component.html',
-  styleUrls: ['./modal-detalle-donacion.component.scss']
+  selector: 'app-modal-detalle-egreso',
+  templateUrl: './modal-detalle-egreso.component.html',
+  styleUrls: ['./modal-detalle-egreso.component.scss']
 })
-export class ModalDetalleDonacionComponent implements OnInit {
+export class ModalDetalleEgresoComponent implements OnInit {
   dataSource = new MatTableDataSource<Reportes>([]);
-  displayedColumns: string[] = ['tipoEspecie','nombreCientifico','nombreComun','nroActa','tipoIngreso','cantidad','unidadMedida','metroCubico','cantidadRetornada','cantidadM3Retornada'];
+  displayedColumns: string[] = ['tipoEspecie','nombreCientifico','nombreComun','nroActa','tipoIngreso','cantidad','unidadMedida','descontar','metroCubico','descontarMetroCubico','flagAgregar','cantidadRetornada','cantidadM3Retornada'];
   reportesResponse: ReportesResponse = new ReportesResponse();
   reportesRequest:  Reportes = new Reportes();
   resultsLength = 0;
   cantidadVacia = 0;
   descontarMayor = 0;
   constructor(
-    public dialogRef: MatDialogRef<ModalDetalleDonacionComponent>,
+    public dialogRef: MatDialogRef<ModalDetalleEgresoComponent>,
     private _fuseConfigService: FuseConfigService,
     private _reportesService: ReportesService,
     private serviceTransferencia: TransferenciaService,

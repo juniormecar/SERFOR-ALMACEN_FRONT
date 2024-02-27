@@ -82,6 +82,8 @@ import { ReportesSalidasComponent } from './main/reporte/reportes-salidas/report
 import { ReportesIndicadoresComponent } from './main/reporte/reportes-indicadores/reportes-indicadores.component';
 import { ReportesDisponibilidadComponent } from './main/reporte/reportes-disponibilidad/reportes-disponibilidad.component';
 import { ModalDetalleDonacionComponent } from './main/reporte/reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
+import { BandejaEgresoComponent } from './main/egreso/bandeja-egreso/bandeja-egreso.component';
+import { ModalDetalleEgresoComponent } from './main/egreso/bandeja-egreso/modal/modal-detalle-egreso/modal-detalle-egreso.component';
 
 const appRoutes: Routes = [
     {
@@ -188,6 +190,11 @@ const appRoutes: Routes = [
 
     },
     {
+        path: 'bandeja-egreso',
+        component: BandejaEgresoComponent
+
+    },
+    {
         path: '',
         pathMatch:'full',
         redirectTo: 'login',
@@ -250,7 +257,11 @@ const appRoutes: Routes = [
 
         ReportesDisponibilidadComponent,
 
-        ModalDetalleDonacionComponent
+        ModalDetalleDonacionComponent,
+
+        BandejaEgresoComponent,
+
+        ModalDetalleEgresoComponent
     ],
     imports: [
         BrowserModule,

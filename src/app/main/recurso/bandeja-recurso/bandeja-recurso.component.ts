@@ -46,7 +46,7 @@ export class BandejaRecursoComponent implements OnInit {
   dataRecurso = new Recurso();
   tipoIngreso: string = Constants.TIPO_INGRESO;
   disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
-  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
 
   isShowModal2_2:boolean=false;
 
@@ -234,6 +234,7 @@ export class BandejaRecursoComponent implements OnInit {
       const files = file?.target?.files as FileList
       if (files && files.length > 0) {
         const fileExt = files[0].type.toLocaleLowerCase();
+        console.log('fileExtfileExtfileExtfileExtfileExt',fileExt);
         if (this.tipoArchivoTablaCod.includes(fileExt)) {
           const file = files[0];
           console.log("files-addArchivoRecurso", file);

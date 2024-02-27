@@ -33,6 +33,12 @@ export const navigation: FuseNavigation[] = [
                         id   : '1',
                         title: 'Bandeja de Egresos',
                         type : 'item',
+                        url  : '/bandeja-egreso'
+                    },
+                    {
+                        id   : '1',
+                        title: 'Registro de Egresos',
+                        type : 'item',
                         url  : '/actualizar-almacen'
                     }
                 ]

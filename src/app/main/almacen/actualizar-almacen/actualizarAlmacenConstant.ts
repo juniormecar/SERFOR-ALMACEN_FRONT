@@ -8,6 +8,6 @@ export interface ActualizarStep {
 
 export const ActualizarListSteps: ActualizarStep[] = [
     { stepId: 'step01', title: 'Actualizar Información', content: '' },
-    { stepId: 'step02', title: 'Bandeja de Egresos', content: '' }
+    { stepId: 'step02', title: 'Registro de Egresos', content: '' }
 ];
 

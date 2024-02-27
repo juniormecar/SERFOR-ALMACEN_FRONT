@@ -68,7 +68,7 @@ export class RegistroRecursoComponent implements OnInit {
   showIcon: boolean = true
   accept: string = ".jpg, .png";
   acceptRecurso: string = ".pdf";
-  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
   fileInfGenreal: any = {} ;
 
   origenes: General[] = [
@@ -300,10 +300,10 @@ export class RegistroRecursoComponent implements OnInit {
     }
 
     if (this.dataRecurso !== undefined) {
-      this.texto_boton = 'Actualizar';
+      this.texto_boton = 'Guardar';
       this.flagRegistrar = false;
     } else {
-      this.texto_boton = 'Registrar';
+      this.texto_boton = 'Guardar';
     }
 
     this.especieResponse.page = 1;

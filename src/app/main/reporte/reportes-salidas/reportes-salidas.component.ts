@@ -48,7 +48,7 @@ import { TransferenciaService } from 'app/service/transferencia.service';
     selection = new SelectionModel<Recurso>(true, []);
     listAlmacen: Almacen[] = [];
     almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
-    displayedColumns: string[] = ['codigoUnico','fecha','origen','destino', 'nroActa', 'observaciones', 'acciones','archivo'];
+    displayedColumns: string[] = ['codigoUnico','fecha','origen','destino', 'nroActa', 'observaciones', 'acciones'];
     inputBandeja: FormGroup;
     resultsLength = 0;
     idAlmacen: any;
@@ -270,7 +270,7 @@ else{
         nroActa=null;
       }
       const dialogRef = this._dialog.open(ModalDetalleDonacionComponent, {
-        width: '1250px',
+        width: '1150px',
         height: '600px',
         data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia,titulo:'Reporte de Salidas - Detalle'}
       });

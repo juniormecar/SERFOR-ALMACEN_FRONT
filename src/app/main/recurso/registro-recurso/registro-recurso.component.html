@@ -270,6 +270,34 @@
                                         <br>
                                       </mat-accordion>
                                     <br>
+                                      
+                                    <button  mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; border-radius: 6px; font-size: 13px;"
+                                    (click)="fileInput.click()">
+                                         <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                         Cargar Archivo
+                                         <input class="no-show" type="file" (change)="addArchivoRecurso($event)" [accept]="acceptRecurso" #fileInput
+                                         readonly />
+                                        </button>
+
+
+                                        
+
+                                         <button mat-raised-button class="mat-accent mr-16" style="background-color: #89B361; color: white; border: 2px solid #89B361;  border-radius: 6px; font-size: 13px;"
+                                         (click)="openModalAlmacenResponsable(null, 'NEW',null)">
+                                         <mat-icon aria-label="Agregar">vertical_align_bottom</mat-icon>
+                                         Descargar Archivo</button>
+
+                                         <button mat-raised-button class="mat-accent mr-16" style="background-color: #89B361; color: white; border: 2px solid #89B361; border-radius: 6px; font-size: 13px;"
+                                         (click)="openModalAlmacenResponsable(null, 'NEW',null)">
+                                         <mat-icon aria-label="Agregar">remove_red_eye</mat-icon>
+                                         </button>
+
+                                         <button mat-raised-button class="mat-accent mr-16" style="background-color: #d33; color: white; border: 2px solid #d33; border-radius: 6px; font-size: 13px;"
+                                         (click)="openModalAlmacenResponsable(null, 'NEW',null)">
+                                         <mat-icon aria-label="Agregar">delete</mat-icon>
+                                        </button>
+                                    
+                                    
                                     <button  class="mat-raised-button round-button" style="background-color: #679738; color: white; display: flex; align-items: center; justify-content: center;"
                                     (click)="cambiarPestana(1)">2. Catálogo de Productos <mat-icon style="margin-left: 5px;">keyboard_arrow_right</mat-icon></button>
 
@@ -1138,6 +1166,7 @@
                         <br>
                         <div style="display: flex; gap: 10px;">
                             <div class="col-6"></div>
+                            
                             <button class="mat-raised-button round-button3"  (click)="cambiarPestana(1)" 
                                 style="background-color: white; color: #679738; display: flex; align-items: center; justify-content: center; ">
                                 <mat-icon style="margin-right: 5px;">keyboard_arrow_left</mat-icon> 2. Catálogo de Productos
