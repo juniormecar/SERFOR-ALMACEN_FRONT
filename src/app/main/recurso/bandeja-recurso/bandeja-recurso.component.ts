@@ -49,7 +49,7 @@ export class BandejaRecursoComponent implements OnInit {
   tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
 
   isShowModal2_2:boolean=false;
-
+  accept: string = ".pdf";
   constructor(
     private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -285,12 +285,13 @@ export class BandejaRecursoComponent implements OnInit {
   }
 
   viewDocuments(idFile) {
-    const dialogOpen = this.dialog.open(AppViewDocumentsPdfComponent, {
-      disableClose: true,
+    const dialogRef = this.dialog.open(AppViewDocumentsPdfComponent, {
       data: {
         modulo: Constants.MODULO,
-        IDarchivo: idFile
+        idArchivo: idFile
       }
+    });
+    dialogRef.afterClosed().subscribe(result => {  
     });
   }
 

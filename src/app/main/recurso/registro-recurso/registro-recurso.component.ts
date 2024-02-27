@@ -208,6 +208,7 @@ export class RegistroRecursoComponent implements OnInit {
   }
   
   showArchivoRecurso: boolean = false;
+  nuIdArchivoRecurso: number = 0;
   
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -833,10 +834,13 @@ export class RegistroRecursoComponent implements OnInit {
   }
 
   validarFileRecuso(data: Recurso[]){
-    if(data !=null && data != undefined){
-      if(data[0].nuIdArchivoRecurso != null || data[0].nuIdArchivoRecurso != undefined
-        || data[0].nuIdArchivoRecurso != '0'){
-          this.showArchivoRecurso =  true;
+    console.log("validarFileRecuso-data", data);
+    if(data !=null && data != undefined && data.length > 0){
+      if(data[0].nuIdArchivoRecurso != null && data[0].nuIdArchivoRecurso != undefined
+        && data[0].nuIdArchivoRecurso != '0'){
+          console.log("ingreso")
+          this.showArchivoRecurso = true;
+          this.nuIdArchivoRecurso = Number(data[0].nuIdArchivoRecurso);
         }
     }
   }
@@ -2127,6 +2131,24 @@ redondeo(row:RecursoProduco){
         this.showArchivoRecurso = true;
         this.fileInfGenreal.id = result.data;
       });
+  }
+
+  descargarArchivoRecurso() {
+    console.log("idArchivo", this.nuIdArchivoRecurso);
+    const params = { "idArchivo": this.nuIdArchivoRecurso };
+    this._servicioArchivo.descargarArchivoGeneral(params).subscribe((result: any) => {
+      this.dialog.closeAll();
+      if (result.data !== null && result.data !== undefined) {
+        DownloadFile(result.data.archivo, result.data.nombeArchivo, result.data.contenTypeArchivo);
+      }
+    }, () => {
+      this.dialog.closeAll();
+      Swal.fire(
+        'Mensaje!',
+        'No se pudo descargar el archivo.',
+        'error'
+      )
+    });
   }
 }
 

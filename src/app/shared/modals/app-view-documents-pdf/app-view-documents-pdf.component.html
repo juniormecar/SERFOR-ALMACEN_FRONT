@@ -1,33 +1,41 @@
-<div class="flex flex-col flex-auto md:w-180 md:min-w-180 max-h-screen -m-6 overflow-y-auto content-scroll">
+<!--<div class="flex flex-col flex-auto md:w-180 md:min-w-180 max-h-screen -m-6 overflow-y-auto content-scroll">
 
-    <!-- Header -->
-    <div class="flex flex-0 items-center justify-center py-6 px-6 bg-card text-accent">
-        <div class="font-medium popup-title">Visor PDF</div>
+    <mat-toolbar class="m-0">
+        <mat-toolbar-row fxFlex fxLayout="row">
+            <span class="title dialog-title"> <b> Visor PDF </b></span>
+            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
+            <pdf-viewer [src]="pdfSrc" style="position: absolute;" [render-text]="true" [original-size]="false"
+            style="width: 800px; height: 500px"></pdf-viewer>
+        </ng-container>
     </div>
-    
-    <!-- Body -->
-    <ng-container>
 
-        <div *ngIf="data != null" class="flex flex-col flex-0 px-8 items-center w-full overflow-y-auto">
-            <fuse-card class="flex flex-col w-full mt-3 pdf-container">
-                <div class="flex flex-col py-2 px-3">
-                    <div class="text-secondary">{{ nameFile }}</div>
-                </div>
-                <div class="body">
-                    <div class="w-full h-full flex flex-row justify-center items-center" *ngIf="isLoadingDownload">
-                        <mat-progress-spinner [diameter]="24" [mode]="'indeterminate'"></mat-progress-spinner>
-                    </div>
-                    <div class="w-full h-full flex flex-row justify-center items-center" *ngIf="!isLoadingDownload && pdfSrc == null">
-                        <span class="text-secondary">Archivo no encontrado</span>
-                    </div>
-                    <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
-                        <pdf-viewer [src]="pdfSrc"  [render-text]="true"  [original-size]="false"
-                        style="width: 800px; height: 500px"></pdf-viewer>
-                    </ng-container>
-                </div>
-            </fuse-card>
-        </div>
+</div>-->
 
-    </ng-container>
 
+<div class="dialog-content-wrapper">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+            <span class="title dialog-title"> <b> Visor PDF </b></span>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+        <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
+            <pdf-viewer [src]="pdfSrc"  [render-text]="true"  [original-size]="false"
+            style="width: 800px; height: 500px"></pdf-viewer>
+        </ng-container>
+
+    </div>
+    <br> <br>
+    <div style="text-align: right;">
+        <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
 </div>

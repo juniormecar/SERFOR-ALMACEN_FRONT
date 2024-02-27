@@ -10,7 +10,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app-view-documents-pdf.component';
+import { AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app-view-documents-pdf.component';
+import { PdfViewerModule} from 'ng2-pdf-viewer'
+import { MatToolbarModule } from '@angular/material/toolbar';
 //import { ActionMessageComponent } from './modals/action-message/action-message.component';
 
 
@@ -29,8 +31,11 @@ import {AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app-
         MatPaginatorModule,
         MatInputModule,
         MatButtonModule,
-        MatIconModule, ],
-    exports: [DetalleRecursosComponent]
+        PdfViewerModule,
+        MatIconModule,
+        MatToolbarModule ],
+    exports: [DetalleRecursosComponent,
+    MatToolbarModule]
 })
 
 export class SharedModule {}
