@@ -75,6 +75,9 @@ import { TransferenciaService } from 'app/service/transferencia.service';
     disponibilidadActa: string = Constants.DISPONIBILIDAD_ACTA;
     tipoEspecie: string = Constants.TIPO_PRODUCTO_CATA;
     listTipoEspecie: Parametro[] = [];
+
+    accept = '.pdf';
+
     constructor(
       private _fuseConfigService: FuseConfigService,
       private _formBuilder: FormBuilder,

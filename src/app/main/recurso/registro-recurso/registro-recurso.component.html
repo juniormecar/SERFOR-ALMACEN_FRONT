@@ -1143,18 +1143,17 @@
                                 <mat-icon style="margin-right: 5px;">keyboard_arrow_left</mat-icon> 2. Catálogo de Productos
                             </button>
                             <div class="col-6" style="margin-left: auto;">
-                                    <!--<button mat-raised-button [disabled]="showArchivoRecurso" class="btn-secondary" style="background-color: #679738;" 
+                                    <button mat-raised-button *ngIf="!showArchivoRecurso" class="btn-secondary" style="background-color: #679738;" 
                                     (click)="fileInput.click()">Cargar File
                                         <input class="no-show" type="file" (change)="addArchivoRecurso($event)" [accept]="acceptRecurso" #fileInput
                                         readonly />
-                                    </button>-->
+                                    </button>
+                                    <button mat-raised-button *ngIf="showArchivoRecurso" class="btn-danger" style="background-color: red;" 
+                                    (click)="descargarArchivoRecurso()">Descargar File
+                                    </button>
                                     <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;" 
                                     (click)="registro()">{{texto_boton}}</button>
                             </div>
-                            <!--<button mat-raised-button class="btn-secondary width-full" style="background-color: #679738;"
-                            (click)="registro()">Cargar File</button>
-                            <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738; margin-left: 35%;"
-                            (click)="registro()">{{texto_boton}}</button>-->
                         </div>
                          <br>
                     </div>

@@ -42,7 +42,9 @@
               "crossvent",
               "dom-plane",
               "dom-set",
-              "@mattlewis92/dom-autoscroller"
+              "@mattlewis92/dom-autoscroller",
+              "pdfjs-dist",
+              "pdfjs-dist/web/pdf_viewer"
             ]
           },
           "configurations": {
