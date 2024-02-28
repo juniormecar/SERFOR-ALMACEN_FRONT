@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { Observable, Subject } from 'rxjs';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
@@ -206,7 +206,7 @@ export class RegistroRecursoComponent implements OnInit {
       cantidad: null,
       redondeo: null
   }
-  
+  indexChangeTab: number = 0;
   showArchivoRecurso: boolean = false;
   nuIdArchivoRecurso: number = 0;
   
@@ -337,6 +337,7 @@ export class RegistroRecursoComponent implements OnInit {
   //---------------------------------------------------------
 
   ngOnInit(): void {    
+    
     this.setStep(5);
     this.searchTipoDocumento();
     this.searchTipoInfraccion();
@@ -1599,6 +1600,12 @@ export class RegistroRecursoComponent implements OnInit {
 
   }
 
+  selectedTabChange(e){
+    this.indexChangeTab = e.index;
+    console.log('indexChangeTabindexChangeTabindexChangeTab',this.indexChangeTab);
+    
+  }
+
   validRecursoProducto(listDetalleInit){
   
     let validar: boolean = true;
@@ -1617,6 +1624,10 @@ export class RegistroRecursoComponent implements OnInit {
 
     let listDetalle = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'MAD');
     console.log('listDetallelistDetallelistDetallelistDetallelistDetalle',listDetalle);
+
+    //VALIDANDO QUE ESTÉ EN EL TAB DE MADERABLES
+
+    if(this.indexChangeTab === 0){
   
     for( let index = 0 ; index < listDetalle.length; index++){
       if ((listDetalle[index].nombreComun == '' || listDetalle[index].nombreComun == null) 
@@ -1650,6 +1661,9 @@ export class RegistroRecursoComponent implements OnInit {
         message += '\n - Unidad Medida';
       }
     }
+    }
+
+    if(this.indexChangeTab === 1){
     let listDetalleNM = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'NOMAD');
     for( let index = 0 ; index < listDetalleNM.length; index++){
       
@@ -1684,6 +1698,8 @@ export class RegistroRecursoComponent implements OnInit {
         message += '\n - Unidad Medida';
       }
     }
+  }
+  if(this.indexChangeTab === 2){
     let listDetalleFA = listDetalleInit.filter( e => (e.nombreCientifico != '' || e.nombreCientifico != null || e.nombreCientifico == null) && e.type === 'FA');
     for( let index = 0 ; index < listDetalleFA.length; index++){
      
@@ -1701,6 +1717,7 @@ export class RegistroRecursoComponent implements OnInit {
       }
 
     }
+  }
     //if (!validar) this.ErrorMensaje(mensaje);
     return (validar == false) ? message:'';
     //return (validar == false) ? Swal.fire('Mensaje!',message,'warning'): true;
@@ -1988,6 +2005,8 @@ redondeo(row:RecursoProduco){
   cambiarPestana(indice: number) {
     this.tabGroup.selectedIndex = indice;
   }
+
+  
 
   ///Nuevos
   addArchivoTabla(item: any, file: any,index:any) {

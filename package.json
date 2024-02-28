@@ -51,7 +51,7 @@
         "md5": "2.3.0",
         "moment": "2.29.1",
         "ng2-charts": "2.4.2",
-        "ng2-pdf-viewer": "7.0.0",
+        "ng2-pdf-viewer": "7.0.2",
         "ngrx-store-freeze": "0.2.4",
         "ngx-color-picker": "10.1.0",
         "ngx-cookie-service": "10.1.1",
