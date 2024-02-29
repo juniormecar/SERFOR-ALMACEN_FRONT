@@ -117,7 +117,7 @@ export class BandejaEgresoComponent implements OnInit {
 
     this.numeroDocumento = localStorage.getItem('usuario'); 
   }
-  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg"];
 
   isShowModal2_2:boolean=false;
   showArchivoSalida: boolean=false;

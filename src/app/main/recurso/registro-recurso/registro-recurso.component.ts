@@ -66,7 +66,7 @@ export class RegistroRecursoComponent implements OnInit {
   file: File | null | string = null;
   onChange: any = () => { }
   showIcon: boolean = true
-  accept: string = ".jpg, .png";
+  accept: string = ".jpg, .png, .mp4";
   acceptRecurso: string = ".pdf";
   tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
   fileInfGenreal: any = {} ;
@@ -2022,7 +2022,7 @@ redondeo(row:RecursoProduco){
       } else {
         Swal.fire(
           'Mensaje!',
-          '(*) Formato no valido (jpg o png)',
+          '(*) Formato no valido (jpg o png o mp4)',
           'error'
         )
       }
