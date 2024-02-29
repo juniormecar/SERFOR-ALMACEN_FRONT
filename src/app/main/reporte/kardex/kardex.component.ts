@@ -29,7 +29,7 @@ export class KardexComponent implements OnInit {
   kardexRequest:  Kardex = new Kardex();
   listAlmacen: Almacen[] = [];
   listKardex: Kardex[] = [];
-  displayedColumns: string[] = ['codigoUnico','fecha','nomAlmacen','Tipo','nombreCientifico','nombreComun','documento','tipoI','cantidadI','unidadMedidaIngreso','cantidadM3I', 'totalI','totalM3I', 'tipoS','cantidadS','unidadMedidaSalida','cantidadM3S', 'totalS','totalM3S' ];
+  displayedColumns: string[] = ['codigoUnico','fecha','nroActa','nomAlmacen','Tipo','nombreCientifico','nombreComun','documento','tipoI','cantidadI','unidadMedidaIngreso','cantidadM3I', 'totalI','totalM3I', 'tipoS','cantidadS','unidadMedidaSalida','cantidadM3S', 'totalS','totalM3S' ];
   almacenResponse: BandejaAlmacenResponse = new BandejaAlmacenResponse();
   inputBandeja: FormGroup; 
   resultsLength = 0;

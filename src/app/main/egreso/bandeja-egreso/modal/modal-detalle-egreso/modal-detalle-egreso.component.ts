@@ -166,7 +166,8 @@ export class ModalDetalleEgresoComponent implements OnInit {
             tipoEspecie: ds.tipoEspecie,
             nombreComun: ds.nombreComun,
             nombreCientifico: ds.nombreCientifico,
-            numeroActaRetorno: this.inputDetalle.get('numeroActaRetorno').value
+            numeroActaRetorno: this.inputDetalle.get('numeroActaRetorno').value,
+            nuIdTransferenciaDetalle: ds.nuIdTransferenciaDetalle
           }
           paramsList.push(params);
           console.log('paramsList',paramsList);
