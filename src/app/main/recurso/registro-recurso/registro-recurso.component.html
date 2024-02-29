@@ -793,6 +793,13 @@
                                                     >
                                                     <mat-icon title="Eliminar Archivo">delete</mat-icon>
                                                     </button>
+                                                    &nbsp; &nbsp;
+                                                    <button mat-mini-fab *ngIf="element.nuIdArchivoRecursoProducto !== 'noFile' && element.nuIdArchivoRecursoProducto !== 0 && element.nuIdArchivoRecursoProducto !== undefined && element.nuIdArchivoRecursoProducto !== null"
+                                                        (click)="verDocuments(element.nuIdArchivoRecursoProducto)" style="min-width: 40px; width: 40px; background-color: #89B361;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon title="Ver Archivo">visibility</mat-icon>
+                                                    </button>
 
                                                 </td>
                                             </ng-container>
@@ -1005,6 +1012,13 @@
                                                         >
                                                         <mat-icon title="Eliminar Archivo">delete</mat-icon>
                                                         </button>
+                                                        &nbsp; &nbsp;
+                                                        <button mat-mini-fab *ngIf="element.nuIdArchivoRecursoProducto !== 'noFile' && element.nuIdArchivoRecursoProducto !== 0 && element.nuIdArchivoRecursoProducto !== undefined && element.nuIdArchivoRecursoProducto !== null"
+                                                            (click)="verDocuments(element.nuIdArchivoRecursoProducto)" style="min-width: 40px; width: 40px; background-color: #89B361;"
+                                                        readonly
+                                                        >
+                                                        <mat-icon title="Ver Archivo">visibility</mat-icon>
+                                                        </button>
 
                                                     </td>
                                                 </ng-container>
@@ -1146,6 +1160,13 @@
                                                     readonly
                                                     >
                                                     <mat-icon title="Eliminar Archivo">delete</mat-icon>
+                                                    </button>
+                                                    &nbsp; &nbsp;
+                                                    <button mat-mini-fab *ngIf="element.nuIdArchivoRecursoProducto !== 'noFile' && element.nuIdArchivoRecursoProducto !== 0 && element.nuIdArchivoRecursoProducto !== undefined && element.nuIdArchivoRecursoProducto !== null"
+                                                        (click)="verDocuments(element.nuIdArchivoRecursoProducto)" style="min-width: 40px; width: 40px; background-color: #89B361;"
+                                                    readonly
+                                                    >
+                                                    <mat-icon title="Ver Archivo">visibility</mat-icon>
                                                     </button>
 
                                                 </td>

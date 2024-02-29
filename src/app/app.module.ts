@@ -84,6 +84,7 @@ import { ReportesDisponibilidadComponent } from './main/reporte/reportes-disponi
 import { ModalDetalleDonacionComponent } from './main/reporte/reportes-donaciones/modal/modal-detalle-donacion/modal-detalle-donacion.component';
 import { BandejaEgresoComponent } from './main/egreso/bandeja-egreso/bandeja-egreso.component';
 import { ModalDetalleEgresoComponent } from './main/egreso/bandeja-egreso/modal/modal-detalle-egreso/modal-detalle-egreso.component';
+import { ActualizarEgresoComponent } from './main/egreso/actualizar-egreso/actualizar-egreso.component';
 
 const appRoutes: Routes = [
     {
@@ -195,6 +196,10 @@ const appRoutes: Routes = [
 
     },
     {
+        path: 'actualizar-egreso/:id',
+        component: ActualizarEgresoComponent
+    },
+    {
         path: '',
         pathMatch:'full',
         redirectTo: 'login',
@@ -261,7 +266,9 @@ const appRoutes: Routes = [
 
         BandejaEgresoComponent,
 
-        ModalDetalleEgresoComponent
+        ModalDetalleEgresoComponent,
+
+        ActualizarEgresoComponent
     ],
     imports: [
         BrowserModule,

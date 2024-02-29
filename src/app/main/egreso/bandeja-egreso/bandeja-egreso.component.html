@@ -163,10 +163,13 @@
                                     <ng-container matColumnDef="acciones">
                                         <th mat-header-cell *matHeaderCellDef> Detalle </th>
                                         <td mat-cell *matCellDef="let element">
+                                            <button  mat-mini-fab (click)="editarEgreso(element, element.nuIdTransferencia)" style="background-color: #679738;">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp; &nbsp;
                                             <button  mat-mini-fab (click)="verDetalleSalida(element.tipoTransferencia,element.nroActa,element.nuIdTransferencia)" style="background-color: #679738;">
                                                 <mat-icon>remove_red_eye</mat-icon>
-                                            </button>              
-                                           
+                                            </button>   
                                         </td>
                                     </ng-container> 
 

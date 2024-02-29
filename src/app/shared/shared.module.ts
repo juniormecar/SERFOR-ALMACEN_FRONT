@@ -13,13 +13,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app-view-documents-pdf.component';
 import { PdfViewerModule} from 'ng2-pdf-viewer'
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AppViewDocumentsComponent } from './modals/app-view-documents/app-view-documents.component';
 //import { ActionMessageComponent } from './modals/action-message/action-message.component';
 
 
 @NgModule({
     declarations: [
         DetalleRecursosComponent,
-        AppViewDocumentsPdfComponent
+        AppViewDocumentsPdfComponent,
+        AppViewDocumentsComponent
         //ActionMessageComponent
     ],
     imports: [ CommonModule,
