@@ -465,4 +465,9 @@ else{
     });
   }
 
+  editarEgreso(data: Reportes, id: any): void {
+    let url = 'actualizar-egreso/'+ id;
+    this._router.navigate([url], { state: { data: data, type:'' } });
+  }
+
 }
