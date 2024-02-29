@@ -1,0 +1,52 @@
+.pdf-container {
+    width: 100%;
+}
+
+.pdf-container .body {
+    background-color: white !important;
+    height: 520px;
+}
+
+.tittle-especie{
+    color:#C9E0C0;
+}
+
+.next,
+.done {
+    margin-left: auto;
+}
+
+h1{
+    color:#4a962c;
+}
+
+table {
+    width: 100%;
+
+    th {
+        background-color: #89B361;
+        color: white;
+        text-align: center;
+        font-weight: 600;
+        padding-bottom: 20px;
+    }
+
+    td {
+        text-align: center;
+    }
+}
+
+
+
+.mat-row,
+.mat-header-row {
+    display: table-row;
+}
+
+.accept{
+    background-color: #679738;
+}
+
+.close{
+    background-color: #BF3F23;
+} 

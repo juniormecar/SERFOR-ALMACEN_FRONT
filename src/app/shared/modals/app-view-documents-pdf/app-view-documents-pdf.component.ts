@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ArchivoService } from 'app/service/archivo.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-app-view-documents-pdf',
@@ -11,19 +10,20 @@ import { Subject } from 'rxjs';
 })
 export class AppViewDocumentsPdfComponent implements OnInit {
 
-  private _unsubscribeAll: Subject<any> = new Subject<any>();
   isLoadingDownload: boolean = false;
   
-  pdfSrc :string = "";  
+  pdfSrc :string = "";
+  imageSrc :string = "";  
+
   isShowModal2_2:boolean=false;
+  isImage: boolean=false;
 
   constructor(
       public dialogRef: MatDialogRef<AppViewDocumentsPdfComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
       //private _serviceAccount: AccountService,
       public dialog: MatDialog,
-      private _servicioArchivo: ArchivoService
-  ) { }
+      private _servicioArchivo: ArchivoService  ) { }
 
   ngOnInit(): void {
     this.verPDF();
@@ -49,10 +49,7 @@ export class AppViewDocumentsPdfComponent implements OnInit {
           const blob = this.base64toBlob(result.data.archivo, 'application/pdf')
           reader.readAsArrayBuffer(blob);
         }
-
       });
-
-
   }
 
   base64toBlob(base64Data:any, contentType:any) {

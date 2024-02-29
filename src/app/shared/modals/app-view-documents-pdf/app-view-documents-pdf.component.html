@@ -1,41 +1,18 @@
-<!--<div class="flex flex-col flex-auto md:w-180 md:min-w-180 max-h-screen -m-6 overflow-y-auto content-scroll">
+<mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <span class="title dialog-title"> <b> Visor PDF </b></span>
+</mat-toolbar>
 
-    <mat-toolbar class="m-0">
-        <mat-toolbar-row fxFlex fxLayout="row">
-            <span class="title dialog-title"> <b> Visor PDF </b></span>
-            <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
+<div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
 
-    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
-        <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
-            <pdf-viewer [src]="pdfSrc" style="position: absolute;" [render-text]="true" [original-size]="false"
-            style="width: 800px; height: 500px"></pdf-viewer>
-        </ng-container>
-    </div>
+    <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
+        <pdf-viewer [src]="pdfSrc"  [render-text]="true"  [original-size]="false"
+        style="width: 800px; height: 500px"></pdf-viewer>
+    </ng-container>
 
-</div>-->
-
-
-<div class="dialog-content-wrapper">
-    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
-            <span class="title dialog-title"> <b> Visor PDF </b></span>
-    </mat-toolbar>
-
-    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
-
-        <ng-container *ngIf="!isLoadingDownload && pdfSrc != null">
-            <pdf-viewer [src]="pdfSrc"  [render-text]="true"  [original-size]="false"
-            style="width: 800px; height: 500px"></pdf-viewer>
-        </ng-container>
-
-    </div>
-    <br> <br>
-    <div style="text-align: right;">
-        <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
-            <mat-icon>close</mat-icon>
-        </button>
-    </div>
+</div>
+<br> <br>
+<div style="text-align: right;">
+    <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
 </div>

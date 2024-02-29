@@ -1,0 +1,63 @@
+<div *ngIf="isImage">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <span class="title dialog-title"> <b> Visor Imagen </b></span>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+    <ng-container *ngIf="imageSrc != null">
+        <img style="width: 800px; height: 500px" [src]="imageSrc" />
+    </ng-container>
+
+    </div>
+    <br> <br>
+    <div style="text-align: right;">
+    <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+    </div>
+</div>
+
+<div *ngIf="isVideo">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <span class="title dialog-title"> <b> Visor Video </b></span>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+    <ng-container *ngIf="videoSrc != null">
+        <video style="width: 800px; height: 500px" controls *ngIf="videoSrc">
+            <source [src]="videoSrc">
+        </video>
+    </ng-container>
+
+    </div>
+    <br> <br>
+    <div style="text-align: right;">
+    <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+    </div>
+</div>
+
+<div *ngIf="isVacio">
+    <mat-toolbar class="m-0" style="background-color: #679738; color: white;">
+        <span class="title dialog-title"> <b> Visor Documento </b></span>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+
+    <ng-container *ngIf="imageSrc != null">
+        <div style="width: 800px; height: 500px">
+            <span class="title dialog-title"> <b> Tipo de Archivo no es Imagen ni Video. </b></span>
+        </div>
+    </ng-container>
+
+    </div>
+    <br> <br>
+    <div style="text-align: right;">
+    <button mat-fab class="next red-500 fuse-white-fg mat-dialog-close" (click)="close()">
+        <mat-icon>close</mat-icon>
+    </button>
+    </div>
+</div>
