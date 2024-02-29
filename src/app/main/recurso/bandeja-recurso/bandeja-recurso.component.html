@@ -194,28 +194,28 @@
                                         <th mat-header-cell *matHeaderCellDef> Archivo </th>
                                         <td mat-cell *matCellDef="let element; let i = index">
 
-                                            <button type="button" *ngIf="element.nuIdArchivoRecurso !== 'noFile' && (element.nuIdArchivoRecurso === 0 || element.nuIdArchivoRecurso === undefined || element.nuIdArchivoRecurso === null)" 
+                                            <button type="button" *ngIf="element.nuIdArchivoRecurso !== 'noFile' && (element.nuIdArchivoRecurso === 0 || element.nuIdArchivoRecurso === undefined || element.nuIdArchivoRecurso === null) && (element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER')" 
                                                 class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
                                                 <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
                                                 <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
                                                     readonly />
                                             </button>
 
-                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null && (element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER')"
                                                 (click)="descargarArchivoTabla(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: #89B361;"
                                             readonly
                                             >
                                             <mat-icon title="Descargar Archivo">vertical_align_bottom</mat-icon>
                                             </button>
                                             &nbsp; &nbsp;
-                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null && (element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER')"
                                                 (click)="eliminarArchivoGeneral(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: #d33;"
                                             readonly
                                             >
                                             <mat-icon title="Eliminar Archivo">delete</mat-icon>
                                             </button>
                                             &nbsp; &nbsp;
-                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null"
+                                            <button mat-mini-fab *ngIf="element.nuIdArchivoRecurso !== 'noFile' && element.nuIdArchivoRecurso !== 0 && element.nuIdArchivoRecurso !== undefined && element.nuIdArchivoRecurso !== null && (element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER')"
                                                 (click)="verPDF(element.nuIdArchivoRecurso)" style="min-width: 40px; width: 40px; background-color: #89B361;"
                                             readonly
                                             >

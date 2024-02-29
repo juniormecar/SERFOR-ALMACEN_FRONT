@@ -48,6 +48,7 @@ import * as moment from 'moment';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ArchivoService } from 'app/service/archivo.service';
 import { DownloadFile } from 'app/shared/models/util/util';
+import { AppViewDocumentsComponent } from 'app/shared/modals/app-view-documents/app-view-documents.component';
 
 interface General {
   value: string;
@@ -66,9 +67,9 @@ export class RegistroRecursoComponent implements OnInit {
   file: File | null | string = null;
   onChange: any = () => { }
   showIcon: boolean = true
-  accept: string = ".jpg, .png";
+  accept: string = ".jpg, .png, .mp4";
   acceptRecurso: string = ".pdf";
-  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4"];
+  tipoArchivoTablaCod: string[] = ["application/pdf", "image/png","image/jpg","video/mp4","image/jpeg"];
   fileInfGenreal: any = {} ;
 
   origenes: General[] = [
@@ -2014,15 +2015,24 @@ redondeo(row:RecursoProduco){
     if (files && files.length > 0) {
       const fileExt = files[0].type.toLocaleLowerCase();
       if (this.tipoArchivoTablaCod.includes(fileExt)) {
-        console.log("INGRESA AQUI")
         const file = files[0];
         console.log("files-addArchivoTabla", file);
-        //this.fileInfGenrealOsinfor.file = files[0];
-        this.guardarArchivo(item, file);
+        const fileSize = files[0].size;
+        const fSize = Math.round((fileSize / 1024))
+        if(fSize > 10240){
+          const fileSizeConvert = fSize/1000;
+          Swal.fire(
+            'Mensaje!',
+            '(*) Archivo excede de los 10mb, el archivo que esta intentando cargar tiene: ' + fileSizeConvert + 'MB',
+            'error'
+          )
+        } else {
+          this.guardarArchivo(item, file);
+        }
       } else {
         Swal.fire(
           'Mensaje!',
-          '(*) Formato no valido (jpg o png)',
+          '(*) Formato no valido (jpg o png o mp4)',
           'error'
         )
       }
@@ -2065,7 +2075,7 @@ redondeo(row:RecursoProduco){
         null,
         item.nuIdRecursoProducto,
         codigoUrlArchivo,
-        file,
+        file
       )
       .pipe(finalize(() => this.dialog.closeAll()))
       .subscribe((result: any) => {
@@ -2115,7 +2125,6 @@ redondeo(row:RecursoProduco){
         if (this.tipoArchivoTablaCod.includes(fileExt)) {
           const file = files[0];
           console.log("files-addArchivoRecurso", file);
-          //this.fileInfGenrealOsinfor.file = files[0];
           this.guardarArchivoRecurso(file);
         } else {
           Swal.fire(
@@ -2131,10 +2140,8 @@ redondeo(row:RecursoProduco){
   guardarArchivoRecurso( file: any) {
 
     let codigoTipo = 'INGRESO';
-    console.log("this.idRecurso: ", this.idRecurso)
     let codigoUrlArchivo = codigoTipo + Constants.BACKSLASH + Constants.BACKSLASH + String(this.idRecurso) 
     + Constants.BACKSLASH + Constants.BACKSLASH;
-    //this.dialog.open(LoadingComponent, { disableClose: true });
     this._servicioArchivo
       .cargarArchivoGeneralCodRecurso(
         1,
@@ -2142,7 +2149,7 @@ redondeo(row:RecursoProduco){
         Number(this.idRecurso),
         null,
         codigoUrlArchivo,
-        file,
+        file
       )
       .pipe(finalize(() => this.dialog.closeAll()))
       .subscribe((result: any) => {
@@ -2169,7 +2176,23 @@ redondeo(row:RecursoProduco){
       )
     });
   }
-}
+
+  verDocuments(idFile: number){
+    this.viewDocuments(idFile);
+  }
+
+  viewDocuments(idFile) {
+    const dialogRef = this.dialog.open(AppViewDocumentsComponent, {
+      data: {
+        modulo: Constants.MODULO,
+        idArchivo: idFile
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {  
+    });
+  }
+
+} 
 
 
 
