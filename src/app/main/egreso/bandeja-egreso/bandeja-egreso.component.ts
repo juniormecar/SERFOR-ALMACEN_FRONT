@@ -271,7 +271,7 @@ else{
     }
     const dialogRef = this._dialog.open(ModalDetalleEgresoComponent, {
       width: '1250px',
-      height: '600px',
+      height: '800px',
       data: { nroActa: nroActa, nuIdTransferencia:nuIdTransferencia,titulo:'Bandeja de Egresos - Detalle'}
     });
 

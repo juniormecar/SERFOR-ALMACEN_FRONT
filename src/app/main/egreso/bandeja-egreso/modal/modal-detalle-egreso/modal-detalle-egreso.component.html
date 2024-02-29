@@ -9,6 +9,23 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="inputDetalle">
+
+            <br>
+
+            <div fxLayout="row" fxLayoutAlign="space-between">
+                <span class="text-primary-ir" floatLabel="always" fxFlex="45">N° Acta de Retorno</span>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between">
+
+                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
+                    <input matInput type="text" formControlName="numeroActaRetorno">
+                </mat-form-field>
+            </div>
+
+            <br>
+
         <div class="example-container mat-elevation-z1">
             <table mat-table [dataSource]="dataSource">
 
@@ -145,6 +162,6 @@
     </div>
 
         </div>
-        
+    </form>
     </div>
 </div>

@@ -56,4 +56,5 @@ export class Reportes {
     nuIdAlmacenOrigin?:number;
     cantidadProductoRet?:number;
     metroCubicoRet?:number;
+    numeroActaRetorno?:string;
 }

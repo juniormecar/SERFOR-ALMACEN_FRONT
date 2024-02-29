@@ -8,6 +8,7 @@ import { Reportes } from 'app/shared/models/reportes.model';
 import { ReportesResponse } from 'app/shared/models/response/reportes-response';
 import Swal from 'sweetalert2';
 import { TransferenciaService } from 'app/service/transferencia.service';
+import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 
 interface DialogData {
   nroActa:string,
@@ -27,11 +28,13 @@ export class ModalDetalleEgresoComponent implements OnInit {
   resultsLength = 0;
   cantidadVacia = 0;
   descontarMayor = 0;
+  inputDetalle: FormGroup;  
   constructor(
     public dialogRef: MatDialogRef<ModalDetalleEgresoComponent>,
     private _fuseConfigService: FuseConfigService,
     private _reportesService: ReportesService,
     private serviceTransferencia: TransferenciaService,
+    private _formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { 
     this.reportesResponse.pageNumber = 1;
@@ -52,6 +55,9 @@ export class ModalDetalleEgresoComponent implements OnInit {
         }
       }
     };
+    this.inputDetalle = this._formBuilder.group({
+      numeroActaRetorno: ['', Validators.required],
+    });  
   }
 
   ngOnInit(): void {
@@ -60,7 +66,7 @@ export class ModalDetalleEgresoComponent implements OnInit {
   }
 
   async SearchReportes() {
-console.log('jjj');
+
     this.dataSource = new MatTableDataSource<Reportes>([]);
     this.reportesRequest.tipo =  'D';
     this.reportesRequest.nroActa =  this.data.nroActa;
@@ -159,7 +165,8 @@ console.log('jjj');
             tipoTransferencia: ds.tipoTransferencia,
             tipoEspecie: ds.tipoEspecie,
             nombreComun: ds.nombreComun,
-            nombreCientifico: ds.nombreCientifico
+            nombreCientifico: ds.nombreCientifico,
+            numeroActaRetorno: this.inputDetalle.get('numeroActaRetorno').value
           }
           paramsList.push(params);
           console.log('paramsList',paramsList);
