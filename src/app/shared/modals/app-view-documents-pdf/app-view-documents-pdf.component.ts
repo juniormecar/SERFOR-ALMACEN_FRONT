@@ -29,7 +29,8 @@ export class AppViewDocumentsPdfComponent implements OnInit {
     this.verPDF();
   }
 
-  verPDF(){
+  /*old*/
+  /*verPDF(){
     this.isShowModal2_2 = true;
     //this.pdfSrc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
     var params = {
@@ -47,6 +48,23 @@ export class AppViewDocumentsPdfComponent implements OnInit {
 
           };
           const blob = this.base64toBlob(result.data.archivo, 'application/pdf')
+          reader.readAsArrayBuffer(blob);
+        }
+      });
+  }*/
+
+  verPDF(){
+    this._servicioArchivo.listarMultiplesArchivosGeneral(this.data.idArchivo,this.data.idArchivoDetalle)
+      .pipe()
+      .subscribe((result: any) => {
+
+        if(result.data !== null && result.data !== undefined){
+          let reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.pdfSrc = e.target.result;
+
+          };
+          const blob = this.base64toBlob(result.data[0].archivo, 'application/pdf')
           reader.readAsArrayBuffer(blob);
         }
       });

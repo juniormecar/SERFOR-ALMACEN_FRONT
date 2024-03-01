@@ -36,7 +36,7 @@ export class AppViewDocumentsComponent implements OnInit {
     this.verDocument();
   }
 
-  verDocument(){
+  /*verDocument(){
     var params = {
       idArchivo: this.data.idArchivo
     };
@@ -62,6 +62,38 @@ export class AppViewDocumentsComponent implements OnInit {
                 this.videoSrc = e.target.result;
               };
               const blob = this.base64toBlob(result.data.archivo, result.data.typeFile )
+              reader.readAsDataURL(blob);
+            }
+            else{
+              this.isVacio = true;
+            }
+          }
+        }
+      });
+  }*/
+
+  verDocument(){
+    this._servicioArchivo.listarMultiplesArchivosGeneral(this.data.idArchivo,this.data.idArchivoDetalle)
+      .pipe()
+      .subscribe((result: any) => {
+        if(result.data !== null && result.data !== undefined){
+          console.log("result.data-verDocument",result.data)
+          if(result.data[0].typeFile != null && result.data[0].typeFile != undefined && result.data[0].typeFile != ''){
+            if(this.tipoArchivoImage.includes(result.data[0].typeFile)){
+              let reader = new FileReader();
+              reader.onload = (e: any) => {
+                this.imageSrc = e.target.result;
+              };
+              this.isImage = true;
+              this.imageSrc = 'data:image/png;base64,' + result.data[0].archivo;
+
+            } else if (this.tipoArchivoVideo.includes(result.data[0].typeFile)) {
+              this.isVideo = true;
+              let reader = new FileReader();
+              reader.onload = (e: any) => {
+                this.videoSrc = e.target.result;
+              };
+              const blob = this.base64toBlob(result.data[0].archivo, result.data[0].typeFile )
               reader.readAsDataURL(blob);
             }
             else{

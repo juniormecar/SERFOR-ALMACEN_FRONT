@@ -22,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ArchivoService } from 'app/service/archivo.service';
 import { DownloadFile } from 'app/shared/models/util/util';
 import { AppViewDocumentsPdfComponent } from 'app/shared/modals/app-view-documents-pdf/app-view-documents-pdf.component';
+import { TableViewDocumentsComponent } from 'app/shared/modals/table-view-documents/table-view-documents.component';
 
 @Component({
   selector: 'app-bandeja-recurso',
@@ -292,6 +293,24 @@ export class BandejaRecursoComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {  
+    });
+  }
+
+  viewFiles(element: any,accept: string){
+    console.log("element",element)
+    const dialogRef = this.dialog.open(TableViewDocumentsComponent, {
+      width: '1300px',
+      height: '800px',
+      data: {
+        idArchivo: element.nuIdArchivoRecurso,
+        accept: accept,
+        typeObject: Constants.RECURSO,
+        idObjeto: element.nuIdRecurso
+        //modulo: Constants.MODULO,
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.Search();
     });
   }
 

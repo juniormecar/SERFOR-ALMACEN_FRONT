@@ -220,5 +220,9 @@ return this.http.get<BandejaRecursoResponse>((url)).pipe(catchError(this.errorHa
     let url = `${this.basePas}?nuActa=${nuActa}`;
     return this.http.get<RecursoPasResponse>((url)).pipe(catchError(this.errorHandler));
   }
+
+  actualizarRecursoArchivos(params: any) {
+    return this.http.put(`${this.base}/actualizarRecursoArchivos`, params);
+  }
   
 }

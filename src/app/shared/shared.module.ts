@@ -14,6 +14,7 @@ import { AppViewDocumentsPdfComponent} from './modals/app-view-documents-pdf/app
 import { PdfViewerModule} from 'ng2-pdf-viewer'
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppViewDocumentsComponent } from './modals/app-view-documents/app-view-documents.component';
+import { TableViewDocumentsComponent } from './modals/table-view-documents/table-view-documents.component';
 //import { ActionMessageComponent } from './modals/action-message/action-message.component';
 
 
@@ -21,7 +22,8 @@ import { AppViewDocumentsComponent } from './modals/app-view-documents/app-view-
     declarations: [
         DetalleRecursosComponent,
         AppViewDocumentsPdfComponent,
-        AppViewDocumentsComponent
+        AppViewDocumentsComponent,
+        TableViewDocumentsComponent
         //ActionMessageComponent
     ],
     imports: [ CommonModule,
