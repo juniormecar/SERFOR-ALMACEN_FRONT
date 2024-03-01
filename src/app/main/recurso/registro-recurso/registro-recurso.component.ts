@@ -166,7 +166,7 @@ export class RegistroRecursoComponent implements OnInit {
   /********************************************* RECURSO PRODUCTO FAUNA ******************************************************/
   listProductoFA: RecursoProduco[] = [];
   recursoResponseFA: BandejaRecursoResponse = new BandejaRecursoResponse();
-  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','detalle', 'archivo' ];
+  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','txObservaciones','detalle', 'archivo' ];
   dataSourceFA = new MatTableDataSource<RecursoProduco>(this.listProductoFA);
   totalToneladasFA: number = 0;
   /***************************************************************************************************/
