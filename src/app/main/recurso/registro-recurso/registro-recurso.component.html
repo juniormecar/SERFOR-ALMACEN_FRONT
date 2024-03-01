@@ -1014,7 +1014,7 @@
                                         <table mat-table [dataSource]="dataSourceFA">
 
                                             <ng-container matColumnDef="position">
-                                                <th mat-header-cell *matHeaderCellDef style="width:10%"></th>
+                                                <th mat-header-cell *matHeaderCellDef style="width:5%"></th>
                                                 <td mat-cell *matCellDef="let element;">
                                                     <!-- <div *ngIf="element.idEspecie !== 0">
                                                         {{ i + 1 + (paginator.pageIndex * paginator.pageSize) }}
@@ -1030,7 +1030,7 @@
 
                                             <!--Symbol Column -->
                                             <ng-container matColumnDef="nameCientifico">
-                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Nombre
+                                                <th mat-header-cell *matHeaderCellDef style="width:20%"> Nombre
                                                     Científico </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie === 999999">
@@ -1049,7 +1049,7 @@
 
                                             <!--Symbol Column -->
                                             <ng-container matColumnDef="nameComun">
-                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Nombre Común o
+                                                <th mat-header-cell *matHeaderCellDef style="width:20%"> Nombre Común o
                                                     Comercial
                                                 </th>
                                                 <td mat-cell *matCellDef="let element">
@@ -1069,7 +1069,7 @@
 
                                             <!--Symbol Column -->
                                             <ng-container matColumnDef="cantidad">
-                                                <th mat-header-cell *matHeaderCellDef style="width:14%"> Cantidad </th>
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Cantidad </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=100>
@@ -1082,8 +1082,20 @@
                                                 </td>
                                             </ng-container>
 
+                                            <ng-container matColumnDef="txObservaciones">
+                                                <th mat-header-cell *matHeaderCellDef style="width:20%;"> Observaciones </th>
+                                                <td mat-cell *matCellDef="let element">
+                                                    <div *ngIf="element.idEspecie !== 0">                                                       
+                                                        <mat-form-field appearance="outline" floatLabel="always" >
+                                                            <textarea matInput type="text" [(ngModel)]="element.txObservaciones" >                                                                
+                                                            </textarea>
+                                                        </mat-form-field> 
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+
                                             <ng-container matColumnDef="detalle">
-                                                <th mat-header-cell *matHeaderCellDef style="width:30%"> Detalle </th>
+                                                <th mat-header-cell *matHeaderCellDef style="width:10%"> Detalle </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     &nbsp;&nbsp;&nbsp;
                                                     <button mat-mini-fab
