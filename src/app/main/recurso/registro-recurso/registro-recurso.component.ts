@@ -49,6 +49,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { ArchivoService } from 'app/service/archivo.service';
 import { DownloadFile } from 'app/shared/models/util/util';
 import { AppViewDocumentsComponent } from 'app/shared/modals/app-view-documents/app-view-documents.component';
+import { TableViewDocumentsComponent } from 'app/shared/modals/table-view-documents/table-view-documents.component';
 
 interface General {
   value: string;
@@ -166,7 +167,7 @@ export class RegistroRecursoComponent implements OnInit {
   /********************************************* RECURSO PRODUCTO FAUNA ******************************************************/
   listProductoFA: RecursoProduco[] = [];
   recursoResponseFA: BandejaRecursoResponse = new BandejaRecursoResponse();
-  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','detalle', 'archivo' ];
+  displayedColumnsFA = ['position', 'nameCientifico', 'nameComun', 'cantidad','txObservaciones','detalle', 'archivo' ];
   dataSourceFA = new MatTableDataSource<RecursoProduco>(this.listProductoFA);
   totalToneladasFA: number = 0;
   /***************************************************************************************************/
@@ -210,6 +211,9 @@ export class RegistroRecursoComponent implements OnInit {
   indexChangeTab: number = 0;
   showArchivoRecurso: boolean = false;
   nuIdArchivoRecurso: number = 0;
+
+  listRecursoView: RecursoProduco[] = [];
+
   
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
@@ -2177,15 +2181,63 @@ redondeo(row:RecursoProduco){
     });
   }
 
-  verDocuments(idFile: number){
+  /*verDocuments(idFile: number){
     this.viewDocuments(idFile);
-  }
+  }*/
 
-  viewDocuments(idFile) {
+  /*viewDocuments(idFile) {
     const dialogRef = this.dialog.open(AppViewDocumentsComponent, {
       data: {
         modulo: Constants.MODULO,
         idArchivo: idFile
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {  
+    });
+  }*/
+
+  viewFiles(accept: string){
+    console.log("this.idRecurso-viewFiles",this.idRecurso)
+    this.getRecursosEspecies(Number(this.idRecurso));
+    this.openDocument(accept);
+  }
+
+  openDocument(accept: string){
+    console.log("this.nuIdArchivoRecurso-openDocument",this.nuIdArchivoRecurso);
+    const dialogRef = this.dialog.open(TableViewDocumentsComponent, {
+      width: '1300px',
+      height: '800px',
+      data: {
+        idArchivo: this.nuIdArchivoRecurso,
+        accept: accept,
+        typeObject: Constants.RECURSO,
+        idObjeto: Number(this.idRecurso),
+        subTypeObject: 'INGRESOS'
+        //modulo: Constants.MODULO,
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {  
+    });
+  }
+
+  viewFilesDetalle(element: any, accept: string){
+    console.log("this.idRecurso-viewFiles",this.idRecurso)
+    this.getRecursosEspecies(Number(this.idRecurso));
+    this.openDocumentDetalle(element, accept);
+  }
+
+  openDocumentDetalle(element, accept: string){
+    console.log("element",element)
+    const dialogRef = this.dialog.open(TableViewDocumentsComponent, {
+      width: '1300px',
+      height: '800px',
+      data: {
+        idArchivo: element.nuIdArchivoRecursoProducto,
+        accept: accept,
+        typeObject: Constants.RECURSO,
+        idObjeto: element.nuIdRecurso,
+        idObjetoDet: element.nuIdRecursoProducto,
+        subTypeObject: 'INGRESOS'
       }
     });
     dialogRef.afterClosed().subscribe(result => {  

@@ -177,7 +177,12 @@
                                         <th mat-header-cell *matHeaderCellDef> Archivo </th>
                                         <td mat-cell *matCellDef="let element; let i = index">
 
-                                            <button type="button" *ngIf="element.nuIdArchivoTransferencia !== 'noFile' && (element.nuIdArchivoTransferencia === 0 || element.nuIdArchivoTransferencia === undefined || element.nuIdArchivoTransferencia === null)" 
+                                            <button type="button"  
+                                                class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="viewFiles(element,'.pdf')">
+                                                <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
+                                            </button>
+
+                                            <!--<button type="button" *ngIf="element.nuIdArchivoTransferencia !== 'noFile' && (element.nuIdArchivoTransferencia === 0 || element.nuIdArchivoTransferencia === undefined || element.nuIdArchivoTransferencia === null)" 
                                                 class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
                                                 <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
                                                 <input class="no-show" type="file" (change)="changeFile(element,$event,i)" [accept]="accept" #fileInput
@@ -203,7 +208,7 @@
                                             readonly
                                             >
                                             <mat-icon title="Ver Archivo">visibility</mat-icon>
-                                            </button>
+                                            </button>-->
 
                                         </td>
                                     </ng-container>

@@ -34,6 +34,7 @@ import { AppViewDocumentsPdfComponent } from 'app/shared/modals/app-view-documen
 import { DownloadFile } from 'app/shared/models/util/util';
 import { TransferenciaService } from 'app/service/transferencia.service';
 import { ModalDetalleEgresoComponent } from '../bandeja-egreso/modal/modal-detalle-egreso/modal-detalle-egreso.component';
+import { TableViewDocumentsComponent } from 'app/shared/modals/table-view-documents/table-view-documents.component';
 
 
 @Component({
@@ -468,6 +469,25 @@ else{
   editarEgreso(data: Reportes, id: any): void {
     let url = 'actualizar-egreso/'+ id;
     this._router.navigate([url], { state: { data: data, type:'' } });
+  }
+
+  viewFiles(element: any,accept: string){
+    console.log("element",element)
+    const dialogRef = this._dialog.open(TableViewDocumentsComponent, {
+      width: '1300px',
+      height: '800px',
+      data: {
+        idArchivo: element.nuIdArchivoTransferencia,
+        accept: accept,
+        typeObject: Constants.TRANSFERENCIA,
+        idObjeto: element.nuIdTransferencia,
+        subTypeObject: 'SALIDA'
+        //modulo: Constants.MODULO,
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.SearchReportes();
+    });
   }
 
 }
