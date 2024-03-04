@@ -144,8 +144,11 @@
                                                {{element.faunaSalida}}
                                            </div>
                                            <div *ngIf="element.tipoTransferencia === 'TPTRANS002'">
-                                            {{element.almacenDestino}}
+                                            {{element.almacenDestino}}  
                                        </div>
+                                       <div *ngIf="element.tipoTransferencia === 'TPTRANS005'">
+                                        BAJA
+                                   </div>
                                         </td>
                                     </ng-container>
 
