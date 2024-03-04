@@ -21,6 +21,11 @@ export class TransferenciaService {
         return this.http.post(url, request).pipe(catchError(this.errorHandler));
     }
 
+    putTransferencia(request: any) {
+        let url = `${this.base}`;
+        return this.http.put(url, request).pipe(catchError(this.errorHandler));
+    }
+
     postRetorno(request: any) {
         let url = `${this.base}/Retorno`;
         return this.http.post(url, request).pipe(catchError(this.errorHandler));

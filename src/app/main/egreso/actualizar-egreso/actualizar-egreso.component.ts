@@ -39,6 +39,8 @@ import { Decimal } from 'app/shared/models/settings.model';
 import { FaunaSalidaComponent } from 'app/main/transferencia/fauna-salida/fauna-salida.component';
 import { ActualizarListSteps, ActualizarStep } from 'app/main/almacen/actualizar-almacen/actualizarAlmacenConstant';
 import { Reportes } from 'app/shared/models/reportes.model';
+import { ActaService } from 'app/service/acta.service';
+import { TransferenciaService } from 'app/service/transferencia.service';
 
 @Component({
   selector: 'app-actualizar-egreso',
@@ -157,6 +159,8 @@ export class ActualizarEgresoComponent implements OnInit {
   idTransferencia !: number;
   typeRecurso: string = '';
 
+  lstTransferenciaDetalle: any[] = [];
+
   constructor(private _fuseConfigService: FuseConfigService,
     private _formBuilder: FormBuilder,
     private _recursoService: RecursoService,
@@ -167,7 +171,9 @@ export class ActualizarEgresoComponent implements OnInit {
     private puestoControlService: PuestoControlService,
     private pideService: PideService,
     private almacenService: AlmacenService,
-    private parametroService: ParametroService) {
+    private parametroService: ParametroService,
+    private actaService: ActaService,
+    private serviceTransferencia: TransferenciaService) {
     ////////console.log("window.history.state ", window.history.state)
     this.dataRecurso = window.history.state.data;
     this.type = window.history.state.type;
@@ -1786,12 +1792,28 @@ saveStorage(cantidad: any, redondeo: any){
 
   saveTransferencia(){
     let paramsList = [];
-    let lstTransferenciaDetalle: RecursoProduco[] = [];
-    let objDetalle = new RecursoProduco();
-    objDetalle
+    this.lstTransferenciaDetalle = [];
 
+    // Procesar dataSourceMad.data
+    this.dataSourceMad.data.forEach(item => {
+      item.nuIdUsuarioModificacion = 1;
+      this.lstTransferenciaDetalle.push(item);
+    });
+
+    // Procesar dataSourceNoMad.data
+    this.dataSourceNoMad.data.forEach(item => {
+      item.nuIdUsuarioModificacion = 1;
+      this.lstTransferenciaDetalle.push(item);
+    });
+
+    // Procesar dataSource.data
+    this.dataSource.data.forEach(item => {
+      item.nuIdUsuarioModificacion = 1;
+      this.lstTransferenciaDetalle.push(item);
+    });
 
     let params = {
+      nuIdTransferencia: this.idTransferencia,
       nuIdRecurso: this.dataTransferencia.nuIdRecurso,
       nuIdAlmacenOrigin : this.dataTransferencia.nuIdAlmacenOrigin,
       nombre: this.inputProductos.get('nombreBeneficiario').value,        
@@ -1804,10 +1826,44 @@ saveStorage(cantidad: any, redondeo: any){
       txCodigoPuntoControl: this.inputProductos.get('idPuntoControl').value,
       nuIdAlmacen: this.inputProductos.get('idAlmacen').value,
       nroActaTraslado: this.inputProductos.get('nroActaTraslado').value,
-      lstTransferenciaDetalle: lstTransferenciaDetalle,
+      lstTransferenciaDetalle: this.lstTransferenciaDetalle,
     }
 
     paramsList.push(params);
+
+    console.log("paramsList", paramsList)
+    // return false;
+    if(paramsList.length > 0){
+        this.serviceTransferencia.putTransferencia(paramsList)
+        .subscribe((response: any) => {
+          if (response.data) {
+            Swal.fire(
+              'Mensaje de Confirmación',
+              'Transferencia realizada correctamente.',
+              'success'
+            )
+          }  else {
+            Swal.fire(
+              'Mensaje!',
+              'Error inesperado al generar la transferencia.  ',
+              'error'
+            )
+          }
+        }, error => {
+          //console.log("error ",error)
+        })
+    }else{
+      Swal.fire(
+        'Mensaje!',
+        'No se selecciono recursos ',
+        'error'
+      )
+    }
+  }
+
+  close() {
+    //console.log("cerrar");
+    this._router.navigate(['bandeja-egreso']);
   }
 
 }
