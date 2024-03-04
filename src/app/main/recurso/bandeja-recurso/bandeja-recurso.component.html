@@ -177,7 +177,7 @@
                                     <ng-container matColumnDef="action">
                                         <th mat-header-cell *matHeaderCellDef> Acciones </th>
                                         <td mat-cell *matCellDef="let element">
-
+                                            &nbsp;
                                             <button *ngIf="element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER'" mat-mini-fab (click)="verRecurso(element, element.nuIdRecurso)" style="background-color: #679738;">
                                              <mat-icon>edit</mat-icon>
                                             </button>
@@ -198,7 +198,7 @@
                                                 class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="viewFiles(element,'.pdf')">
                                                 <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
                                             </button>
-
+                                            &nbsp; &nbsp;&nbsp;
                                             <!--<button type="button" *ngIf="element.nuIdArchivoRecurso !== 'noFile' && (element.nuIdArchivoRecurso === 0 || element.nuIdArchivoRecurso === undefined || element.nuIdArchivoRecurso === null) && (element.tipoIngreso === 'TIPINGRNOR' || element.tipoIngreso ==='TIPINGRINTER')" 
                                                 class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="fileInput.click()">
                                                 <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>

@@ -11,12 +11,13 @@ import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
-
+import { finalize } from 'rxjs/operators';
+import { ActaService } from 'app/service/acta.service';
 
 interface DialogData{
   id: number;
   data: any[];
-  recurso: Recurso;
+  idAlmacen: number;
 }
 
 @Component({
@@ -31,11 +32,12 @@ export class DevolucionesComponent implements OnInit {
   transferencia: any[] = [];
   recursoResponse: BandejaProductoResponse = new BandejaProductoResponse();
   // displayedColumns: string[] = ['position', 'nombreCientifico', 'nombreComun', 'tipo','cantidad','descontar','unidadMedida','FlagAgregar'];
-  inputTransferirBeneficiario: FormGroup;
+  inputDevolucion: FormGroup;
   tipoTransferencia: 'TPTRANS001';
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   listTipoDocumento: Parametro[] = [];
   validaDNIClass: boolean = false;
+  consolidadoActa: any = null;
   constructor(    public _dialogRef: MatDialogRef<DevolucionesComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -43,24 +45,23 @@ export class DevolucionesComponent implements OnInit {
     private serviceTransferencia: TransferenciaService,
     private parametroService: ParametroService,
     private pideService: PideService,
-    @Inject(MAT_DIALOG_DATA) public _data: DialogData
+    @Inject(MAT_DIALOG_DATA) public _data: DialogData,
+    private actaService: ActaService,
     ) {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
-      this.inputTransferirBeneficiario = this._formBuilder.group({
-        nombreBeneficiario: ['', Validators.required],
-        // apellidosBeneficiario: ['', Validators.required],
-        tipoDocumento: ['', Validators.required],
+      this.inputDevolucion = this._formBuilder.group({ 
+        tipoDocumento: ['RUC', Validators.required],
         numeroDocumento: ['', Validators.required],
-        numeroActa: ['', Validators.required],
-        observaciones: ['', ],
+        actaEntrega: ['', Validators.required],
+        nroResolucion: ['', ],
       });
       // this.inputTransferirBeneficiario.get('numeroActa').patchValue(this._data.recurso.numeroActa);
      }
 
   ngOnInit(): void {
     //console.log("_data",this._data.data);
-    this.getRecursosEspecies(this._data.id);
+    this.dataSource = this._data.data;
     this.searchTipoDocumento();
   }
 
@@ -68,7 +69,7 @@ export class DevolucionesComponent implements OnInit {
     this.recursoResponse.page = e.pageIndex;
      this.recursoResponse.size = e.pageSize;
      //this.getRecursos(this.idAlmacen);
-     this.getRecursosEspecies(this._data.id)
+     //this.getRecursosEspecies(this._data.id)
      return e;
    }
 
@@ -78,7 +79,7 @@ export class DevolucionesComponent implements OnInit {
     });
   }
 
-   getRecursosEspecies(idRecurso: any) {
+  getRecursosEspecies(idRecurso: any) {
        
     this.dataSource = []; //= new MatTableDataSource<Recurso>([])
     this.dataSourceSearch = [];
@@ -104,49 +105,136 @@ export class DevolucionesComponent implements OnInit {
     });
      
     this.dataSource =this.dataSourceSearch;
+
+    console.log('this.dataSourcethis.dataSourcethis.dataSourcethis.dataSource',this.dataSource);
     //console.log("this.dataSource",this.dataSource);
     //console.log("response-getRecursosEspecies",this.dataSource);
     })
   }
 
-  saveBeneficiario(){
-    //console.log("this.inputTransferirBeneficiario",this.inputTransferirBeneficiario);
-    //console.log("this.dataSource",this.dataSource);
-    let dataSourceFilter = this.dataSource.filter((t: any) => t.flag == true);
-
-    let params = {
-      nuIdRecurso: this._data.id,
-      nombre: this.inputTransferirBeneficiario.value.nombreBeneficiario,
-      apellidos: this.inputTransferirBeneficiario.value.apellidosBeneficiario,
-      nroActa: this.inputTransferirBeneficiario.value.numeroActa,
-      documento: this.inputTransferirBeneficiario.value.numeroDocumento,
-      observaciones: this.inputTransferirBeneficiario.value.observaciones,
-      tipoDocumento: this.inputTransferirBeneficiario.value.tipoDocumento,
-      tipoTransferencia: 'TPTRANS001',
-      lstTransferenciaDetalle: dataSourceFilter
-    }
-
-    this.serviceTransferencia.postTransferencia(params).subscribe((response: any) => {
-      if (response.data && response.data.nuIdRecurso > 0) {
-        Swal.fire(
-          'Mensaje de Confirmación',
-          'Transferecia realizada correctamente.',
-          'success'
-        )
-      this._dialogRef.close(1);
-      } else {
-        Swal.fire(
-          'Mensaje!',
-          'Error inesperado al generar la transferencia.  ',
-          'error'
-        )
+  saveTransferencia(){
+    let paramsList = [];
+    //console.log("this.dataSource ", this.dataSource)
+    this.dataSource.forEach( ds =>{
+      //console.log("ds ",ds)
+      let params = {
+        nuIdRecurso: ds.nuIdRecurso,
+        nuIdAlmacenOrigin : ds.lstTransferenciaDetalle[0].nuIdAlmacen,
+        //nombre: this.inputTransferirBeneficiario.value.nombreBeneficiario,
+        //apellidos: this.inputTransferirBeneficiario.value.apellidosBeneficiario,        
+        documento: this.inputDevolucion.value.numeroDocumento,
+        //observaciones: this.inputTransferirBeneficiario.value.observaciones,
+        tipoDocumento: this.inputDevolucion.value.tipoDocumento,
+        tipoTransferencia: 'TPTRANS003',
+        lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
+        nroActaTransferencia: this.inputDevolucion.value.actaEntrega,
+        nroResolucion: this.inputDevolucion.value.nroResolucion,
       }
-    }, error => {
-      //console.log("error ",error)
-    })
+      paramsList.push(params);
+      console.log('paramsListparamsListparamsListparamsList',paramsList);
+    });
+
+    //console.log("paramsList", paramsList)
+    if(paramsList.length > 0){
+      this.serviceTransferencia.postTransferencia(paramsList)
+      .pipe(finalize(() => this.generarActa(paramsList)))
+      .subscribe((response: any) => {
+        if (response.data && response.data[0].nuIdRecurso) {
+          Swal.fire(
+            'Mensaje de Confirmación',
+            'Transferecia realizada correctamente.',
+            'success'
+          )
+        this._dialogRef.close(1);
+        } else {
+          Swal.fire(
+            'Mensaje!',
+            'Error inesperado al generar la transferencia.  ',
+            'error'
+          )
+        }
+      }, error => {
+        //console.log("error ",error)
+      })
+    } else{
+      Swal.fire(
+        'Mensaje!',
+        'No se seleccionaron recursos. ',
+        'error'
+      )
+    }
+  
 
   }
 
+  generarActa(paramsList:any) {
+
+    this.actaService
+      .consolidadoActaSalida(paramsList)
+      .subscribe((res: any) => {
+        if (res.success == true) {
+          this.consolidadoActa = res;
+          this.descargarArchivo(this.consolidadoActa);
+        } else {
+
+        }
+      }, err => {
+      });
+  }
+
+  descargarArchivo(archivoResponse: any) {
+    if (this.isNullOrEmpty(archivoResponse)) {
+      console.error("Archivo nulo");
+      return;
+    }
+    const { archivo, nombeArchivo, contenTypeArchivo } = archivoResponse;
+    if (
+      this.isNullOrEmpty(archivo) ||
+      this.isNullOrEmpty(nombeArchivo) ||
+      this.isNullOrEmpty(contenTypeArchivo)
+    ) {
+      console.error("Archivo o nombre archivo o content type nulo ");
+      return;
+    }
+    this.DownloadFile(archivo, nombeArchivo, contenTypeArchivo);
+  }
+
+  
+isNullOrEmpty(value: any | number | string): boolean {
+  return value == null || value == undefined || value == "";
+}
+
+DownloadFile(base64: string, name: string, mediaType: string) {
+  let blob = this.Base64toBlob(base64, mediaType);
+  const link = document.createElement("a");
+  const objectUrl = URL.createObjectURL(blob);
+  link.href = objectUrl;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(objectUrl);
+}
+
+Base64toBlob(base64Data: string, contentType: string): Blob {
+  contentType = contentType || "";
+  var sliceSize = 1024;
+  var byteCharacters = atob(base64Data.replace(/['"]+/g, ""));
+  var bytesLength = byteCharacters.length;
+  var slicesCount = Math.ceil(bytesLength / sliceSize);
+  var byteArrays = new Array(slicesCount);
+
+  for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    var begin = sliceIndex * sliceSize;
+    var end = Math.min(begin + sliceSize, bytesLength);
+
+    var bytes = new Array(end - begin);
+    for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
+  
   searchPass(){
     Swal.fire(
       'Consulta al PASS',
@@ -157,7 +245,7 @@ export class DevolucionesComponent implements OnInit {
   /*FUNCION DE BTN VALIDAR DNI*/ 
   validarDNI() {
     //console.log('validarDNI');
-    let params = { "numDNIConsulta": this.inputTransferirBeneficiario.get("numDoc").value }
+    let params = { "numDNIConsulta": this.inputDevolucion.get("numDoc").value }
     //console.log("params ", params)
     this.pideService.consultarDNI(params).subscribe((result: any) => {
       //console.log("result ", result)
@@ -170,8 +258,8 @@ export class DevolucionesComponent implements OnInit {
           nombreBeneficiario = persona.prenombres != null ? persona.prenombres : '';
           paterno = persona.apPrimer != null ? persona.apPrimer : '';
           materno = persona.apSegundo != null ? persona.apSegundo : '';
-          this.inputTransferirBeneficiario.get("nombres").patchValue(nombreBeneficiario + ' ' + paterno + ' ' + materno);
-          this.inputTransferirBeneficiario.get("direccion").patchValue(persona.direccion);
+          this.inputDevolucion.get("nombres").patchValue(nombreBeneficiario + ' ' + paterno + ' ' + materno);
+          this.inputDevolucion.get("direccion").patchValue(persona.direccion);
           Swal.fire(
             'Mensaje de Confirmación',
             'Se validó el DNI en RENIEC.',
