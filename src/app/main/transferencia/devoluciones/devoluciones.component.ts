@@ -37,6 +37,7 @@ export class DevolucionesComponent implements OnInit {
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   listTipoDocumento: Parametro[] = [];
   validaDNIClass: boolean = false;
+  validaRUCClass: boolean = false;
   consolidadoActa: any = null;
   constructor(    public _dialogRef: MatDialogRef<DevolucionesComponent>,
     private _recursoService: RecursoService,
@@ -51,6 +52,7 @@ export class DevolucionesComponent implements OnInit {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
       this.inputDevolucion = this._formBuilder.group({ 
+        nombreBeneficiario: ['', Validators.required],
         tipoDocumento: ['RUC', Validators.required],
         numeroDocumento: ['', Validators.required],
         actaEntrega: ['', Validators.required],
@@ -120,7 +122,7 @@ export class DevolucionesComponent implements OnInit {
       let params = {
         nuIdRecurso: ds.nuIdRecurso,
         nuIdAlmacenOrigin : ds.lstTransferenciaDetalle[0].nuIdAlmacen,
-        //nombre: this.inputTransferirBeneficiario.value.nombreBeneficiario,
+        nombre: this.inputDevolucion.value.nombreBeneficiario,
         //apellidos: this.inputTransferirBeneficiario.value.apellidosBeneficiario,        
         documento: this.inputDevolucion.value.numeroDocumento,
         //observaciones: this.inputTransferirBeneficiario.value.observaciones,
@@ -165,6 +167,46 @@ export class DevolucionesComponent implements OnInit {
     }
   
 
+
+  }
+  validarRUC() {
+    //console.log('validarDNI');
+    let params = { "numRUC": this.inputDevolucion.get("numeroDocumento").value }
+    //console.log("params ", params)
+    this.pideService.consultarRazonSocial(params).subscribe((result: any) => {
+      //console.log("result ", result)
+      if (result.dataService && result.dataService) {
+        this.validaRUCClass = true;
+        if (result.dataService.respuesta) {
+          let empresa = result.dataService.respuesta;
+          let razonSocial;
+          razonSocial = empresa.ddp_nombre!=null?empresa.ddp_nombre:'';                  
+          this.inputDevolucion.get("nombreBeneficiario").patchValue(razonSocial);          
+          Swal.fire(
+            'Mensaje de Confirmación',
+            'Se validó el RUC.',
+            'success'
+          )
+        } else {
+
+          Swal.fire(
+            'Mensaje de Confirmación',
+            result.dataService.deResultado,
+            'warning'
+          )
+        }
+      } else {
+        Swal.fire(
+          'Mensaje de error',
+          'Hay errores con el servicio de validación de RUC. Contactar con el administrador del sistema.',
+          'error'
+        )
+      }
+    }, () => {
+
+      // this.toast.error('Hay errores con el servicio de validación de DNI. Contactar con el administrador del sistema.');
+    }
+    )
   }
 
   generarActa(paramsList:any) {

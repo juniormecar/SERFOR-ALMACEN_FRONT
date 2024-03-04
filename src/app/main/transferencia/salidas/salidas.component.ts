@@ -115,7 +115,7 @@ export class SalidasComponent implements OnInit {
     openDialogDevolucion(){
       const dialogRef = this._dialog.open(DevolucionesComponent, {
         width: '1000px',
-        height: '450px',
+        height: '550px',
         data: { idAlmacen: this._data.idAlmacen, data: this._data.data  }
       });
       dialogRef.afterClosed().subscribe(result => {
