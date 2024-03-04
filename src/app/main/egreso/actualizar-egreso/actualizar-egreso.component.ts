@@ -38,6 +38,7 @@ import { DeleteAlmacenResponsableResponse } from 'app/shared/models/response/del
 import { Decimal } from 'app/shared/models/settings.model';
 import { FaunaSalidaComponent } from 'app/main/transferencia/fauna-salida/fauna-salida.component';
 import { ActualizarListSteps, ActualizarStep } from 'app/main/almacen/actualizar-almacen/actualizarAlmacenConstant';
+import { Reportes } from 'app/shared/models/reportes.model';
 
 @Component({
   selector: 'app-actualizar-egreso',
@@ -76,15 +77,15 @@ export class ActualizarEgresoComponent implements OnInit {
   listATF: ATF[] = [];
   listAlmacen: Almacen[] = [];
   listPuestoControl: PuestoControl[] = [];
-  displayedColumns: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida', 'descontar', 'metroCubico', 'descontarMetroCubico','flagAgregar'];
-  displayedColumnsNMFA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida','descontar','flagAgregar'];
-  displayedColumnsNMFAUNA: string[] = ['position', 'nroGuiaTransporteForestal', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto', 'descontar','flagAgregar'];
+  displayedColumns: string[] = ['position', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida', 'metroCubico'];
+  displayedColumnsNMFA: string[] = ['position', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto','unidadMedida'];
+  displayedColumnsNMFAUNA: string[] = ['position', 'numeroActa', 'nombreCientifico', 'nombreComun', 'txCantidadProducto'];
   displayedColumnsEncargado = ['position', 'tipoDocumento', 'numeroDocumento', 'nombresResponsable','acciones'];
   listAlmacenResponsable: AlmacenResponsable[] = [];
   totalM3: number = 0;
   almacenId: number = 0;
   almacenRequest: Almacen = new Almacen();
-  dataAlmacen = new Almacen();
+  dataTransferencia = new Reportes();
   idAlmacen: any;
   listTipoAlmacen: Parametro[] = [];
   listTipoDocumento: Parametro[] = [];
@@ -221,28 +222,36 @@ export class ActualizarEgresoComponent implements OnInit {
       
     });
     this.inputProductos = this._formBuilder.group({
-      numeroGuia: [''],
-      numeroActa: [''],
-      nombresApellidos: [''],
-      nombreProducto: [''],
-      tipoIngresoForm: [''],
-      almacen: ['']
+      tipoDocumento: [''],
+      numeroDocumento: [''],
+      nombreBeneficiario: [''],
+      nroActaTransferencia: [''],
+      nroResolucion: [''],
+      observaciones: [''],
+
+      numeroATF: [''],
+      idPuntoControl: [''],
+      idAlmacen: [''],
+      nroActaTraslado: ['']
       
     });
-    this.dataAlmacen = window.history.state.data;
+    this.dataTransferencia = window.history.state.data;
     this.idTransferencia = Number(this.activaRoute.snapshot.paramMap.get('id'));
-    ////////console.log('this.dataAlmacen', this.dataAlmacen);
+    console.log('this.dataTransferencia', this.dataTransferencia);
     ////////console.log('this.dataRecurso', this.dataRecurso);
-    if (this.dataAlmacen !== undefined) {
-      this.inputRegistro.get('nombreAlmacen').patchValue(this.dataRecurso.txNombreAlmacen);
-      this.inputRegistro.get('tipoDocumento').patchValue(this.dataRecurso.txTipoDocumento);
-      this.inputRegistro.get('numeroDocumento').patchValue(this.dataRecurso.txNumeroDocumento);
-      this.inputRegistro.get('nombreEncargado').patchValue(this.dataRecurso.txNombresEncargado);
-      this.inputRegistro.get('capacidadMaderable').patchValue(this.dataRecurso.capacidadMaderable);
-      this.inputRegistro.get('capacidadNoMaderable').patchValue(this.dataRecurso.capacidadNoMaderable);
-      this.inputRegistro.get('capacidadFauna').patchValue(this.dataRecurso.capacidadFauna);
-      this.inputRegistro.get('direccionAlmacen').patchValue(this.dataRecurso.direccionAlmacen);
+    if (this.dataTransferencia !== undefined && this.dataTransferencia.tipoTransferencia == 'TPTRANS001') {
+      this.inputProductos.get('tipoDocumento').patchValue(this.dataTransferencia.tipoDocumento);
+      this.inputProductos.get('numeroDocumento').patchValue(this.dataTransferencia.documento);
+      this.inputProductos.get('nombreBeneficiario').patchValue(this.dataTransferencia.nombre);
+      this.inputProductos.get('nroActaTransferencia').patchValue(this.dataTransferencia.nroActa);
+      this.inputProductos.get('nroResolucion').patchValue(this.dataTransferencia.nroResolucion);
+      this.inputProductos.get('observaciones').patchValue(this.dataTransferencia.observaciones);
       this.photo = this.dataRecurso.foto;
+    }else  if (this.dataTransferencia !== undefined && this.dataTransferencia.tipoTransferencia == 'TPTRANS002') {
+      this.inputProductos.get('numeroATF').patchValue(Number(this.dataTransferencia.nombreCientifico));
+      this.searchPuestoControl() ;
+      this.inputProductos.get('nroActaTraslado').patchValue(this.dataTransferencia.nroActa);
+      this.inputProductos.get('observaciones').patchValue(this.dataTransferencia.observaciones);
     }
     this.searchTipoAlmacen();
     this.searchTipoDocumento();
@@ -273,20 +282,11 @@ export class ActualizarEgresoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log("this.dataRecurso ",this.dataRecurso)
-          // if (this.dataRecurso == null) {
-          //   this.getRecursos(this.idAlmacen);
-          // // this.getRecursos2(this.idAlmacen);
-          // } else {
-          //   this.idAlmacen = this.dataRecurso.nuIdAlmacen;
-          //   this.getRecursos(this.dataRecurso.nuIdAlmacen);
-          //   //this.getRecursos2(this.dataRecurso.nuIdAlmacen);
-          // }
     this.searchUnidadMedida();
     this.searchTipoIngreso();
     this.searchTipo();
     this.getSettingDecimal();
-    this.searchAlmacen();
+    this.searchATF();
     this.cargarRecursos();
   }
 
@@ -298,7 +298,9 @@ export class ActualizarEgresoComponent implements OnInit {
     almacenRequest.txNumeroDocumento = this.numeroDocumento;
     this.almacenService.getAlmacenSearch(almacenRequest,this.almacenResponse.pageNumber,this.almacenResponse.pageSize).subscribe((response:BandejaAlmacenResponse)=>{
     this.almacenResponse =response;
-    this.listAlmacen=response.data;
+    this.listAlmacen=response.data.filter(x=>x.nuIdAlmacen !== this.dataTransferencia.nuIdAlmacenOrigin);
+    console.log("this.listAlmacen ",this.listAlmacen)
+    this.inputProductos.get('idAlmacen').patchValue(Number(this.dataTransferencia.nuIdAlmacen));
     })
   }
 
@@ -325,7 +327,7 @@ export class ActualizarEgresoComponent implements OnInit {
   getRecursosFauna(idAlmacen: any) {
     
     this.dataSource = new MatTableDataSource<Recurso>([])
-    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'FA',null,
+    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,'TRAN',null,null,null,null,null,'FA',null,
     null,null,this.recursoResponseFauna.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
@@ -425,7 +427,7 @@ export class ActualizarEgresoComponent implements OnInit {
   getRecursosNoMad(idAlmacen: any) {
     
     this.dataSource = new MatTableDataSource<Recurso>([])
-    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
+    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,'TRAN',null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
@@ -525,7 +527,7 @@ export class ActualizarEgresoComponent implements OnInit {
 
   getRecursosMad(idAlmacen: any) {
     this.dataSource = new MatTableDataSource<Recurso>([])
-    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'MAD',null,
+    this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,'TRAN',null,null,null,null,null,'MAD',null,
     null,null,this.recursoResponseFauna.pageNumber,  this.pageSizeTotal,'DESC')
       .subscribe((response: BandejaRecursoResponse) => {
 
@@ -643,7 +645,7 @@ export class ActualizarEgresoComponent implements OnInit {
 
     let totalToneladasCalculada = this.cutDecimalsWithoutRounding(this.totalToneladas, this.cantidad) ;
 
-    let element: RecursoProduco = new RecursoProduco();
+   /* let element: RecursoProduco = new RecursoProduco();
     element =
       {
         nuIdRecursoProducto: 0,
@@ -656,7 +658,7 @@ export class ActualizarEgresoComponent implements OnInit {
         unidadMedida: "TON"
       }
 
-    listProducto.push(element);
+    listProducto.push(element);*/
     this.recursoResponseFauna.totalRecords = totalRecords;//this.totalRecordFauna; //listProducto.length - 1;
     this.dataSource = new MatTableDataSource<Recurso>(listProducto);
   }
@@ -685,7 +687,7 @@ export class ActualizarEgresoComponent implements OnInit {
 
     let totalToneladasCalculada = this.cutDecimalsWithoutRounding(this.totalToneladas, this.cantidad) ;
 
-    let element: RecursoProduco = new RecursoProduco();
+   /* let element: RecursoProduco = new RecursoProduco();
     element =
       {
         nuIdRecursoProducto: 0,
@@ -698,7 +700,7 @@ export class ActualizarEgresoComponent implements OnInit {
         unidadMedida: "TON"
       }
 
-    listProductoNoMad.push(element);
+    listProductoNoMad.push(element);*/
     this.recursoResponseNoMad.totalRecords = totalRecords;//listProductoNoMad.length - 1;
     this.dataSourceNoMad = new MatTableDataSource<Recurso>(listProductoNoMad);
   }
@@ -715,7 +717,7 @@ export class ActualizarEgresoComponent implements OnInit {
       this.totalM3+=Number(item.metroCubico);
     })
 
-    let element: RecursoProduco = new RecursoProduco();
+   /* let element: RecursoProduco = new RecursoProduco();
     element =
       {
         nuIdRecursoProducto: 0,
@@ -729,7 +731,7 @@ export class ActualizarEgresoComponent implements OnInit {
         metroCubico: this.totalM3
       }
 
-    listProductoMad.push(element);
+    listProductoMad.push(element);*/
     this.dataSourceMad = new MatTableDataSource<Recurso>(listProductoMad);
   }
 
@@ -835,7 +837,7 @@ export class ActualizarEgresoComponent implements OnInit {
   registerAlmacen() {
     let obj: Almacen = new Almacen();
 
-    obj.nuIdAlmacen = this.dataAlmacen !== undefined ? this.dataAlmacen.nuIdAlmacen : 0;
+    obj.nuIdAlmacen = this.dataTransferencia !== undefined ? this.dataTransferencia.nuIdAlmacen : 0;
     obj.txNombreAlmacen = this.inputRegistro.get('nombreAlmacen').value
     obj.txTipoAlmacen = this.inputRegistro.get('tipoAlmacen').value
     obj.txTipoDocumento = this.inputRegistro.get('tipoDocumento').value
@@ -1760,10 +1762,52 @@ saveStorage(cantidad: any, redondeo: any){
   }
 
   getValores() {
-    if (this.dataAlmacen !== undefined) {
+    if (this.dataTransferencia !== undefined) {
       this.inputRegistro.get('puestoControl').patchValue(Number(this.dataRecurso.txPuestoControl));
       this.inputRegistro.get('tipoAlmacen').patchValue(this.dataRecurso.txTipoAlmacen);
     }
+  }
+
+  searchATF() {
+    this.atfService.getATFSearch().subscribe((response: ATF[]) => {
+      this.listATF = response;
+    });
+  }
+
+  searchPuestoControl() {
+    console.log('numeroATF ',this.inputProductos.get('numeroATF').value)
+    this.puestoControlService.getPuestoControlSearch(this.inputProductos.get('numeroATF').value)
+    .pipe(finalize(() => this.searchAlmacen()))
+    .subscribe((response: PuestoControl[]) => {
+      this.listPuestoControl= response;
+      this.inputProductos.get('idPuntoControl').patchValue(Number(this.dataTransferencia.nombreComun));
+    });
+  }
+
+  saveTransferencia(){
+    let paramsList = [];
+    let lstTransferenciaDetalle: RecursoProduco[] = [];
+    let objDetalle = new RecursoProduco();
+    objDetalle
+
+
+    let params = {
+      nuIdRecurso: this.dataTransferencia.nuIdRecurso,
+      nuIdAlmacenOrigin : this.dataTransferencia.nuIdAlmacenOrigin,
+      nombre: this.inputProductos.get('nombreBeneficiario').value,        
+      documento: this.inputProductos.get('numeroDocumento').value,
+      observaciones: this.inputProductos.get('observaciones').value,
+      tipoDocumento: this.inputProductos.get('tipoDocumento').value,
+      tipoTransferencia: this.dataTransferencia.tipoTransferencia,
+      nroActaTransferencia: this.inputProductos.get('nroActaTransferencia').value,
+      nroResolucion: this.inputProductos.get('nroResolucion').value,
+      txCodigoPuntoControl: this.inputProductos.get('idPuntoControl').value,
+      nuIdAlmacen: this.inputProductos.get('idAlmacen').value,
+      nroActaTraslado: this.inputProductos.get('nroActaTraslado').value,
+      lstTransferenciaDetalle: lstTransferenciaDetalle,
+    }
+
+    paramsList.push(params);
   }
 
 }

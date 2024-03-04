@@ -25,20 +25,111 @@
                        
                         <form [formGroup]="inputProductos">  
 
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="30">Almacén</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="90">Nombre de Especie</span>
-                                
-                                
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">Tipo de Documento</span>
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="35">N° de Documento</span>
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="18"></span>
                             </div>
 
-                            <div fxLayout="row" fxLayoutAlign="space-between">
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'">
                                 <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
-                                    fxFlex="30">
-                                    <mat-select formControlName="almacen" (selectionChange)="cargarRecursos()">
+                                    fxFlex="35">
+                                    <mat-select formControlName="tipoDocumento">
                                         <mat-option [value]="">
                                             Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listTipoDocumento">
+                                            <mat-option [value]="item.codigo">
+                                                {{item.valorPrimario}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+        
+                                <div fxFlex="3"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="35">
+                                    <input matInput type="text" formControlName="numeroDocumento">
+                                </mat-form-field>
+                                <div fxFlex="3"></div>
+                                <button class="validate-dni" floatLabel="always" fxFlex="18" (click)="validarRUC()">Validar RUC</button>
+                            </div>
+
+
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS002'">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">ATF</span>
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Puesto de Control</span>                        
+                            </div>
+        
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS002'">
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                                    <mat-select formControlName="numeroATF" (selectionChange)="searchPuestoControl()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listATF">
+                                            <mat-option [value]="item.idAtf">
+                                                {{item.nombreAtf}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+        
+                                <div fxFlex="3"></div>
+        
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                                    <mat-select formControlName="idPuntoControl" (selectionChange)="searchAlmacen()">
+                                        <mat-option [value]="">
+                                            Seleccione
+                                        </mat-option>
+                                        <ng-container *ngFor="let item of listPuestoControl">
+                                            <mat-option [value]="item.idPuestoControl">
+                                                {{item.nombrePuestoControl}}
+                                            </mat-option>
+                                        </ng-container>
+                                    </mat-select>
+                                </mat-form-field>
+        
+                            </div>
+
+
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'">                        
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Razón Social</span>                        
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                                    <input matInput type="text" formControlName="nombreBeneficiario">
+                                </mat-form-field>
+                            </div>  
+
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'"> 
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">N° Acta de Transferencia</span>   
+                                <div fxFlex="3"></div>
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">N° de Resolución</span>                
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS001'">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                                    <input matInput type="text" formControlName="nroActaTransferencia">
+                                </mat-form-field>
+                                <div fxFlex="3"></div>
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="47" >
+                                    <input matInput type="text" formControlName="nroResolucion">
+                                </mat-form-field>
+                            </div>   
+                            
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS002'">
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">Almacén</span>
+                                <div fxFlex="3"></div>  
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="47">N° Acta de Traslado</span>             
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="dataTransferencia.tipoTransferencia == 'TPTRANS002'">                        
+        
+                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always" fxFlex="47">
+                                    <mat-select formControlName="idAlmacen">
+                                        <mat-option [value]="">
+                                            Seleccione almacén
                                         </mat-option>
                                         <ng-container *ngFor="let item of listAlmacen">
                                             <mat-option [value]="item.nuIdAlmacen">
@@ -46,71 +137,23 @@
                                             </mat-option>
                                         </ng-container>
                                     </mat-select>
-                                </mat-form-field> 
-
-                                <div fxFlex="5"></div>
-
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="90">
-                                    <input matInput type="text" formControlName="nombreProducto">
                                 </mat-form-field>
-
+                                <div fxFlex="3"></div>                          
+                                    <mat-form-field appearance="outline" floatLabel="always" fxFlex="47">
+                                        <input matInput type="text" formControlName="nroActaTraslado">
+                                    </mat-form-field>                       
                             </div>
-
-                            <div fxLayout="row" fxLayoutAlign="space-between">
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Guía</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Número de Acta</span>
-                                <div fxFlex="5"></div>
-                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Tipo</span>
-                                
+        
+                            <div fxLayout="row" fxLayoutAlign="space-between">                        
+                                <span class="text-primary-ir" floatLabel="always" fxFlex="45">Observaciones</span>                        
                             </div>
-
                             <div fxLayout="row" fxLayoutAlign="space-between">
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="numeroGuia">
-                                </mat-form-field>  
-
-                                <div fxFlex="5"></div>
-
-                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="45">
-                                    <input matInput type="text" formControlName="numeroActa">
+                                <mat-form-field appearance="outline" floatLabel="always" fxFlex="100">
+                                    <textarea matInput type="text" formControlName="observaciones"></textarea>
                                 </mat-form-field>
-
-                                <div fxFlex="5"></div>
-
-                                <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
-                                fxFlex="45">
-                                <mat-select formControlName="tipoIngresoForm">
-                                    <mat-option [value]="">
-                                        Seleccione
-                                    </mat-option>
-                                    <ng-container *ngFor="let item of listTipo">
-                                        <mat-option [value]="item.codigo">
-                                            {{item.valorPrimario}}
-                                        </mat-option>
-                                    </ng-container>
-                                </mat-select>
-                            </mat-form-field> 
-
-                            </div>
+                            </div>  
 
 
-                        <br>
-                        <br>
-
-                        <div class="col-sm-12 my-2 form-group text-center">
-
-                            <button mat-raised-button class="mat-accent mr-16" style="background-color: white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
-                                (click)="limpiarCampos()">                        
-                                Limpiar</button>                             
-                                <button mat-raised-button class="mat-accent mr-16" style="background-color:  white; color: #89B361; border: 2px solid #89B361; width: 140px; border-radius: 6px; font-size: 13px;"
-                                (click)="btnBuscar()">                        
-                                Buscar</button>  
-<!-- 
-
-                            <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="limpiarCampos()">Limpiar</button>
-                            <button mat-button class="btn btn-sm btn-secondary mr-2" (click)="btnBuscar()">Buscar</button> -->
-                        </div>
                         <br>
                         <br>
                             
@@ -135,10 +178,10 @@
                                                 </td>
                                             </ng-container>
                             
-                                            <ng-container matColumnDef="nroGuiaTransporteForestal">
+                                            <!--<ng-container matColumnDef="nroGuiaTransporteForestal">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 11%;">N° Guía</th>
                                                 <td mat-cell *matCellDef="let element"> {{element.nroGuiaTransporteForestal}} </td>
-                                            </ng-container>
+                                            </ng-container>-->
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 11%;">N° Acta</th>
@@ -161,7 +204,13 @@
             
                                             <ng-container matColumnDef="txCantidadProducto">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Cantidad </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                                                <td mat-cell *matCellDef="let element"> 
+                                                    <mat-form-field [style.width.px]=80>
+                                                        <mat-label></mat-label>
+                                                        <input matInput placeholder="" [(ngModel)]="element.txCantidadProducto" [ngModelOptions]="{standalone: true}" type="number"
+                                                        minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
+                                                    </mat-form-field>
+                                                </td>
                                             </ng-container>
 
                                             <ng-container matColumnDef="unidadMedida">
@@ -176,10 +225,11 @@
                                                </td>
                                             </ng-container>
             
+                                            <!--
                                             <ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Descontar </th>
-                                                <!--<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-->
-                                                <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
+                                                ------<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-----
+                                                ------<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-----
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
@@ -191,16 +241,16 @@
                                                     </div>
                                                 </td>
                                             </ng-container>
-
+                                        -->
                                             <ng-container matColumnDef="metroCubico">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 9%;"> Metro Cúbico </th>
                                                 <td mat-cell *matCellDef="let element"> {{element.metroCubico}} </td>
                                             </ng-container>
             
-                                            <ng-container matColumnDef="descontarMetroCubico">
+                                            <!--<ng-container matColumnDef="descontarMetroCubico">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 8%;"> Descontar Metro Cúbico</th>
-                                                <!--<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-->
-                                                <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
+                                                -----<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-------
+                                                -----<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-------
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
@@ -211,7 +261,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </td>
-                                            </ng-container>
+                                            </ng-container>-->
                                             
                                             
                                                 
@@ -223,7 +273,7 @@
                                             </td>
                                             </ng-container>
             
-                                            <ng-container matColumnDef="flagAgregar"class="text-center" >
+                                            <!--<ng-container matColumnDef="flagAgregar"class="text-center" >
                                                 
                                                 <th mat-header-cell *matHeaderCellDef style="width: 12%; padding-left: 1%;" > 
                                                     <div *ngIf="validCheck">
@@ -237,7 +287,7 @@
                                                     </div>
                                                     </div>
                                                 </td>
-                                            </ng-container> 
+                                            </ng-container> -->
             
                             
                                             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -282,10 +332,10 @@
                                                 </td>
                                             </ng-container>
                             
-                                            <ng-container matColumnDef="nroGuiaTransporteForestal">
+                                            <!--<ng-container matColumnDef="nroGuiaTransporteForestal">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Guía</th>
                                                 <td mat-cell *matCellDef="let element"> {{element.nroGuiaTransporteForestal}} </td>
-                                            </ng-container>
+                                            </ng-container>-->
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;">N° Acta</th>
@@ -308,7 +358,13 @@
             
                                             <ng-container matColumnDef="txCantidadProducto">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Total </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.cantidadTotal}} </td>
+                                                <td mat-cell *matCellDef="let element">
+                                                     <mat-form-field [style.width.px]=80>
+                                                        <mat-label></mat-label>
+                                                        <input matInput placeholder="" [(ngModel)]="element.cantidadTotal" [ngModelOptions]="{standalone: true}" type="number"
+                                                        minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
+                                                    </mat-form-field>
+                                                </td>
                                             </ng-container>
 
                                             <ng-container matColumnDef="unidadMedida">
@@ -324,10 +380,10 @@
                                             </ng-container>
 
             
-                                            <ng-container matColumnDef="descontar">
+                                            <!--<ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Descontar </th>
-                                                <!--<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-->
-                                                <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
+                                                ------<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>------
+                                                -------<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">------
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
@@ -347,8 +403,8 @@
             
                                             <ng-container matColumnDef="descontarMetroCubico">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Descontar Metro Cúbico</th>
-                                                <!--<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-->
-                                                <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
+                                                ----<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>----
+                                                ----<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">----
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
@@ -384,7 +440,7 @@
                                                     </div>
                                                     </div>
                                                 </td>
-                                            </ng-container> 
+                                            </ng-container> -->
             
                             
                                             <tr mat-header-row *matHeaderRowDef="displayedColumnsNMFA"></tr>
@@ -428,10 +484,10 @@
                                                 </td>
                                             </ng-container>
                             
-                                            <ng-container matColumnDef="nroGuiaTransporteForestal">
+                                           <!-- <ng-container matColumnDef="nroGuiaTransporteForestal">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Guía</th>
                                                 <td mat-cell *matCellDef="let element"> {{element.nroGuiaTransporteForestal}} </td>
-                                            </ng-container>
+                                            </ng-container>-->
             
                                             <ng-container matColumnDef="numeroActa">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 15%;">N° Acta</th>
@@ -454,14 +510,20 @@
             
                                             <ng-container matColumnDef="txCantidadProducto">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Cantidad </th>
-                                                <td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>
+                                                <td mat-cell *matCellDef="let element"> 
+                                                    <mat-form-field [style.width.px]=80>
+                                                        <mat-label></mat-label>
+                                                        <input matInput placeholder="" [(ngModel)]="element.txCantidadProducto" [ngModelOptions]="{standalone: true}" type="number"
+                                                        minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)" style="text-align: right;">
+                                                    </mat-form-field>
+                                                </td>
                                             </ng-container>
                                            
             
-                                            <ng-container matColumnDef="descontar">
+                                            <!--<ng-container matColumnDef="descontar">
                                                 <th mat-header-cell *matHeaderCellDef style="width: 10%;"> Descontar </th>
-                                                <!--<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>-->
-                                                <!--<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">-->
+                                                ----<td mat-cell *matCellDef="let element"> {{element.txCantidadProducto}} </td>----
+                                                ----<input mat-cell *matCellDef="let element" class="field-input" type="number" [(ngModel)]="element.descontar" minlength="1" min="0" onkeypress="return /[0-9.]/i.test(event.key)">----
                                                 <td mat-cell *matCellDef="let element">
                                                     <div *ngIf="element.idEspecie !== 0">
                                                         <mat-form-field [style.width.px]=80 *ngIf="element.disponibilidadActa==='D'">
@@ -488,7 +550,7 @@
                                                     </div>
                                                     </div>
                                                 </td>
-                                            </ng-container> 
+                                            </ng-container> -->
             
                             
                                             <tr mat-header-row *matHeaderRowDef="displayedColumnsNMFAUNA"></tr>
@@ -528,10 +590,10 @@
                 (click)="openDialogAlmacen()">Transferencia a Almacén</button>
 
             <button mat-raised-button class="mat-accent mr-16" style="background-color: #43a047;"
-                >Transferencia a Decomisado</button> -->
+                >Transferencia a Decomisado</button> 
 
                 <button mat-raised-button class="mat-accent mr-16" style="background-color: #679738;"
-                (click)="salidas()">Salidas</button>
+                (click)="salidas()">Salidas</button>-->
         </div>
         
         <!-- / CONTENT -->

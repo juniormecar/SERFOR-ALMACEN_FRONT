@@ -58,4 +58,7 @@ export class Reportes {
     metroCubicoRet?:number;
     numeroActaRetorno?:string;
     nuIdTransferenciaDetalle?:number;
+    nroResolucion?:string;
+    tipoDocumento?:string;
+    documento?:string;
 }
