@@ -62,5 +62,5 @@ export class Reportes {
     tipoDocumento?:string;
     documento?:string;
     fechaTransferencia?:Date;
-    horaTransferencia:string;
+    horaTransferencia?:string;
 }
