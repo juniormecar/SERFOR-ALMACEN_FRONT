@@ -60,5 +60,7 @@ export class Recurso {
     nuIdArchivoRecursoProducto?: string;
     nuIdArchivoRecurso?: string;
 
+    nuIdDetTransferencia?: number;
+
 }
     
