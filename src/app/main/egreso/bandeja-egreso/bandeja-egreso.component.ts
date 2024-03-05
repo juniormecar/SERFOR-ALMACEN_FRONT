@@ -197,6 +197,8 @@ else{
     this.reportesRequest.periodo = this.varPeriodo;
     this.reportesRequest.tipo =  'G';
     this.reportesRequest.numeroDocumento =  this.numeroDocumento;
+
+    //console.log('request bandeja', this.reportesRequest + ' pageNumber: ' + this.reportesResponse.pageNumber + ' pageSize: ' + this.reportesResponse.pageSize);
     this._reportesService.getReporteSalidas(this.reportesRequest,this.reportesResponse.pageNumber,this.reportesResponse.pageSize).subscribe((response:ReportesResponse)=>{
       // if(response.success){
       //   this.reportesResponse = response;
@@ -209,18 +211,19 @@ else{
         let lstReportesFiltered =[];
         response.data.forEach(item=>{
           console.log('response.dataresponse.dataresponse.data',response.data);
-          if(lstReportes.length==0){
-            lstReportes.push(item);
-          }else{
-            lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
-            if(lstReportesFiltered.length===0){
-              lstReportes.push(item);
-            }
-          }
+          lstReportes.push(item);
+          // if(lstReportes.length==0){
+          //   lstReportes.push(item);
+          // }else{
+          //   lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
+          //   if(lstReportesFiltered.length===0){
+          //     lstReportes.push(item);
+          //   }
+          // }
         })
         this.dataSource = new MatTableDataSource<Reportes>(lstReportes);
         this.resultsLength=response.totalRecords;
-        this.reportesResponse.totalRecords = lstReportes.length;
+        this.reportesResponse.totalRecords = response.totalRecords;//lstReportes.length;
       }
     })
   }

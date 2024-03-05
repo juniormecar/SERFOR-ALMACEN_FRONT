@@ -80,7 +80,7 @@ export class BajasComponent implements OnInit {
       paramsList.push(params);
     });
 
-    //console.log("paramsList", paramsList)
+    console.log("paramsList", paramsList)
     if(paramsList.length > 0){
       this.serviceTransferencia.postTransferencia(paramsList).subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso > 0) {

@@ -70,7 +70,7 @@ export class SalidasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log("_data",this._data.data);
+    console.log("_data",this._data.data);
   }
   
   openDialogBeneficiario(){

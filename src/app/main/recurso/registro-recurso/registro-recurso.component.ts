@@ -369,6 +369,29 @@ export class RegistroRecursoComponent implements OnInit {
     this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
   }
 
+  onKeyPress(event: KeyboardEvent) {
+    const charCode = event.which || event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+        event.preventDefault();
+    }
+  }
+
+  onPaste(event: ClipboardEvent) {
+      const clipboardData = event.clipboardData || (window as any).clipboardData;
+      const pastedData = clipboardData.getData('text');
+      if (!(/^\d+$/.test(pastedData))) {
+          event.preventDefault();
+      }
+  }
+
+  onInput(event: any) {
+      const inputValue = event.target.value;
+      if (!(/^\d+$/.test(inputValue))) {
+          event.target.value = inputValue.replace(/[^\d]/g, '');
+      }
+  }
+
+
  /* getToken() {
 
     let obj: Token = new Token();
