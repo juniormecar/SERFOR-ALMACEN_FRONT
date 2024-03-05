@@ -211,18 +211,19 @@ else{
           let lstReportesFiltered =[];
           response.data.forEach(item=>{
             console.log('response.dataresponse.dataresponse.data',response.data);
-            if(lstReportes.length==0){
-              lstReportes.push(item);
-            }else{
-              lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
-              if(lstReportesFiltered.length===0){
-                lstReportes.push(item);
-              }
-            }
+            lstReportes.push(item);
+            // if(lstReportes.length==0){
+            //   lstReportes.push(item);
+            // }else{
+            //   lstReportesFiltered = lstReportes.filter((rd: Reportes) => rd.nroActa === item.nroActa);
+            //   if(lstReportesFiltered.length===0){
+            //     lstReportes.push(item);
+            //   }
+            // }
           })
           this.dataSource = new MatTableDataSource<Reportes>(lstReportes);
           this.resultsLength=response.totalRecords;
-          this.reportesResponse.totalRecords = lstReportes.length;
+          this.reportesResponse.totalRecords = response.totalRecords;//lstReportes.length;
         }
       })
     }

@@ -1076,7 +1076,9 @@
                                                             <mat-label></mat-label>
                                                             <input matInput type="text" placeholder=""
                                                                 [(ngModel)]="element.txCantidadProducto"
-                                                                style="text-align: right;"  onkeypress="return /[0-9.]/i.test(event.key)">
+                                                                style="text-align: right;" (keypress)="onKeyPress($event)"
+                                                                (paste)="onPaste($event)"
+                                                                (input)="onInput($event)">
                                                         </mat-form-field>
                                                     </div>
                                                 </td>

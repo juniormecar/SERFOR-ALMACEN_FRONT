@@ -802,6 +802,7 @@ saveStorage(cantidad: any, redondeo: any){
         this.totalToneladas +=Number(item.txCantidadProducto);
       }
       this.totalM3+=Number(item.metroCubico);
+      this.totalM3 = Number(this.totalM3.toFixed(this.listDecimal.cantidad == null ? 4: this.listDecimal.cantidad));
     })
 
     let element: RecursoProduco = new RecursoProduco();
@@ -1242,6 +1243,8 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
 
       if(this.cantivacianm === 1){this.cantivacianm = 0}
       else{
+
+        console.log('datos no maderados ::::', dataFilteredNoMad);
       
       dataFilteredNoMad
       .forEach((resp:any)=>{
@@ -1294,16 +1297,20 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
 
           })
         }else{
+          console.log('entra en el ELSE');
           contadorNoMad++;
           if((descontarNoMad !== null && descontarNoMad !==undefined && resp.txCantidadProducto != null && resp.txCantidadProducto != undefined)){
+            console.log('ENTRA AL PRIMER IF');
             dataGeneralNoMad.push(resp);
             dataFiltered.push(resp);
           }
           if(dataFilteredNoMad.length === contadorNoMad && validateNoMad){
             //console.log("ENTRO 3")
-            //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm))  
+            //dataFilteredNoMad.forEach( nm => dataFiltered.push(nm)) 
+            console.log('ENTRA AL SEGUNDO IF');
             this.getSalidas(dataFiltered,contadorNoMad);
           }
+
         } 
       })
 
