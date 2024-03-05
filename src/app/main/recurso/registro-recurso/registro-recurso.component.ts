@@ -1939,7 +1939,7 @@ saveStorage(cantidad: any, redondeo: any){
 
 redondeo(row:RecursoProduco){
     const index = this.listProducto.indexOf(row, 0);
-    row.metroCubico = Number(row.metroCubico.toFixed(Number(this.listDecimalCantidad.valorPrimario)));
+    row.metroCubico = Number(row.metroCubico.toFixed(Number(this.listDecimal.cantidad)));
     this.listProducto[index] = row;    
 }
 
