@@ -228,17 +228,17 @@ export class ActualizarEgresoComponent implements OnInit {
       
     });
     this.inputProductos = this._formBuilder.group({
-      tipoDocumento: [''],
-      numeroDocumento: [''],
-      nombreBeneficiario: [''],
-      nroActaTransferencia: [''],
-      nroResolucion: [''],
-      observaciones: [''],
+      tipoDocumento: [null],
+      numeroDocumento: [null],
+      nombreBeneficiario: [null],
+      nroActaTransferencia: [null],
+      nroResolucion: [null],
+      observaciones: [null],
 
-      numeroATF: [''],
-      idPuntoControl: [''],
-      idAlmacen: [''],
-      nroActaTraslado: ['']
+      numeroATF: [null],
+      idPuntoControl: [null],
+      idAlmacen: [null],
+      nroActaTraslado: [null]
       
     });
     this.dataTransferencia = window.history.state.data;
