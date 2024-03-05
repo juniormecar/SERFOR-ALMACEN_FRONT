@@ -125,7 +125,15 @@
                                     
                                     <ng-container matColumnDef="fecha">
                                         <th mat-header-cell *matHeaderCellDef> Fecha</th>
-                                        <td mat-cell *matCellDef="let element"> {{element.feFechaRegistro | date: "dd/MM/yyyy h:mm:ss a" : "UTC" }} </td>
+                                        <td mat-cell *matCellDef="let element">
+                                            <div *ngIf="element.fechaTransferencia === null">
+                                                {{element.feFechaRegistro | date: "dd/MM/yyyy h:mm:ss a" : "UTC" }} 
+                                           </div>
+                                           <div *ngIf="element.fechaTransferencia !== null">
+                                            {{element.fechaTransferencia | date: "dd/MM/yyyy" : "UTC" }} {{element.horaTransferencia}}
+                                       </div>
+                                             
+                                        </td>
                                     </ng-container>
 
                                     <ng-container matColumnDef="origen">

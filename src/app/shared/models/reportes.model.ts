@@ -61,4 +61,6 @@ export class Reportes {
     nroResolucion?:string;
     tipoDocumento?:string;
     documento?:string;
+    fechaTransferencia?:Date;
+    horaTransferencia:string;
 }
