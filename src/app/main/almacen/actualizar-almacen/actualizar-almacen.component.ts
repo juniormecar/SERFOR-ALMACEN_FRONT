@@ -1032,7 +1032,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
       ////////console.log("dataBeneficiario", dataBeneficiario);
       const dialogRef = this._dialog.open(FaunaSalidaComponent, {
         width: '1000px',
-        height: '500px',
+        height: '610px',
         data: { idAlmacen: this.idAlmacen, data: dataFauna }
       });
       dialogRef.afterClosed().subscribe(result => {

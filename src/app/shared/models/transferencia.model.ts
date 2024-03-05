@@ -30,4 +30,6 @@ export class Transferencia {
     nroActaTraslado?:string;   
     metroCubico?:number;
     faunaSalida?:string;   
+    fechaTransferencia?:Date;
+    horaTransferencia?:string; 
 }

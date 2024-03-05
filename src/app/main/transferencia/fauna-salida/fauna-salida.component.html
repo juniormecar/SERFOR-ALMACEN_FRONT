@@ -21,6 +21,26 @@
             <div id="course-step-content" class="course-step-content ">
                 <form [formGroup]="inputTransferir">
 
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Fecha de Salida</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Hora de Salida</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">    
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                        fxFlex="47">
+                            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="fechaActual" name="fechaTransferencia"
+                                formControlName="fechaTransferencia"> 
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker" ></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                        <div fxFlex="3"></div>
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                        fxFlex="47">
+                            <input matInput type="time" [(ngModel)]="horaActual" formControlName="horaTransferencia">
+                        </mat-form-field>
+                    </div>
+
                 <mat-radio-group fxLayout="column" fxLayoutAlign="start start" formControlName="tipo"  [(ngModel)]="this.listDecimalRedondeo.valorPrimario">
                     <div class="val-dec">
                         <mat-radio-button class="mb-3 may-dec ft text-primary-ir" [value]="type"
