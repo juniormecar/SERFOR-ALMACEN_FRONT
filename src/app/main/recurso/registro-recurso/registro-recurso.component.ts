@@ -1065,6 +1065,9 @@ export class RegistroRecursoComponent implements OnInit {
       }
     })
 
+    this.totalM3 = Number(this.totalM3.toFixed(this.listDecimal.cantidad == null ? 4: this.listDecimal.cantidad));
+    console.log('TOTAL ME CUBICO : ', this.totalM3);
+
     let element: RecursoProduco = new RecursoProduco();
     element.nuIdRecursoProducto = 0;
     element.idEspecie = 0;
@@ -1124,6 +1127,7 @@ export class RegistroRecursoComponent implements OnInit {
         }
       }
     })
+    this.totalM3 = Number(this.totalM3.toFixed(this.listDecimal.cantidad == null ? 4: this.listDecimal.cantidad));
   }
 
   calculateTotalM3Modal() {
