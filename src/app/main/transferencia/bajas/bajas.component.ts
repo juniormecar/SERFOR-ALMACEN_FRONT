@@ -12,6 +12,9 @@ import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
 import { DevolucionesComponent } from '../devoluciones/devoluciones.component';
+import * as _moment from 'moment';
+
+
 
 interface DialogData{
   id: number;
@@ -38,6 +41,9 @@ export class BajasComponent implements OnInit {
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   listTipoDocumento: Parametro[] = [];
   validaDNIClass: boolean = false;
+  fechaActual:any;
+  horaActual:any;
+
   constructor(    public _dialogRef: MatDialogRef<BajasComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -50,6 +56,8 @@ export class BajasComponent implements OnInit {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
       this.inputTransferirBajas = this._formBuilder.group({
+        fechaTransferencia: ['', Validators.required],
+        horaTransferencia: [''],
         numeroResolucion: ['', Validators.required],
         idAlmacen: ['', Validators.required],
         numeroActa: ['', Validators.required],
@@ -62,10 +70,15 @@ export class BajasComponent implements OnInit {
     //console.log("_data-baja",this._data.data);
     this.dataSource = this._data.data;
     //this.getRecursosEspecies(this._data.id);
+    this.fechaActual = this.fechaActual === undefined ? _moment() : this.fechaActual;
+    this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
   }
 
   saveBajas(){
     let paramsList = [];
+
+    let fechaTransferencia = new Date(this.inputTransferirBajas.get('fechaTransferencia').value)
+    fechaTransferencia.setMinutes(fechaTransferencia.getMinutes() + fechaTransferencia.getTimezoneOffset());
 
     this.dataSource.forEach( ds =>{
       let params = {
@@ -76,6 +89,8 @@ export class BajasComponent implements OnInit {
         observaciones: this.inputTransferirBajas.value.observaciones,
         tipoTransferencia: 'TPTRANS005',
         lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
+        fechaTransferencia: fechaTransferencia,
+        horaTransferencia: this.inputTransferirBajas.get('horaTransferencia').value
       }
       paramsList.push(params);
     });

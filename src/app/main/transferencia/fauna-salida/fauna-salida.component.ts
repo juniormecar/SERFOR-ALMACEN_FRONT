@@ -11,6 +11,8 @@ import { Constants } from 'app/shared/models/util/constants';
 import { Parametro } from 'app/shared/models/parametro.model';
 import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
+import * as _moment from 'moment';
+
 
 
 interface DialogData{ 
@@ -38,6 +40,12 @@ export class FaunaSalidaComponent implements OnInit {
   tipoDocumento: string = Constants.TIPO_DOCUMENTO;
   listTipoDocumento: Parametro[] = [];
   validaDNIClass: boolean = false;
+
+  fechaActual:any;
+  horaActual:any;
+
+
+
   constructor(    public _dialogRef: MatDialogRef<FaunaSalidaComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -50,6 +58,8 @@ export class FaunaSalidaComponent implements OnInit {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
       this.inputTransferir = this._formBuilder.group({
+        fechaTransferencia: ['', Validators.required],
+        horaTransferencia: [''],
         tipo: ['', Validators.required],
         observaciones: [''],
         
@@ -62,6 +72,8 @@ export class FaunaSalidaComponent implements OnInit {
   ngOnInit(): void {
     console.log("_data",this._data);
     this.dataSource = this._data.data;
+    this.fechaActual = this.fechaActual === undefined ? _moment() : this.fechaActual;
+    this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
   }
 
   pageDataSource(e: PageEvent): PageEvent {
@@ -76,9 +88,12 @@ export class FaunaSalidaComponent implements OnInit {
   saveFaunaSalida(){
 
     let paramsList = [];
-    //console.log("this.dataSource ", this.dataSource)
+
+    let fechaTransferencia = new Date(this.inputTransferir.get('fechaTransferencia').value)
+    fechaTransferencia.setMinutes(fechaTransferencia.getMinutes() + fechaTransferencia.getTimezoneOffset());
+
     this.dataSource.forEach( ds =>{
-      //console.log("ds ",ds)
+
       let params = {
         nuIdRecurso: ds.nuIdRecurso,
         faunaSalida: this.inputTransferir.value.tipo,
@@ -86,6 +101,8 @@ export class FaunaSalidaComponent implements OnInit {
       nuIdAlmacenOrigin : ds.lstTransferenciaDetalle[0].nuIdAlmacen,
       tipoTransferencia: 'TPTRANS006',
       lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
+      fechaTransferencia: fechaTransferencia,
+        horaTransferencia: this.inputTransferir.get('horaTransferencia').value
       }
       paramsList.push(params);
     });

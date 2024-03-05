@@ -13,6 +13,9 @@ import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
 import { finalize } from 'rxjs/operators';
 import { ActaService } from 'app/service/acta.service';
+import * as _moment from 'moment';
+
+
 
 interface DialogData{
   id: number;
@@ -39,6 +42,9 @@ export class DevolucionesComponent implements OnInit {
   validaDNIClass: boolean = false;
   validaRUCClass: boolean = false;
   consolidadoActa: any = null;
+  fechaActual:any;
+  horaActual:any;
+
   constructor(    public _dialogRef: MatDialogRef<DevolucionesComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -52,6 +58,8 @@ export class DevolucionesComponent implements OnInit {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
       this.inputDevolucion = this._formBuilder.group({ 
+        fechaTransferencia: ['', Validators.required],
+        horaTransferencia: [''],
         nombreBeneficiario: ['', Validators.required],
         tipoDocumento: ['RUC', Validators.required],
         numeroDocumento: ['', Validators.required],
@@ -65,6 +73,8 @@ export class DevolucionesComponent implements OnInit {
     //console.log("_data",this._data.data);
     this.dataSource = this._data.data;
     this.searchTipoDocumento();
+    this.fechaActual = this.fechaActual === undefined ? _moment() : this.fechaActual;
+    this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
   }
 
   pageDataSource(e: PageEvent): PageEvent {
@@ -116,7 +126,9 @@ export class DevolucionesComponent implements OnInit {
 
   saveTransferencia(){
     let paramsList = [];
-    //console.log("this.dataSource ", this.dataSource)
+    let fechaTransferencia = new Date(this.inputDevolucion.get('fechaTransferencia').value)
+    fechaTransferencia.setMinutes(fechaTransferencia.getMinutes() + fechaTransferencia.getTimezoneOffset());
+
     this.dataSource.forEach( ds =>{
       //console.log("ds ",ds)
       let params = {
@@ -131,6 +143,8 @@ export class DevolucionesComponent implements OnInit {
         lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
         nroActaTransferencia: this.inputDevolucion.value.actaEntrega,
         nroResolucion: this.inputDevolucion.value.nroResolucion,
+        fechaTransferencia: fechaTransferencia,
+        horaTransferencia: this.inputDevolucion.get('horaTransferencia').value
       }
       paramsList.push(params);
       console.log('paramsListparamsListparamsListparamsList',paramsList);

@@ -18,6 +18,26 @@
                 <form [formGroup]="inputTransferirBeneficiario">
 
                     <div fxLayout="row" fxLayoutAlign="space-between">
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Fecha de Transferencia</span>
+                        <div fxFlex="3"></div>
+                        <span class="text-primary-ir" floatLabel="always" fxFlex="47">Hora de Transferencia</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">    
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                        fxFlex="47">
+                            <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="fechaActual" name="fechaTransferencia"
+                                formControlName="fechaTransferencia"> 
+                            <mat-datepicker-toggle matSuffix [for]="startDatePicker" ></mat-datepicker-toggle>
+                            <mat-datepicker #startDatePicker></mat-datepicker>
+                        </mat-form-field>
+                        <div fxFlex="3"></div>
+                        <mat-form-field appearance="outline" style="margin-bottom: 0px" floatLabel="always"
+                        fxFlex="47">
+                            <input matInput type="time" [(ngModel)]="horaActual" formControlName="horaTransferencia">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between">
                         <span class="text-primary-ir" floatLabel="always" fxFlex="35">Tipo de Documento</span>
                         <div fxFlex="3"></div>
                         <span class="text-primary-ir" floatLabel="always" fxFlex="35">N° de Documento</span>

@@ -13,6 +13,10 @@ import { Recurso } from 'app/shared/models/recurso.model';
 import { PideService } from 'app/service/pide.service';
 import { finalize } from 'rxjs/operators';
 import { ActaService } from 'app/service/acta.service';
+import * as _moment from 'moment';
+
+
+
 interface DialogData{ 
   id: number;
   data: any[];
@@ -37,6 +41,9 @@ export class BeneficiarioComponent implements OnInit {
   validaRUCClass: boolean = false;
   listTipoDocumento: Parametro[] = [];
   consolidadoActa: any = null;
+  fechaActual:any;
+  horaActual:any;
+
   constructor(    public _dialogRef: MatDialogRef<BeneficiarioComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -50,8 +57,9 @@ export class BeneficiarioComponent implements OnInit {
       this.recursoResponse.page = 1;
       this.recursoResponse.size = 5;
       this.inputTransferirBeneficiario = this._formBuilder.group({
-        nombreBeneficiario: ['', Validators.required],
-        //apellidosBeneficiario: ['', Validators.required],
+        fechaTransferencia: ['', Validators.required],
+        horaTransferencia: [''],
+        nombreBeneficiario: ['', Validators.required],        
         tipoDocumento: ['RUC', Validators.required],
         numeroDocumento: ['', Validators.required],
         nroActaTransferencia: ['', Validators.required],
@@ -66,6 +74,10 @@ export class BeneficiarioComponent implements OnInit {
     //this.getRecursosEspecies(this._data.id);
     this.dataSource = this._data.data;
     this.searchTipoDocumento();
+
+    this.fechaActual = this.fechaActual === undefined ? _moment() : this.fechaActual;
+    this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
+
   }
 
   pageDataSource(e: PageEvent): PageEvent {
@@ -115,6 +127,10 @@ export class BeneficiarioComponent implements OnInit {
 
   saveTransferencia(){
     let paramsList = [];
+
+    let fechaTransferencia = new Date(this.inputTransferirBeneficiario.get('fechaTransferencia').value)
+    fechaTransferencia.setMinutes(fechaTransferencia.getMinutes() + fechaTransferencia.getTimezoneOffset());
+
     //console.log("this.dataSource ", this.dataSource)
     this.dataSource.forEach( ds =>{
       //console.log("ds ",ds)
@@ -130,6 +146,8 @@ export class BeneficiarioComponent implements OnInit {
         lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
         nroActaTransferencia: this.inputTransferirBeneficiario.value.nroActaTransferencia,
         nroResolucion: this.inputTransferirBeneficiario.value.nroResolucion,
+        fechaTransferencia: fechaTransferencia,
+        horaTransferencia: this.inputTransferirBeneficiario.get('horaTransferencia').value
       }
       paramsList.push(params);
     });

@@ -19,6 +19,8 @@ import { PuestoControl } from 'app/shared/models/puesto-control.model';
 import { PuestoControlService } from 'app/service/puesto-control.service';
 import { ActaService } from 'app/service/acta.service';
 import { finalize } from 'rxjs/operators';
+import * as _moment from 'moment';
+
 
 interface DialogData{
   id: number;
@@ -46,6 +48,10 @@ export class AlmacenComponent implements OnInit {
   listATF: ATF[] = [];
   listPuestoControl: PuestoControl[] = [];
   consolidadoActa: any = null;
+  fechaActual:any;
+  horaActual:any;
+
+
   constructor(public _dialogRef: MatDialogRef<AlmacenComponent>,
     private _recursoService: RecursoService,
     public _dialog: MatDialog,
@@ -60,6 +66,8 @@ export class AlmacenComponent implements OnInit {
       this.recursoResponse.pageNumber = 1;
       this.recursoResponse.pageSize = 5;
       this.inputTransferirAlmacen = this._formBuilder.group({
+        fechaTransferencia: ['', Validators.required],
+        horaTransferencia: [''],
         numeroATF: ['', Validators.required],
         idPuntoControl: ['', Validators.required],
         idAlmacen: ['', Validators.required],
@@ -73,6 +81,8 @@ export class AlmacenComponent implements OnInit {
     //this.getRecursosEspecies(this._data.id);
     //this.getAlmacen();
     this.searchATF();
+    this.fechaActual = this.fechaActual === undefined ? _moment() : this.fechaActual;
+    this.horaActual = this.horaActual === undefined ? _moment(new Date()).format('HH:mm') : this.horaActual;
   }
 
   getRecursosEspecies(idRecurso: any) {
@@ -151,6 +161,9 @@ export class AlmacenComponent implements OnInit {
    saveTransferencia(){
     let paramsList = [];
 
+    let fechaTransferencia = new Date(this.inputTransferirAlmacen.get('fechaTransferencia').value)
+    fechaTransferencia.setMinutes(fechaTransferencia.getMinutes() + fechaTransferencia.getTimezoneOffset());
+
     this.dataSource.forEach( ds =>{
       let params = {
         nuIdRecurso: ds.nuIdRecurso,
@@ -161,6 +174,8 @@ export class AlmacenComponent implements OnInit {
         tipoTransferencia: 'TPTRANS002',
         lstTransferenciaDetalle: ds.lstTransferenciaDetalle,
         nroActaTraslado: this.inputTransferirAlmacen.value.nroActaTraslado,
+        fechaTransferencia: fechaTransferencia,
+        horaTransferencia: this.inputTransferirAlmacen.get('horaTransferencia').value
       }
       paramsList.push(params);
     });
