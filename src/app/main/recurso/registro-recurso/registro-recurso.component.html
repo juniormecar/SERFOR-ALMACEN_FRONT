@@ -777,12 +777,13 @@
                                             <ng-container matColumnDef="archivo">
                                                 <th mat-header-cell *matHeaderCellDef style="width:30%"> Archivo </th>
                                                 <td mat-cell *matCellDef="let element; let i = index" style="min-width: 150px; width: 150px;">
+                                                    <div *ngIf="element.idEspecie !== 0">
                                                     &nbsp;&nbsp;&nbsp;
                                                     <button type="button"  
                                                     class="btn-secondary width-full" style="min-width: 40px; width: 40px;" (click)="viewFilesDetalle(element,'.png, .jpeg, .jpg, .mp4')">
                                                     <mat-icon title="Cargar Archivo">vertical_align_top</mat-icon>
                                                     </button>
-
+                                                </div>
                                                 </td>
                                             </ng-container>
 
