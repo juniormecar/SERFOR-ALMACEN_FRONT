@@ -193,6 +193,9 @@ import { TransferenciaService } from 'app/service/transferencia.service';
 }
 else{
 
+      this.reportesResponse.pageNumber = 1;
+      this.reportesResponse.pageSize = 10;
+
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
       this.reportesRequest.tipoEspecie = this.inputBandeja.get('tipoEspecie').value;    
@@ -304,9 +307,8 @@ else{
       this.inputBandeja.get('periodo').setValue('');   
       this.inputBandeja.get('periodoSe').setValue('');  
       this.varPeriodo = null; 
-      this.reportesResponse.pageNumber = 1;
-      this.reportesResponse.pageSize = 10;
-      
+      this.reportesResponse = new ReportesResponse();
+      this.dataSource = new MatTableDataSource<Reportes>([]);
     }
   
   

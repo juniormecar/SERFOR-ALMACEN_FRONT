@@ -188,6 +188,10 @@ export class ReportesIndicadoresComponent implements OnInit {
       }) 
     }
     else{
+
+    this.reportesResponse.pageNumber = 1;
+    this.reportesResponse.pageSize = 10;
+    
     this.dataSource = new MatTableDataSource<Reportes>([])
     this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;
     this.reportesRequest.periodo = this.varPeriodo;
@@ -198,8 +202,10 @@ export class ReportesIndicadoresComponent implements OnInit {
       if(response.success){
         this.reportesResponse = response;
         this.dataSource = new MatTableDataSource<Reportes>(response.data);
-        this.dataSource2 = new MatTableDataSource<Reportes>();
         this.reportesResponse.totalRecords=this.dataSource.data.length;
+
+        this.dataSource2 = new MatTableDataSource<Reportes>([]);
+        this.reportesResponse2 = new ReportesResponse();
         
       }
     })
@@ -209,6 +215,9 @@ export class ReportesIndicadoresComponent implements OnInit {
   }
 
   verEspecies (nuIdAlmacen:number,tipoAccion:string){
+
+    this.reportesResponse2.pageNumber = 1;
+    this.reportesResponse2.pageSize = 10;
     //consultar las especies
     console.log('nuIdAlmacen',nuIdAlmacen);
     console.log('tipoAccion',tipoAccion);
@@ -257,6 +266,7 @@ export class ReportesIndicadoresComponent implements OnInit {
             contador++;     
           })
           this.dataSource2 = new MatTableDataSource<Reportes>(grillaMad);
+          this.reportesResponse2.totalRecords=this.dataSource2.data.length;
         }else if(grillaNoMad.length >= grillaMad.length && grillaNoMad.length>=grillaFa.length){
           console.log("ENTRO2 ")
             grillaNoMad.forEach((item:any)=>{
@@ -273,6 +283,7 @@ export class ReportesIndicadoresComponent implements OnInit {
             contador++;         
           })
           this.dataSource2 = new MatTableDataSource<Reportes>(grillaNoMad);
+          this.reportesResponse2.totalRecords=this.dataSource2.data.length;
         }else{
           console.log("ENTRO3 ")
           grillaFa.forEach((item:any)=>{
@@ -289,6 +300,7 @@ export class ReportesIndicadoresComponent implements OnInit {
             contador++;      
           });
           this.dataSource2 = new MatTableDataSource<Reportes>(grillaFa);
+          this.reportesResponse2.totalRecords=this.dataSource2.data.length;
         }
 
 /*
@@ -436,9 +448,11 @@ export class ReportesIndicadoresComponent implements OnInit {
     this.inputBandeja.get('tipoAccion').setValue('');   
     this.inputBandeja.get('periodo').setValue('');   
     this.inputBandeja.get('periodoSe').setValue('');  
-    this.reportesResponse.pageNumber = 1;
-    this.reportesResponse.pageSize = 10;
     this.varPeriodo = null; 
+    this.dataSource = new MatTableDataSource<Reportes>([]);
+    this.dataSource2 = new MatTableDataSource<Reportes>([])
+    this.reportesResponse = new ReportesResponse();
+    this.reportesResponse2 = new ReportesResponse();
   }
 
 

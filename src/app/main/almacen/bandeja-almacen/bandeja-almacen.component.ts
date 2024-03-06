@@ -105,6 +105,8 @@ export class BandejaAlmacenComponent implements OnInit {
   }
 
   async search() {
+    this.almacenResponse.pageNumber = 1;
+    this.almacenResponse.pageSize = 10;
     this.dataSource = new MatTableDataSource<Almacen>([])
     this.almacenRequest.txPuestoControl = this.inputBandeja.get('puestoControl').value;
     this.almacenRequest.txNumeroATF = this.inputBandeja.get('numeroATF').value;
@@ -189,6 +191,8 @@ export class BandejaAlmacenComponent implements OnInit {
     this.inputBandeja.get('puestoControl').setValue('');
     this.inputBandeja.get('numeroATF').setValue('');
     this.inputBandeja.get('nombreAlmacen').setValue('');
+    this.dataSource = new MatTableDataSource<Almacen>([]);
+    this.almacenResponse = new BandejaAlmacenResponse();
   }
 
   openMessange(title: string, message: string, type: 'success' | 'warning' | 'error') {

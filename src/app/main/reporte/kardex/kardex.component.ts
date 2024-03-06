@@ -200,8 +200,8 @@ else{
     this.inputBandeja.get('tipoEspecie').setValue('');
     this.inputBandeja.get('tipoIngreso').setValue('');
     this.inputBandeja.get('disponibilidadActa').setValue('');
-    this.kardexResponse.pageNumber = 1;
-     this.kardexResponse.pageSize = 10;
+    this.kardexResponse = new KardexResponse();
+    this.dataSource = new MatTableDataSource<Kardex>([]);
      //this.Search();
   }
 
