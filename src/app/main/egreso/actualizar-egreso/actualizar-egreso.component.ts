@@ -1377,7 +1377,7 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
   }
 
   cancelar() {
-    this._router.navigate(['bandeja-almacen']);
+    this._router.navigate(['bandeja-egreso']);
   }
 
   //queda
