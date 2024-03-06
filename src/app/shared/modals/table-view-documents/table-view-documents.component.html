@@ -9,6 +9,9 @@
         <input class="no-show" type="file" (change)="addArchivo($event)" [accept]="accept" #fileInput
         readonly />
         </button>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
     </div>
     <br>
     <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>

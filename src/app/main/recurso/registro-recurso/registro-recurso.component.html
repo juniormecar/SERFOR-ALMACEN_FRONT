@@ -732,7 +732,7 @@
                                                 <th mat-header-cell *matHeaderCellDef style="width:10%"> Acciones </th>
                                                 <td mat-cell *matCellDef="let element">
                                                     <button mat-mini-fab *ngIf="element.idEspecie !== 0 && element.flagCubicacion"
-                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun)"
+                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun, element.unidadMedida)"
                                                     style="background-color: #679738;"
                                                     readonly
                                                     >
@@ -740,7 +740,7 @@
                                                     </button>
 
                                                     <button mat-mini-fab *ngIf="element.idEspecie !== 0 && !element.flagCubicacion"
-                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun)"
+                                                    (click)="agregarCubicacion(element.nuIdRecursoProducto, element.txCantidadProducto,element.tipoProducto,element.nombreCientifico,element.nombreComun, element.unidadMedida)"
                                                     style="background-color: #d33;"
                                                     [disabled]="element.unidadMedida === '' || element.unidadMedida === undefined ||
                                                     element.tipoProducto === '' ||  element.tipoProducto === undefined ||

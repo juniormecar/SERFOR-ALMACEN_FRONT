@@ -72,7 +72,8 @@ export class ModalFaunaDetalleComponent implements OnInit {
     this.txCantidadProducto = this.data.cantidad;
     //console.log("this.data ", this.data);
     //console.log("this.txCantidadProducto ", this.txCantidadProducto);
-    this.tittleFaunaDetalle = 'Detalle de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' + '/ ' + this.txCantidadProducto+' piezas';
+    let textUnidad = this.txCantidadProducto == '1' ? ' unidad' : ' unidades';
+    this.tittleFaunaDetalle = 'Detalle de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' + '/ ' + this.txCantidadProducto+ textUnidad;
     this.faunaDetalleResponse.pageNumber = 1;
     this.faunaDetalleResponse.pageSize = 10;
   }
