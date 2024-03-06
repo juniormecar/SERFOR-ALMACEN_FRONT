@@ -195,7 +195,8 @@ export class BandejaRecursoComponent implements OnInit {
     this.inputBandeja.get('numeroActa').setValue('');
     this.inputBandeja.get('numeroGuia').setValue('');
     this.inputBandeja.get('tipoIngreso').setValue('');
-    this.inputBandeja.get('almacen').setValue('');      
+    this.inputBandeja.get('almacen').setValue('');     
+    this.Search();
   }
 
   descargarArchivoTabla(idFile: number) {

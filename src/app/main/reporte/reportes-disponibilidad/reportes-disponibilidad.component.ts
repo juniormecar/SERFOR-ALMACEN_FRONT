@@ -184,6 +184,9 @@
         }) 
       }
       else{
+
+      this.reportesResponse.pageNumber = 1;
+      this.reportesResponse.pageSize = 10;
       this.dataSource = new MatTableDataSource<Reportes>([])
       this.reportesRequest.nuIdAlmacen = this.inputBandeja.get('almacen').value;        
       this.reportesRequest.numeroDocumento =  this.numeroDocumento;
@@ -215,10 +218,10 @@
   
     limpiarCampos(): void {
       this.inputBandeja.get('almacen').setValue('');
-      this.reportesResponse.pageNumber = 1;
-      this.reportesResponse.pageSize = 10;
-      this.reportesResponse2.pageNumber = 1;
-      this.reportesResponse2.pageSize = 10;
+      this.dataSource = new MatTableDataSource<Reportes>([]);
+      this.reportesResponse = new ReportesResponse();
+      // this.reportesResponse2.pageNumber = 1;
+      // this.reportesResponse2.pageSize = 10;
     }
   
   

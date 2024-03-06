@@ -38,6 +38,7 @@ import { ModalAlmacenEncargadosComponent } from 'app/main/almacen/registro-almac
 import { DeleteAlmacenResponsableResponse } from 'app/shared/models/response/delete-almacen-responsable-response';
 import { Decimal } from 'app/shared/models/settings.model';
 import { FaunaSalidaComponent } from 'app/main/transferencia/fauna-salida/fauna-salida.component';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 
 @Component({
@@ -412,6 +413,9 @@ saveStorage(cantidad: any, redondeo: any){
   }
 
   getRecursosFauna(idAlmacen: any) {
+
+    this.recursoResponseFauna.pageNumber = 1;
+    this.recursoResponseFauna.pageSize = 10;
     
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'FA',null,
@@ -513,6 +517,9 @@ saveStorage(cantidad: any, redondeo: any){
 
   getRecursosNoMad(idAlmacen: any) {
     
+    this.recursoResponseNoMad.pageNumber = 1;
+    this.recursoResponseNoMad.pageSize = 10;
+
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'NOMAD',null,
     null,null,this.recursoResponseNoMad.pageNumber,  this.pageSizeTotal,'DESC')
@@ -613,6 +620,10 @@ saveStorage(cantidad: any, redondeo: any){
   }
 
   getRecursosMad(idAlmacen: any) {
+
+    this.recursoResponseMad.pageNumber = 1;
+    this.recursoResponseMad.pageSize = 10;
+
     this.dataSource = new MatTableDataSource<Recurso>([])
     this._recursoService.getRecursoSearchVerProductos(null, null, null, null,null, idAlmacen,null,null,null,null,null,null,null,'MAD',null,
     null,null,this.recursoResponseFauna.pageNumber,  this.pageSizeTotal,'DESC')
@@ -1473,7 +1484,14 @@ console.log('dataFilteredFaunadataFilteredFaunadataFilteredFauna',dataFilteredFa
     this.inputProductos.get('numeroActa').setValue('');
     this.inputProductos.get('tipoIngresoForm').setValue('');
     this.inputProductos.get('nombreProducto').setValue('');
-    
+    this.inputProductos.get('nombresApellidos').setValue('');
+    this.inputProductos.get('almacen').setValue('');
+    this.dataSource = new MatTableDataSource<Recurso>([]);
+    this.dataSourceNoMad = new MatTableDataSource<Recurso>([]);
+    this.dataSourceMad = new MatTableDataSource<Recurso>([]);
+    this.recursoResponseMad = new BandejaRecursoResponse();
+    this.recursoResponseNoMad = new BandejaRecursoResponse();
+    this.recursoResponseFauna = new BandejaRecursoResponse();
   }
 
   validarDNI() {

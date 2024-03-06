@@ -249,8 +249,8 @@ saveStorage(cantidad: any, redondeo: any){
     this.inputBandeja.get('tipoIngreso').setValue('');
     this.inputBandeja.get('disponibilidadActa').setValue('');
     this.inputBandeja.get('tipoEspecie').setValue('');
-    this.recursoResponse.pageNumber = 1;
-    this.recursoResponse.pageSize = 10;
+    this.dataSource = new MatTableDataSource<Recurso>([]);
+    this.recursoResponse = new BandejaRecursoResponse();
   }
 
   verDetalleProducto(idEspecie: number, nombreCientifico: string, nombreComun: string) {

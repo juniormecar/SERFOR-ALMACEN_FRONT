@@ -152,6 +152,9 @@ export class ReportesDonacionesComponent implements OnInit {
 }
 else{
 
+    this.reportesResponse.pageNumber = 1;
+    this.reportesResponse.pageSize = 10;
+
     this.fechaInicio = this.inputBandeja.get('fechaInicio').value;
     if( this.fechaInicio === undefined || this.fechaInicio === null || this.fechaInicio === '')
     { this.fechaInicio = null;}
@@ -225,8 +228,8 @@ else{
     this.inputBandeja.get('tipoEspecie').setValue('');   
     this.inputBandeja.get('fechaInicio').setValue('');   
     this.inputBandeja.get('fechaFin').setValue('');   
-    this.reportesResponse.pageNumber = 1;
-    this.reportesResponse.pageSize = 10;
+    this.reportesResponse = new ReportesResponse();
+    this.dataSource = new MatTableDataSource<Reportes>([]);
   }
   
   exportToExcel() {
