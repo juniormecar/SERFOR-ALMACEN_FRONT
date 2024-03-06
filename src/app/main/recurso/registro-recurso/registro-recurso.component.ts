@@ -1297,10 +1297,10 @@ export class RegistroRecursoComponent implements OnInit {
     
   }
 
-  agregarCubicacion(nuIdRecursoProducto: number, txCantidadProducto: string,tipoProducto:string,nombreCientifico:string,nombreComun:string): void {
+  agregarCubicacion(nuIdRecursoProducto: number, txCantidadProducto: string,tipoProducto:string,nombreCientifico:string,nombreComun:string,unidaMedida:string): void {
     
 
-    //console.log('probando el nuIdRecursoProducto',nuIdRecursoProducto);
+    // console.log('probando unidaMedida ',unidaMedida);
     if(nuIdRecursoProducto === 0){
       Swal.fire({
         title: 'Mensaje!',
@@ -1318,10 +1318,11 @@ export class RegistroRecursoComponent implements OnInit {
       })
     }
     else{
+      let nombreUnidadMedida = this.listUnidadMedida.find(x=>x.codigo == unidaMedida).valorPrimario;
       const dialogRef = this.dialog.open(ModalEspecieCubicacionComponent, {
         width: '1300px',
         height: '800px',
-        data: { id: nuIdRecursoProducto, cantidad: txCantidadProducto,tipoProducto: tipoProducto, nombreCientifico:nombreCientifico,nombreComun:nombreComun }
+        data: { id: nuIdRecursoProducto, cantidad: txCantidadProducto,tipoProducto: tipoProducto, nombreCientifico:nombreCientifico,nombreComun:nombreComun, uMedida: nombreUnidadMedida }
       });
       
       dialogRef.afterClosed().subscribe(result => {
