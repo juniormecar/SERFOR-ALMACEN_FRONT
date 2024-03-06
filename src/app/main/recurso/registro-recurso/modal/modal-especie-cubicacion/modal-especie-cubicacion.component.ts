@@ -19,7 +19,8 @@ interface DialogData {
   cantidad: string,
   tipoProducto: string,
   nombreCientifico: string,
-  nombreComun: string
+  nombreComun: string,
+  uMedida: string
 }
 
 @Component({
@@ -70,12 +71,16 @@ export class ModalEspecieCubicacionComponent implements OnInit {
     this.txCantidadProducto = this.data.cantidad;
     //console.log("this.data ", this.data);
     //console.log("this.txCantidadProducto ", this.txCantidadProducto);
-    this.tittleCubicacion = 'Hoja de cubicación de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' +this.txCantidadProducto+' piezas';
+    let tipoUMedidad = this.txCantidadProducto == '1' ? this.data.uMedida : this.data.uMedida + 's';
+    
+    this.tittleCubicacion = 'Hoja de cubicación de '+this.data.nombreCientifico + ' - '+ this.data.nombreComun + ' ' +this.txCantidadProducto+ ' ' + tipoUMedidad;
     this.cubicacionResponse.pageNumber = 1;
     this.cubicacionResponse.pageSize = 10;
   }
 
   ngOnInit(): void {
+
+    console.log('DATA' , this.data);
    
     if(this.data.tipoProducto==='ACE'){
       this.disabledRoll = false;
