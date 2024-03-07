@@ -111,11 +111,16 @@ export class FaunaSalidaComponent implements OnInit {
     if(paramsList.length > 0){
       this.serviceTransferencia.postTransferencia(paramsList).subscribe((response: any) => {
         if (response.data && response.data[0].nuIdRecurso) {
-          Swal.fire(
-            'Mensaje de Confirmación',
-            'Transferecia realizada correctamente.',
-            'success'
-          )
+          Swal.fire({
+            title: 'Mensaje de Confirmación',
+            text: "Salida realizada correctamente.",
+            icon: 'success',
+            //showCancelButton: true,
+            confirmButtonColor: '#679738',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancelar'
+          })
         this._dialogRef.close(1);
         } else {
           Swal.fire(

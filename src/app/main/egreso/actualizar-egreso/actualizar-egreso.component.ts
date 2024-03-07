@@ -1837,11 +1837,18 @@ saveStorage(cantidad: any, redondeo: any){
         this.serviceTransferencia.putTransferencia(paramsList)
         .subscribe((response: any) => {
           if (response.data) {
-            Swal.fire(
-              'Mensaje de Confirmación',
-              'Transferencia realizada correctamente.',
-              'success'
-            )
+            
+            Swal.fire({
+              title: 'Mensaje de Confirmación',
+              text: "Egreso actualizado correctamente.",
+              icon: 'success',
+              //showCancelButton: true,
+              confirmButtonColor: '#679738',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'OK',
+              cancelButtonText: 'Cancelar'
+            })
+
           }  else {
             Swal.fire(
               'Mensaje!',
