@@ -107,6 +107,7 @@ export class BandejaInventarioComponent implements OnInit {
       disponibilidadActa: [''], 
       tipoEspecie: [''], 
     });
+    this.numeroDocumento = localStorage.getItem('usuario');
     
     /*
     this.lstDecimal = JSON.parse(sessionStorage.getItem('listDecimal'));
